@@ -10,8 +10,8 @@ public class Veiculo {
 	private int CapMax;
 	private String cor;
 	private String tipo;
-	private String combustivel;
-	private Date datacadastro;
+	private String carroceria;
+	private String datacadastro;
 
 	/** Metodo construtor da classe Veiculo - vazio */
 
@@ -39,13 +39,13 @@ public class Veiculo {
 	 *            e a data de registro do veiculo
 	 */
 	public Veiculo(String placa, String marca, int CapMax, String cor,
-			String tipo, String combustivel, Date datacadastro) {
+			String tipo, String combustivel, String datacadastro) {
 		this.placa = placa;
 		this.marca = marca;
 		this.CapMax = CapMax;
 		this.cor = cor;
 		this.tipo = tipo;
-		this.combustivel = combustivel;
+		this.carroceria = carroceria;
 		this.datacadastro = datacadastro;
 	}
 
@@ -90,19 +90,19 @@ public class Veiculo {
 		this.tipo = tipo;
 	}
 
-	public String getCombustivel() {
-		return combustivel;
+	public String getCarroceria() {
+		return carroceria;
 	}
 
-	public void setCombustivel(String combustivel) {
-		this.combustivel = combustivel;
+	public void setCarroceria(String carroceria) {
+		this.carroceria = carroceria;
 	}
 
-	public Date getDatacadastro() {
+	public String getDatacadastro() {
 		return datacadastro;
 	}
 
-	public void setDatacadastro(Date datacadastro) {
+	public void setDatacadastro(String datacadastro) {
 		this.datacadastro = datacadastro;
 	}
 }

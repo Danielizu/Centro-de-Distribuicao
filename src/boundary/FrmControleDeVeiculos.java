@@ -22,7 +22,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.awt.FlowLayout;
 
-public class FrmControleDeVeiculos{
+public class FrmControleDeVeiculos {
 
 	public JFrame frame;
 	public JTextField txtPlaca;
@@ -34,15 +34,18 @@ public class FrmControleDeVeiculos{
 	public JComboBox cbTipo;
 	public JComboBox cbCor;
 	public JComboBox cbMarca;
-	public JComboBox cbCombustivel;
+	public JComboBox cbCarroceria;
 	public Veiculo veiculo = new Veiculo();
 	public ControlarVeiculos control = new ControlarVeiculos();
 	public CrudVeiculo crud = new CrudVeiculo();
-	String cores[] = {null, "Azul", "Amarelo", "Vermelho", "Preto", "Prata", "Cinza", "Grafite"};
-	String marcas[] = {null, "Agrale", "Ford", "International", "Iveco", "Mercede Benz", "Scania", "Shacman", "Sinotruk", "Volkswagen", "Volvo"};
-	String combustivel[] = {null, "Gasolina", "Diesel", "Gás Natural", "Etanol", "Biodisel", "Biogás"};
-	
-	
+	String tipo[] = { null, "Caminhão", "Carro" };
+	String cores[] = { null, "Azul", "Amarelo", "Vermelho", "Preto", "Prata",
+			"Cinza", "Grafite" };
+	String marcas[] = { null, "Agrale", "Ford", "International", "Iveco",
+			"Mercede Benz", "Scania", "Shacman", "Sinotruk", "Volkswagen",
+			"Volvo" };
+	String carroceria[] = { null, "Gasolina", "Diesel", "Gás Natural",
+			"Etanol", "Biodisel", "Biogás" };
 
 	/**
 	 * Launch the application.
@@ -52,7 +55,7 @@ public class FrmControleDeVeiculos{
 			public void run() {
 				try {
 					FrmControleDeVeiculos window = new FrmControleDeVeiculos();
-					
+
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,20 +76,19 @@ public class FrmControleDeVeiculos{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
-		
+
 		// Criação da Janela
 		frame = new JFrame();
 		frame.setBounds(100, 100, 520, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		//Declarando a label "Placa"
+
+		// Declarando a label "Placa"
 		JLabel lblPlaca = new JLabel("Placa");
 		lblPlaca.setBounds(30, 58, 46, 14);
 		frame.getContentPane().add(lblPlaca);
-		
-		//Declarando o campo de entrada da "Placa" e criação da máscara
+
+		// Declarando o campo de entrada da "Placa" e criação da máscara
 		txtPlaca = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter placa = new javax.swing.text.MaskFormatter(
@@ -98,41 +100,45 @@ public class FrmControleDeVeiculos{
 		txtPlaca.setBounds(138, 55, 121, 20);
 		frame.getContentPane().add(txtPlaca);
 		txtPlaca.setColumns(10);
-		
-		//Declarando a label "Capacidade Máxima"
+
+		// Declarando a label "Capacidade Máxima"
 		JLabel lblCapacidadeMax = new JLabel("Capacidade Max.");
 		lblCapacidadeMax.setBounds(30, 89, 126, 14);
 		frame.getContentPane().add(lblCapacidadeMax);
-		
-		//Declarando o campo de entrada da "Capacidade Máxima" e criação da máscara
+
+		// Declarando o campo de entrada da "Capacidade Máxima" e criação da
+		// máscara
 		txtCapacidadeMax = new JTextField();
 		try {
-			javax.swing.text.MaskFormatter capacidade = new javax.swing.text.MaskFormatter(
+			javax.swing.text.MaskFormatter capacidademax = new javax.swing.text.MaskFormatter(
 					"###");
 
-			txtCapacidadeMax = new javax.swing.JFormattedTextField(capacidade);
+			txtCapacidadeMax = new javax.swing.JFormattedTextField(
+					capacidademax);
 		} catch (Exception e) {
 		}
 		txtCapacidadeMax.setBounds(176, 86, 83, 20);
 		frame.getContentPane().add(txtCapacidadeMax);
 		txtCapacidadeMax.setColumns(10);
-		
-		//Declarando a label "Tipo"
+
+		// Declarando a label "Tipo"
 		JLabel lblTipo = new JLabel("Tipo");
 		lblTipo.setBounds(30, 122, 46, 14);
 		frame.getContentPane().add(lblTipo);
-		
-		//Declarando o combo box do "Tipo"
+
+		// Declarando o combo box do "Tipo"
 		final JComboBox cbTipo = new JComboBox();
+		control.AdicionarValoresCB(cbTipo, tipo);
 		cbTipo.setBounds(138, 119, 121, 20);
 		frame.getContentPane().add(cbTipo);
-		
-		//Declarando a label "Quantidade de Paletes"
+
+		// Declarando a label "Quantidade de Paletes"
 		JLabel lblQtdPaletes = new JLabel("Qtd. Máxima de Paletes");
 		lblQtdPaletes.setBounds(30, 161, 136, 14);
 		frame.getContentPane().add(lblQtdPaletes);
-		
-		//Declarando o campo de entrada da "Quantidade máxima de Paletes" e criação da máscara
+
+		// Declarando o campo de entrada da "Quantidade máxima de Paletes" e
+		// criação da máscara
 		txtQtdPaletesMax = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter quantidade = new javax.swing.text.MaskFormatter(
@@ -144,62 +150,62 @@ public class FrmControleDeVeiculos{
 		txtQtdPaletesMax.setBounds(176, 158, 83, 20);
 		frame.getContentPane().add(txtQtdPaletesMax);
 		txtQtdPaletesMax.setColumns(10);
-		
+
 		JLabel lblDataDeCadastro = new JLabel("Data de Cadastro");
 		lblDataDeCadastro.setBounds(30, 196, 126, 14);
 		frame.getContentPane().add(lblDataDeCadastro);
-		
+
 		txtDataCadastro = new JTextField();
 		txtDataCadastro.setBounds(173, 193, 86, 20);
 		frame.getContentPane().add(txtDataCadastro);
 		control.InserirData(txtDataCadastro);
 		txtDataCadastro.setColumns(10);
-		
+
 		JLabel lblMarca = new JLabel("Marca");
 		lblMarca.setBounds(288, 58, 46, 14);
 		frame.getContentPane().add(lblMarca);
-		
+
 		JLabel lblCor = new JLabel("Cor");
 		lblCor.setBounds(288, 89, 46, 14);
 		frame.getContentPane().add(lblCor);
-		
+
 		JLabel lblCarroceria = new JLabel("Carroceria");
 		lblCarroceria.setBounds(288, 122, 74, 14);
 		frame.getContentPane().add(lblCarroceria);
-		
+
 		final JComboBox cbMarca = new JComboBox();
 		cbMarca.setBounds(344, 55, 134, 20);
 		control.AdicionarValoresCB(cbMarca, marcas);
 		frame.getContentPane().add(cbMarca);
-		
+
 		final JComboBox cbCor = new JComboBox();
 		cbCor.setBounds(344, 86, 134, 20);
 		control.AdicionarValoresCB(cbCor, cores);
 		frame.getContentPane().add(cbCor);
-		
-		final JComboBox cbCombustivel = new JComboBox();
-		cbCombustivel.setBounds(354, 119, 124, 20);
-		control.AdicionarValoresCB(cbCombustivel, combustivel);
-		frame.getContentPane().add(cbCombustivel);
-		
+
+		final JComboBox cbCarroceria = new JComboBox();
+		cbCarroceria.setBounds(354, 119, 124, 20);
+		control.AdicionarValoresCB(cbCarroceria, carroceria);
+		frame.getContentPane().add(cbCarroceria);
+
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setBounds(30, 311, 46, 14);
 		frame.getContentPane().add(lblNome);
-		
+
 		txtNomeMotorista = new JTextField();
 		txtNomeMotorista.setBounds(88, 308, 294, 20);
 		frame.getContentPane().add(txtNomeMotorista);
 		txtNomeMotorista.setColumns(10);
-		
+
 		JLabel lblDadosDoMotorista = new JLabel("Dados do Motorista");
 		lblDadosDoMotorista.setBounds(30, 348, 126, 14);
 		frame.getContentPane().add(lblDadosDoMotorista);
-		
+
 		txtDadosMotorista = new JTextField();
 		txtDadosMotorista.setBounds(154, 341, 313, 131);
 		frame.getContentPane().add(txtDadosMotorista);
 		txtDadosMotorista.setColumns(10);
-		
+
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -207,19 +213,16 @@ public class FrmControleDeVeiculos{
 		});
 		btnBuscar.setBounds(384, 307, 83, 23);
 		frame.getContentPane().add(btnBuscar);
-		
+
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-
 			}
 		});
 		btnCancelar.setBounds(378, 507, 89, 23);
 		frame.getContentPane().add(btnCancelar);
-		
-		
-		
+
 		JButton btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -232,41 +235,58 @@ public class FrmControleDeVeiculos{
 				control.LimparComboBox(cbTipo);
 				control.LimparComboBox(cbMarca);
 				control.LimparComboBox(cbCor);
-				control.LimparComboBox(cbCombustivel);
+				control.LimparComboBox(cbCarroceria);
 			}
-		}
-		);
+		});
 		btnLimpar.setBounds(148, 507, 89, 23);
 		frame.getContentPane().add(btnLimpar);
-		
-		
+
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				veiculo.setPlaca(txtPlaca.getText());
+
 				try {
-					crud.SalvarVeiculo(veiculo);
+					veiculo.setCapMax(Integer.parseInt(txtCapacidadeMax
+							.getText()));
+				} catch (Exception e2) {
+				}
+
+				veiculo.setCarroceria((cbCarroceria.getSelectedItem()
+						.toString()));
+
+				veiculo.setDatacadastro(txtDataCadastro.getText());
+				veiculo.setCor(cbCor.getSelectedItem().toString());
+				veiculo.setMarca(cbMarca.getSelectedItem().toString());
+
+				try {
+					control.SalvarVeiculo(veiculo);
 				} catch (IOException e1) {
 					System.out.println("Arquivo não encontrado");
 					e1.printStackTrace();
+
 				}
 			}
 		});
 		btnSalvar.setBounds(30, 507, 89, 23);
 		frame.getContentPane().add(btnSalvar);
-		
-		
 
 		JPanel borderMotorista = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) borderMotorista.getLayout();
 		borderMotorista.setBounds(10, 11, 484, 539);
-		borderMotorista.setBorder(BorderFactory.createTitledBorder("Cadastro de Veiculos"));
+		borderMotorista.setBorder(BorderFactory
+				.createTitledBorder("Cadastro de Veiculos"));
 		frame.getContentPane().add(borderMotorista);
-		
+
 		JPanel border = new JPanel();
 		border.setBounds(10, 246, 484, -193);
-		border.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Cadastro de Motoristas", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		border.setBorder(new TitledBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(0, 0, 0)),
+				"Cadastro de Motoristas", TitledBorder.LEFT, TitledBorder.TOP,
+				null, new Color(0, 0, 0)));
 		frame.getContentPane().add(border);
-		
-		
+
 	}
 }

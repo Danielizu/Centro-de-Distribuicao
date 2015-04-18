@@ -1,0 +1,2 @@
+FEL-1234;;0;;;null;null;
+ETC-1234;International;0;Vermelho;;Diesel;18/04/2015;
