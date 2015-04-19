@@ -4,22 +4,35 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+
+import control.ControlarCatalogo;
 import control.ValidarCPFCNPJ;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import entity.Catalogo;
+
 import com.toedter.calendar.JDateChooser;
 
 public class FrmCatalogo extends JFrame {
@@ -57,22 +70,21 @@ public class FrmCatalogo extends JFrame {
 	private JLabel lblCampoObrigatrioVolume;
 	private JLabel lblCampoObrigatrioDescricao;
 	private JLabel lblCNPJInvalido;
-	private JDateChooser dataCadastro;
+	private JDateChooser txtDataCadastro;
+	public ControlarCatalogo controle = new ControlarCatalogo();
+	public Catalogo catalogo = new Catalogo();
+	private JLabel lblCampoObrigatrioCodProduto;
 
 	public FrmCatalogo() {
-		// Informando que a janela n'ao pode ser redimencionada
-		setResizable(false);
-
 		// Propriedades de inicializacao da tela
 		propInicializacao();
-
-		// Declarando labels de mensagem de erro
-		labelsMensagensErro();
 
 	}
 
 	// Metodo que define as propriedades do form na inicializacao
-	public void propInicializacao() {
+	private void propInicializacao() {
+		// Informando que a janela n'ao pode ser redimencionada
+		setResizable(false);
 
 		// Definindo propriedades da tela principal
 		setTitle("Cat\u00E1logo");
@@ -99,6 +111,9 @@ public class FrmCatalogo extends JFrame {
 		pnlCadastro.add(pnlDescricao);
 		pnlDescricao.setLayout(null);
 
+		// Declarando labels de mensagem de erro
+		labelsMensagensErro();
+
 		// Definindo propriedades do codigo do produto
 		lblCodProduto = new JLabel("C\u00F3d. Produto:");
 		lblCodProduto.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -106,7 +121,6 @@ public class FrmCatalogo extends JFrame {
 		pnlCadastro.add(lblCodProduto);
 
 		txtCodProduto = new JTextField();
-		txtCodProduto.setEnabled(false);
 		txtCodProduto.setBounds(116, 36, 46, 20);
 		pnlCadastro.add(txtCodProduto);
 		txtCodProduto.setColumns(10);
@@ -173,9 +187,9 @@ public class FrmCatalogo extends JFrame {
 		lblDataDeCadastro.setBounds(17, 204, 89, 14);
 		pnlCadastro.add(lblDataDeCadastro);
 
-		dataCadastro = new JDateChooser();
-		dataCadastro.setBounds(116, 198, 101, 20);
-		pnlCadastro.add(dataCadastro);
+		txtDataCadastro = new JDateChooser();
+		txtDataCadastro.setBounds(116, 198, 101, 20);
+		pnlCadastro.add(txtDataCadastro);
 
 		// Definindo propriedades do peso
 		lblPeso = new JLabel("Peso:");
@@ -198,7 +212,7 @@ public class FrmCatalogo extends JFrame {
 		txtVolume.setColumns(10);
 		txtVolume.setBounds(116, 263, 46, 20);
 		pnlCadastro.add(txtVolume);
-		naoPode();
+		excluirCaracteresEspeciais();
 
 		// Declarando ScrollPane para o txtArea da descricao
 		scrollDescricao = new JScrollPane();
@@ -214,18 +228,8 @@ public class FrmCatalogo extends JFrame {
 		btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Verifica se o metodo salvar retorna que todos as informacoes
-				// estao validas
-				if (salvar()) {
-					// Caso estejam validas, estar[a habilidado para salvar as
-					// informacoes
-					System.out.println("Habilitado para salvar");
-				} else {
-					// Caso estejam invalidas, nao estar[a habilidado para
-					// salvar as informacoes
-					System.out.println("Não Habilitado para salvar");
-				}
-				;
+				//Metodo que valida e grava os dados em arquivo
+				salvarDados();
 			}
 		});
 		btnSalvar.setBounds(33, 463, 89, 23);
@@ -236,6 +240,7 @@ public class FrmCatalogo extends JFrame {
 		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Metodo que limpa os campos
 				limparCampos();
 			}
 		});
@@ -247,8 +252,11 @@ public class FrmCatalogo extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Metodo que fecha a janela atual
 				dispose();
+				// A janela do menu passa a ser acessivel
 				FrmMenu.frame.setEnabled(true);
+				// A Janela do menu vem para a frente da tela
 				FrmMenu.frame.setAlwaysOnTop(true);
 			}
 		});
@@ -268,6 +276,15 @@ public class FrmCatalogo extends JFrame {
 
 		lblCampoObrigatrioNomeProduto = new JLabel("Campo Obrigat\u00F3rio!");
 		lblCampoObrigatrioNomeProduto.setVisible(false);
+
+		lblCampoObrigatrioCodProduto = new JLabel("Campo Obrigat\u00F3rio!");
+		lblCampoObrigatrioCodProduto.setForeground(Color.RED);
+		lblCampoObrigatrioCodProduto
+				.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblCampoObrigatrioCodProduto.setVisible(false);
+		lblCampoObrigatrioCodProduto.setBounds(172, 39, 94, 14);
+		pnlCadastro.add(lblCampoObrigatrioCodProduto);
+
 		lblCampoObrigatrioNomeProduto.setForeground(Color.RED);
 		lblCampoObrigatrioNomeProduto
 				.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -327,7 +344,7 @@ public class FrmCatalogo extends JFrame {
 	}
 
 	// Metodo para o botao Salvar
-	public boolean salvar() {
+	public boolean validarTipoCliente() {
 		int aindaFalta = 0;
 		if (validarCampos()) {
 			String CNPJ = "";
@@ -354,8 +371,59 @@ public class FrmCatalogo extends JFrame {
 		}
 	}
 
+	//Metodo para gravar os dados em arquivo
+	public void salvarDados() {
+		// Verifica se o metodo salvar retorna que todos as informacoes
+		// estao validas
+		if (validarTipoCliente()) {
+			// Caso estejam validas, estar[a habilidado para salvar as
+			// informacoes
+			System.out.println("Habilitado para salvar");
+			catalogo.setCodProduto(Integer.parseInt(txtCodProduto.getText()));
+			catalogo.setNome(txtNomeDoProduto.getText());
+			catalogo.setFornecedor(txtFornecedor.getText());
+
+			// Removendo os caracteres da mascara do CNPJ e gravando
+			String CNPJ = "";
+			CNPJ = txtCNPJ.getText();
+			CNPJ = CNPJ.replace(".", "");
+			CNPJ = CNPJ.replace("/", "");
+			CNPJ = CNPJ.replace("-", "");
+			catalogo.setCNPJ(CNPJ);
+
+			// Removendo os caracteres da mascara do telefone e gravando
+			String Telefone = "";
+			Telefone = txtTelefone.getText();
+			Telefone = Telefone.replace("(", "");
+			Telefone = Telefone.replace(")", "");
+			Telefone = Telefone.replace("-", "");
+			catalogo.setTelefone(Telefone);
+
+			//Coletando data no formato correto
+			Date data = txtDataCadastro.getDate();
+			SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+			catalogo.setDataCadastro("" + f.format(data));
+			
+			//Gravando peso, volume e descricao
+			catalogo.setPeso(Integer.parseInt(txtPeso.getText()));
+			catalogo.setVolume(Integer.parseInt(txtVolume.getText()));
+			catalogo.setDescricao(txtAreaDescricao.getText());
+			
+			// Try Catch para gravar em arquivo a partir do controle do catalogo
+			try {
+				controle.SalvarCatalogo(catalogo);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} else {
+			// Caso estejam invalidas, nao estar[a habilidado para
+			// salvar as informacoes
+			System.out.println("Não Habilitado para salvar");
+		}
+	}
+
 	// Metodo que desabilita caracteres especiais do campo nome
-	public void naoPode() {
+	public void excluirCaracteresEspeciais() {
 		// Definindo que o campo do Nome so aceita Texto
 		txtNomeDoProduto.addKeyListener(new KeyAdapter() {
 			@Override
@@ -411,7 +479,7 @@ public class FrmCatalogo extends JFrame {
 		txtTelefone.setValue(null);
 		txtCNPJ.setValue(null);
 		txtAreaDescricao.setText(null);
-		dataCadastro.setCalendar(null);
+		txtDataCadastro.setDate(null);
 		lblCampoObrigatrioNomeProduto.setVisible(false);
 		lblCampoObrigatrioFornecedor.setVisible(false);
 		lblCampoObrigatrioCNPJ.setVisible(false);
@@ -426,6 +494,14 @@ public class FrmCatalogo extends JFrame {
 	// Metodo para validar os campos
 	public boolean validarCampos() {
 		int aindaFalta = 1;
+		// Validando campo do Cod Do produto
+		if (txtCodProduto.getText().isEmpty()) {
+			lblCampoObrigatrioCodProduto.setVisible(true);
+			aindaFalta = 0;
+		} else {
+			lblCampoObrigatrioCodProduto.setVisible(false);
+		}
+
 		// Validando campo do Nome do Produto
 		if (txtNomeDoProduto.getText().isEmpty()) {
 			lblCampoObrigatrioNomeProduto.setVisible(true);
@@ -443,7 +519,7 @@ public class FrmCatalogo extends JFrame {
 		}
 
 		// Validando campo da data
-		if (dataCadastro.getDate() ==null) {
+		if (txtDataCadastro.getDate() == null) {
 			lblCampoObrigatrioDataCadastro.setVisible(true);
 			aindaFalta = 0;
 		} else {

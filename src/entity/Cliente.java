@@ -4,6 +4,7 @@ public class Cliente {
 	// Atributos do cliente
 	private String nome;
 	private String cpf;
+	private String cnpj;
 	private String telefone;
 	private String endereco;
 	private int numero;
@@ -12,7 +13,7 @@ public class Cliente {
 
 	// Construtor da classe cliente
 	public Cliente() {
-		this("", "", "", "", 0, 0, "");
+		this("", "", "", "", "", 0, 0, "");
 	}
 
 	/**
@@ -33,15 +34,16 @@ public class Cliente {
 	 * @param complemento
 	 *            complemento da residencia do cliente(nao obrigatorio)
 	 */
-	public Cliente(String nome, String cpf, String telefone, String endereco,
-			int numero, int cep, String complemento) {
+	public Cliente(String nome, String cnpj, String cpf, String telefone,
+			String endereco, int numero, int cep, String complemento) {
 		this.nome = nome;
-		this.cpf = cpf;
+		this.cnpj = cnpj;
 		this.telefone = telefone;
 		this.endereco = endereco;
 		this.numero = numero;
 		this.cep = cep;
 		this.complemento = complemento;
+		this.cpf = cpf;
 	}
 
 	public String getNome() {
@@ -58,6 +60,14 @@ public class Cliente {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
 
 	public String getTelefone() {
@@ -99,4 +109,5 @@ public class Cliente {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
+
 }

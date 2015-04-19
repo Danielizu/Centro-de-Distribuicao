@@ -2,30 +2,20 @@ package boundary;
 
 import control.ControlarClientes;
 import control.ValidarCPFCNPJ;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
-
-import java.awt.Toolkit;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
 import java.awt.Font;
-
 import javax.swing.JButton;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
-
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
-
 import entity.Cliente;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
@@ -68,11 +58,26 @@ public class FrmCliente extends JFrame {
 	private JLabel lblRazoSocial;
 	public Cliente cliente = new Cliente();
 	public ControlarClientes controleCliente = new ControlarClientes();
-	
+
 	// Criando o frame
 	public FrmCliente() {
+		// Metodo para inicializar o projeto
 		propInicializacao();
+	}
 
+	// Metodo que define as propriedades do form na inicializacao
+	public void propInicializacao() {
+		// Definindo que a tela nao pode ser redimencionada
+		setResizable(false);
+
+		// Definindo prorpiedades da tela Cliente
+		setBounds(100, 100, 534, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		// Metodo que inicializa as lebels de mensagem de erro
 		labelsMsgErro();
 
 		// Declarando label da razao social
@@ -127,6 +132,10 @@ public class FrmCliente extends JFrame {
 		txtCNPJ.setBounds(116, 69, 143, 20);
 		contentPane.add(txtCNPJ);
 
+		// Definindo que o programa comeca com o CNPJ desabilitado
+		txtCNPJ.setVisible(false);
+		lblCnpj.setVisible(false);
+
 		// Declarando propriedades do campo telefone
 		lblTelefone = new JLabel("Telefone:");
 		lblTelefone.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -154,6 +163,17 @@ public class FrmCliente extends JFrame {
 		contentPane.add(txtEndereco);
 		txtEndereco.setColumns(10);
 
+		// Declarando propriedades do campo Numero
+		lblNumero = new JLabel("N\u00FAmero:");
+		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblNumero.setBounds(64, 165, 46, 14);
+		contentPane.add(lblNumero);
+
+		txtNumero = new JTextField();
+		txtNumero.setBounds(116, 162, 40, 20);
+		contentPane.add(txtNumero);
+		txtNumero.setColumns(10);
+
 		// Declarando propriedades do campo CEP
 		lblCep = new JLabel("CEP:");
 		lblCep.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -162,8 +182,7 @@ public class FrmCliente extends JFrame {
 
 		// Inserindo mascara de CEP no campo
 		try {
-			MaskFormatter mascaraCEP = new MaskFormatter(
-					"#####-###");
+			MaskFormatter mascaraCEP = new MaskFormatter("#####-###");
 			txtCEP = new JFormattedTextField(mascaraCEP);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
@@ -182,69 +201,30 @@ public class FrmCliente extends JFrame {
 		contentPane.add(txtComplemento);
 		txtComplemento.setColumns(10);
 
-		// Declarando propriedades do campo Numero
-		lblNumero = new JLabel("N\u00FAmero:");
-		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblNumero.setBounds(64, 165, 46, 14);
-		contentPane.add(lblNumero);
-
-		txtNumero = new JTextField();
-		txtNumero.setBounds(116, 162, 40, 20);
-		contentPane.add(txtNumero);
-		txtNumero.setColumns(10);
-
 		// Declarando botaao Salvar
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(salvar()){
+				// Faz verificacao do tipo de cliente para habilitar a gravacao
+				if (validarTipoCliente()) {
+					// Se o tipo de cliente estiver valido, segue a gravacao
 					System.out.println("Habilitado para salvar");
-					cliente.setNome(txtNomeCompleto.getText());
-					
-					String CPF = "";
-					CPF = txtCPF.getText();
-					CPF = CPF.replace(".", "");
-					CPF = CPF.replace("-", "");
-					cliente.setCpf(CPF);
-					
-					String Telefone = "";
-					Telefone = txtTelefone.getText();
-					Telefone = Telefone.replace("(", "");
-					Telefone = Telefone.replace(")", "");
-					Telefone = Telefone.replace("-", "");
-					System.out.println(Telefone);
-					cliente.setTelefone(Telefone);
-					
-					cliente.setEndereco(txtEndereco.getText());
-					cliente.setNumero(Integer.parseInt(txtNumero.getText()));
-					
-					String CEP = "";
-					CEP = txtCEP.getText();
-					CEP = CEP.replace("-", "");
-					cliente.setCep(Integer.parseInt(CEP));
-					
-					cliente.setComplemento(txtComplemento.getText());
-					try {
-						controleCliente.SalvarCliente(cliente);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					
-				}else{
+					salvarDados();
+				} else {
 					System.out.println("Não Habilitado para salvar");
-				};
+				}
 			}
 		});
 		btnSalvar.setBounds(83, 238, 89, 23);
 		contentPane.add(btnSalvar);
 
-		// Declarando botaao Limpar
+		// Declarando botao Limpar
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Metodo para limpar os campos
 				limparCampos();
 			}
 		});
@@ -257,8 +237,11 @@ public class FrmCliente extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			// Declarando acao no botao cancelar
 			public void actionPerformed(ActionEvent e) {
+				// Metodo que fecha a janela atual
 				dispose();
+				// A janela do menu passa a ser acessivel
 				FrmMenu.frame.setEnabled(true);
+				// A Janela do menu vem para a frente da tela
 				FrmMenu.frame.setAlwaysOnTop(true);
 			}
 		});
@@ -270,8 +253,10 @@ public class FrmCliente extends JFrame {
 		rdbtnPessoaFsica.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		// Dizendo que o radio Button da pessoa Fisica comecara marcado
 		rdbtnPessoaFsica.setSelected(true);
+		// Como ele ja comeca marcado, invoca o metodo que desabilita os
+		// caracteres especiais
 		if (rdbtnPessoaFsica.isSelected()) {
-			naoPode();
+			excluirCaracteresEspeciais();
 		}
 		rdbtnPessoaFsica.setBounds(116, 8, 109, 23);
 		contentPane.add(rdbtnPessoaFsica);
@@ -281,10 +266,6 @@ public class FrmCliente extends JFrame {
 		rdbtnPessoaJuridica.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		rdbtnPessoaJuridica.setBounds(230, 8, 109, 23);
 		contentPane.add(rdbtnPessoaJuridica);
-
-		// Definindo que o programa comeca com o CNPJ desabilitado
-		txtCNPJ.setVisible(false);
-		lblCnpj.setVisible(false);
 
 		// Adicionando acao ao radio button da pessoa fisica
 		rdbtnPessoaFsica.addActionListener(new ActionListener() {
@@ -299,31 +280,13 @@ public class FrmCliente extends JFrame {
 				radioPessoaJuridica();
 			}
 		});
-	}
 
-	// Metodo que define as propriedades do form na inicializacao
-	public void propInicializacao() {
-		// Definindo que a tela nao pode ser redimencionada
-		setResizable(false);
-		// Alterando o icone da tela
-		setIconImage(Toolkit
-				.getDefaultToolkit()
-				.getImage(
-				// Endereco da imagem
-						"C:\\Users\\Jackson\\workspace\\prjCentroDistribuicao\\src\\view\\imgCliente.png"));
-		setTitle("Novo Cliente");
-
-		// Definindo prorpiedades da tela Cliente
-		setBounds(100, 100, 534, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 	}
 
 	// Declaracao de labels de mensagem de erro
 	public void labelsMsgErro() {
 		// Labels de mensagem de erro e suas propriedades
+		// Todas essas labels iniciam invisiveis
 		lblCampoObrigatrioNome = new JLabel("Campo obrigat\u00F3rio!");
 		lblCampoObrigatrioNome.setVisible(false);
 		lblCampoObrigatrioNome.setForeground(Color.RED);
@@ -381,8 +344,8 @@ public class FrmCliente extends JFrame {
 		contentPane.add(lblCNPJInvalido);
 	}
 
-	// Funcoes do botao salvar
-	public boolean salvar() {
+	// Metodo que valida o tipo de cliente e se a informacao é valida
+	public boolean validarTipoCliente() {
 		int aindaFalta = 1;
 		// validando os campos e verificando se o CPF e valido
 		if (rdbtnPessoaFsica.isSelected()) {
@@ -394,12 +357,10 @@ public class FrmCliente extends JFrame {
 				CPF = CPF.replace("-", "");
 				// Validacao do CPF
 				if (ValidarCPFCNPJ.CPFValido(CPF)) {
-					System.out.println("CPF VÁLIDO");
 					lblCPFInvalido.setVisible(false);
 				} else {
 					lblCampoObrigatrioCPFCNPJ.setVisible(false);
 					lblCPFInvalido.setVisible(true);
-					System.out.println("CPF INVÁLIDO");
 					aindaFalta = 0;
 				}
 			}
@@ -415,12 +376,10 @@ public class FrmCliente extends JFrame {
 					CNPJ = CNPJ.replace("-", "");
 					// Validacao do CNPJ
 					if (ValidarCPFCNPJ.CNPJValido(CNPJ)) {
-						System.out.println("CNPJ VÁLIDO");
 						lblCNPJInvalido.setVisible(false);
 					} else {
 						lblCampoObrigatrioCPFCNPJ.setVisible(false);
 						lblCNPJInvalido.setVisible(true);
-						System.out.println("CNPJ INVÁLIDO");
 						aindaFalta = 0;
 					}
 				}
@@ -433,6 +392,65 @@ public class FrmCliente extends JFrame {
 		}
 	}
 
+	// Metodo que fazer a gravacao de arquivos
+	public void salvarDados() {
+		// Gravando informacoes do cliente
+		cliente.setNome(txtNomeCompleto.getText());
+
+		// Caso o radio da Pessoa Fisica esteja selecionada, sera salvo o CPF
+		if (rdbtnPessoaFsica.isSelected()) {
+			String CPF = "";
+			CPF = txtCPF.getText();
+			CPF = CPF.replace(".", "");
+			CPF = CPF.replace("-", "");
+			cliente.setCpf(CPF);
+			// Caso o radio da Pessoa Juridica esteja selecionada, sera salvo o
+			// CNPJ
+		} else if (rdbtnPessoaJuridica.isSelected()) {
+			String CNPJ = "";
+			CNPJ = txtCNPJ.getText();
+			CNPJ = CNPJ.replace(".", "");
+			CNPJ = CNPJ.replace("/", "");
+			CNPJ = CNPJ.replace("-", "");
+			cliente.setCnpj(CNPJ);
+		}
+
+		// Removendo os caracteres da mascara do telefone e gravando
+		String Telefone = "";
+		Telefone = txtTelefone.getText();
+		Telefone = Telefone.replace("(", "");
+		Telefone = Telefone.replace(")", "");
+		Telefone = Telefone.replace("-", "");
+		cliente.setTelefone(Telefone);
+
+		// Gravando endereco e numero do cliente
+		cliente.setEndereco(txtEndereco.getText());
+		cliente.setNumero(Integer.parseInt(txtNumero.getText()));
+
+		// Removendo os caracteres da mascara do CEP e gravando
+		String CEP = "";
+		CEP = txtCEP.getText();
+		CEP = CEP.replace("-", "");
+		cliente.setCep(Integer.parseInt(CEP));
+
+		// Gravando complemento, caso digitado
+		cliente.setComplemento(txtComplemento.getText());
+
+		// Try Catch para gravar em arquivo a partir do controle do cliente
+		try {
+			// Caso a pessoa Fisica esteja selecionada, ele invoca o metodo que
+			// salva a pessoa Fisica
+			if (rdbtnPessoaFsica.isSelected()) {
+				controleCliente.SalvarPessoaFisica(cliente);
+			// Caso contrario, invoca o que grava a pessoa juridica
+			} else {
+				controleCliente.SalvarPessoaJuridica(cliente);
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 	// Metodo que aplica acoes quando o radio da pessoa fisica e selecionado
 	public void radioPessoaFisica() {
 		if (rdbtnPessoaFsica.isSelected()) {
@@ -442,7 +460,6 @@ public class FrmCliente extends JFrame {
 			lblCampoObrigatrioCPFCNPJ.setBounds(240, 69, 115, 20);
 			// Desabilitando a selecao da Pessoa Juridica
 			rdbtnPessoaJuridica.setSelected(false);
-
 			// Habilitando e desbilitando os campos necessarios
 			lblNomeCompleto.setVisible(true);
 			lblRazoSocial.setVisible(false);
@@ -472,11 +489,10 @@ public class FrmCliente extends JFrame {
 		}
 	}
 
-	// Metodo que desabilita caracteres especiais do campo nome
-	public void naoPode() {
+	// Metodo que desabilita caracteres especiais dos campos
+	public void excluirCaracteresEspeciais() {
 		// Definindo que o campo do Nome so aceita Texto
 		txtNomeCompleto.addKeyListener(new KeyAdapter() {
-			@Override
 			public void keyTyped(KeyEvent arg0) {
 				String caracteres = "0987654321ƒŠŒŽšœžŸÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ/|.!?@#$%¨&*(){}][´´;";
 				if (caracteres.contains(arg0.getKeyChar() + "")) {
@@ -525,6 +541,7 @@ public class FrmCliente extends JFrame {
 		lblCampoObrigatrioNumero.setVisible(false);
 		lblCampoObrigatrioCEP.setVisible(false);
 		lblCPFInvalido.setVisible(false);
+		lblCNPJInvalido.setVisible(false);
 	}
 
 	// Metodo para validar se todos os campos foram preenchidos corretamente
