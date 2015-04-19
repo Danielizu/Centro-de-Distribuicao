@@ -1,23 +1,35 @@
 package boundary;
 
+import control.ControlarClientes;
 import control.ValidarCPFCNPJ;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
+
 import java.awt.Toolkit;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import java.awt.Font;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
+
+import entity.Cliente;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
+import java.io.IOException;
 
 public class FrmCliente extends JFrame {
 
@@ -54,7 +66,9 @@ public class FrmCliente extends JFrame {
 	private JRadioButton rdbtnPessoaFsica;
 	private JRadioButton rdbtnPessoaJuridica;
 	private JLabel lblRazoSocial;
-
+	public Cliente cliente = new Cliente();
+	public ControlarClientes controleCliente = new ControlarClientes();
+	
 	// Criando o frame
 	public FrmCliente() {
 		propInicializacao();
@@ -148,9 +162,9 @@ public class FrmCliente extends JFrame {
 
 		// Inserindo mascara de CEP no campo
 		try {
-			javax.swing.text.MaskFormatter mascaraCEP = new javax.swing.text.MaskFormatter(
+			MaskFormatter mascaraCEP = new MaskFormatter(
 					"#####-###");
-			txtCEP = new javax.swing.JFormattedTextField(mascaraCEP);
+			txtCEP = new JFormattedTextField(mascaraCEP);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
@@ -186,6 +200,38 @@ public class FrmCliente extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(salvar()){
 					System.out.println("Habilitado para salvar");
+					cliente.setNome(txtNomeCompleto.getText());
+					
+					String CPF = "";
+					CPF = txtCPF.getText();
+					CPF = CPF.replace(".", "");
+					CPF = CPF.replace("-", "");
+					cliente.setCpf(CPF);
+					
+					String Telefone = "";
+					Telefone = txtTelefone.getText();
+					Telefone = Telefone.replace("(", "");
+					Telefone = Telefone.replace(")", "");
+					Telefone = Telefone.replace("-", "");
+					System.out.println(Telefone);
+					cliente.setTelefone(Telefone);
+					
+					cliente.setEndereco(txtEndereco.getText());
+					cliente.setNumero(Integer.parseInt(txtNumero.getText()));
+					
+					String CEP = "";
+					CEP = txtCEP.getText();
+					CEP = CEP.replace("-", "");
+					cliente.setCep(Integer.parseInt(CEP));
+					
+					cliente.setComplemento(txtComplemento.getText());
+					try {
+						controleCliente.SalvarCliente(cliente);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 				}else{
 					System.out.println("Não Habilitado para salvar");
 				};
@@ -369,12 +415,12 @@ public class FrmCliente extends JFrame {
 					CNPJ = CNPJ.replace("-", "");
 					// Validacao do CNPJ
 					if (ValidarCPFCNPJ.CNPJValido(CNPJ)) {
-						System.out.println("CNPJ VÁLIDO CARAIO");
+						System.out.println("CNPJ VÁLIDO");
 						lblCNPJInvalido.setVisible(false);
 					} else {
 						lblCampoObrigatrioCPFCNPJ.setVisible(false);
 						lblCNPJInvalido.setVisible(true);
-						System.out.println("CNPJ INVÁLIDO CARAIO");
+						System.out.println("CNPJ INVÁLIDO");
 						aindaFalta = 0;
 					}
 				}

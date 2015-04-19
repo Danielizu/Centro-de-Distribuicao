@@ -4,32 +4,23 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
 import java.awt.Color;
-
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
-
 import java.awt.Font;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-
 import control.ValidarCPFCNPJ;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import javax.swing.JComboBox;
+import com.toedter.calendar.JDateChooser;
 
 public class FrmCatalogo extends JFrame {
 
@@ -43,9 +34,6 @@ public class FrmCatalogo extends JFrame {
 	private JLabel lblCnpj;
 	private JLabel lblTelefone;
 	private JLabel lblDataDeCadastro;
-	private JLabel lblDia;
-	private JLabel lblMes;
-	private JLabel lblAno;
 	private JLabel lblPeso;
 	private JLabel lblVolume;
 	private JTextField txtCodProduto;
@@ -69,14 +57,8 @@ public class FrmCatalogo extends JFrame {
 	private JLabel lblCampoObrigatrioVolume;
 	private JLabel lblCampoObrigatrioDescricao;
 	private JLabel lblCNPJInvalido;
-	@SuppressWarnings("rawtypes")
-	private JComboBox<Comparable> cmbDia;
-	@SuppressWarnings("rawtypes")
-	private JComboBox<Comparable> cmbMes;
-	@SuppressWarnings("rawtypes")
-	private JComboBox<Comparable> cmbAno;
+	private JDateChooser dataCadastro;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public FrmCatalogo() {
 		// Informando que a janela n'ao pode ser redimencionada
 		setResizable(false);
@@ -86,6 +68,36 @@ public class FrmCatalogo extends JFrame {
 
 		// Declarando labels de mensagem de erro
 		labelsMensagensErro();
+
+	}
+
+	// Metodo que define as propriedades do form na inicializacao
+	public void propInicializacao() {
+
+		// Definindo propriedades da tela principal
+		setTitle("Cat\u00E1logo");
+		setBounds(100, 100, 525, 525);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		// Definindo propriedades do painel do cadastro de produtos
+		pnlCadastro = new JPanel();
+		pnlCadastro.setBorder(new TitledBorder(new LineBorder(new Color(192,
+				192, 192), 1, true), "Cadastro de Produto",
+				TitledBorder.LEADING, TitledBorder.TOP, null, Color.DARK_GRAY));
+		pnlCadastro.setBounds(10, 11, 497, 441);
+		contentPane.add(pnlCadastro);
+		pnlCadastro.setLayout(null);
+
+		// Definindo Panel para a descricao
+		pnlDescricao = new JPanel();
+		pnlDescricao.setBorder(new TitledBorder(null, "Descrição:",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnlDescricao.setBounds(10, 294, 477, 136);
+		pnlCadastro.add(pnlDescricao);
+		pnlDescricao.setLayout(null);
 
 		// Definindo propriedades do codigo do produto
 		lblCodProduto = new JLabel("C\u00F3d. Produto:");
@@ -161,6 +173,10 @@ public class FrmCatalogo extends JFrame {
 		lblDataDeCadastro.setBounds(17, 204, 89, 14);
 		pnlCadastro.add(lblDataDeCadastro);
 
+		dataCadastro = new JDateChooser();
+		dataCadastro.setBounds(116, 198, 101, 20);
+		pnlCadastro.add(dataCadastro);
+
 		// Definindo propriedades do peso
 		lblPeso = new JLabel("Peso:");
 		lblPeso.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -193,39 +209,7 @@ public class FrmCatalogo extends JFrame {
 		txtAreaDescricao = new JTextArea();
 		scrollDescricao.setViewportView(txtAreaDescricao);
 
-		// Declarando com boxes da data
-		cmbDia = new JComboBox();
-		cmbDia.setBounds(116, 201, 46, 20);
-		pnlCadastro.add(cmbDia);
-
-		cmbMes = new JComboBox();
-		cmbMes.setBounds(181, 201, 46, 20);
-		pnlCadastro.add(cmbMes);
-
-		cmbAno = new JComboBox();
-		cmbAno.setBounds(248, 201, 73, 20);
-		pnlCadastro.add(cmbAno);
-
-		// Declarando labels da data
-		lblDia = new JLabel("Dia");
-		lblDia.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblDia.setBounds(116, 187, 24, 14);
-		pnlCadastro.add(lblDia);
-
-		lblMes = new JLabel("M\u00EAs");
-		lblMes.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblMes.setBounds(180, 187, 24, 14);
-		pnlCadastro.add(lblMes);
-
-		lblAno = new JLabel("Ano");
-		lblAno.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblAno.setBounds(248, 187, 24, 14);
-		pnlCadastro.add(lblAno);
-
-		// Metodo para alimentar combo boxes das datas
-		datas();
-
-		//Declarando botao salvar e adicionando funcao
+		// Declarando botao salvar e adicionando funcao
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvar.addActionListener(new ActionListener() {
@@ -247,7 +231,7 @@ public class FrmCatalogo extends JFrame {
 		btnSalvar.setBounds(33, 463, 89, 23);
 		contentPane.add(btnSalvar);
 
-		//Declarando botao limpar e adicionando funcao
+		// Declarando botao limpar e adicionando funcao
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnLimpar.addActionListener(new ActionListener() {
@@ -258,7 +242,7 @@ public class FrmCatalogo extends JFrame {
 		btnLimpar.setBounds(210, 463, 89, 23);
 		contentPane.add(btnLimpar);
 
-		//Declarando botao cancelar e adicionando funcao
+		// Declarando botao cancelar e adicionando funcao
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnCancelar.addActionListener(new ActionListener() {
@@ -270,35 +254,6 @@ public class FrmCatalogo extends JFrame {
 		});
 		btnCancelar.setBounds(383, 463, 89, 23);
 		contentPane.add(btnCancelar);
-	}
-
-	// Metodo que define as propriedades do form na inicializacao
-	public void propInicializacao() {
-
-		// Definindo propriedades da tela principal
-		setTitle("Cat\u00E1logo");
-		setBounds(100, 100, 525, 525);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-
-		// Definindo propriedades do painel do cadastro de produtos
-		pnlCadastro = new JPanel();
-		pnlCadastro.setBorder(new TitledBorder(new LineBorder(new Color(192,
-				192, 192), 1, true), "Cadastro de Produto",
-				TitledBorder.LEADING, TitledBorder.TOP, null, Color.DARK_GRAY));
-		pnlCadastro.setBounds(10, 11, 497, 441);
-		contentPane.add(pnlCadastro);
-		pnlCadastro.setLayout(null);
-
-		// Definindo Panel para a descricao
-		pnlDescricao = new JPanel();
-		pnlDescricao.setBorder(new TitledBorder(null, "Descrição:",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnlDescricao.setBounds(10, 294, 477, 136);
-		pnlCadastro.add(pnlDescricao);
-		pnlDescricao.setLayout(null);
 	}
 
 	// Declaracao de labels de mensagem de erro
@@ -346,7 +301,7 @@ public class FrmCatalogo extends JFrame {
 		lblCampoObrigatrioDataCadastro.setForeground(Color.RED);
 		lblCampoObrigatrioDataCadastro.setFont(new Font("Tahoma", Font.PLAIN,
 				11));
-		lblCampoObrigatrioDataCadastro.setBounds(327, 204, 94, 14);
+		lblCampoObrigatrioDataCadastro.setBounds(227, 204, 94, 14);
 		pnlCadastro.add(lblCampoObrigatrioDataCadastro);
 
 		lblCampoObrigatrioPeso = new JLabel("Campo Obrigat\u00F3rio!");
@@ -383,13 +338,13 @@ public class FrmCatalogo extends JFrame {
 			CNPJ = CNPJ.replace("-", "");
 			// Validacao do CNPJ
 			if (ValidarCPFCNPJ.CNPJValido(CNPJ)) {
-				System.out.println("CNPJ VÁLIDO CARAIO");
+				System.out.println("CNPJ VÁLIDO");
 				lblCNPJInvalido.setVisible(false);
 				aindaFalta = 1;
 			} else {
 				lblCampoObrigatrioCNPJ.setVisible(false);
 				lblCNPJInvalido.setVisible(true);
-				System.out.println("CNPJ INVÁLIDO CARAIO");
+				System.out.println("CNPJ INVÁLIDO");
 			}
 		}
 		if (aindaFalta == 0) {
@@ -448,8 +403,6 @@ public class FrmCatalogo extends JFrame {
 
 	// Metodo para limpar campos
 	public void limparCampos() {
-		cmbDia.setSelectedItem("");
-		cmbAno.setSelectedItem("");
 		txtCodProduto.setText(null);
 		txtNomeDoProduto.setText(null);
 		txtFornecedor.setText(null);
@@ -458,6 +411,7 @@ public class FrmCatalogo extends JFrame {
 		txtTelefone.setValue(null);
 		txtCNPJ.setValue(null);
 		txtAreaDescricao.setText(null);
+		dataCadastro.setCalendar(null);
 		lblCampoObrigatrioNomeProduto.setVisible(false);
 		lblCampoObrigatrioFornecedor.setVisible(false);
 		lblCampoObrigatrioCNPJ.setVisible(false);
@@ -468,8 +422,7 @@ public class FrmCatalogo extends JFrame {
 		lblCampoObrigatrioDescricao.setVisible(false);
 		lblCNPJInvalido.setVisible(false);
 	}
-	
-	
+
 	// Metodo para validar os campos
 	public boolean validarCampos() {
 		int aindaFalta = 1;
@@ -487,6 +440,14 @@ public class FrmCatalogo extends JFrame {
 			aindaFalta = 0;
 		} else {
 			lblCampoObrigatrioFornecedor.setVisible(false);
+		}
+
+		// Validando campo da data
+		if (dataCadastro.getDate() ==null) {
+			lblCampoObrigatrioDataCadastro.setVisible(true);
+			aindaFalta = 0;
+		} else {
+			lblCampoObrigatrioDataCadastro.setVisible(false);
 		}
 
 		// Verificando se o campo esta vazio ou nao foi preenchido por
@@ -510,25 +471,6 @@ public class FrmCatalogo extends JFrame {
 			aindaFalta = 0;
 		} else {
 			lblCampoObrigatrioTelefone.setVisible(false);
-		}
-
-		// Validando campo da data e verificando se o campo esta vazio ou
-		// nao foi preenchido por completo
-		if (cmbDia.getSelectedItem().equals("")) {
-			lblCampoObrigatrioDataCadastro.setVisible(true);
-			aindaFalta = 0;
-		} else {
-			if (cmbMes.getSelectedItem().equals("")) {
-				lblCampoObrigatrioDataCadastro.setVisible(true);
-				aindaFalta = 0;
-			} else {
-				if (cmbAno.getSelectedItem().equals("")) {
-					lblCampoObrigatrioDataCadastro.setVisible(true);
-					aindaFalta = 0;
-				} else {
-					lblCampoObrigatrioDataCadastro.setVisible(false);
-				}
-			}
 		}
 
 		// Validando campo Peso
@@ -559,47 +501,5 @@ public class FrmCatalogo extends JFrame {
 		} else {
 			return true;
 		}
-	}
-
-	// Metodo para alimentar os combo boxes das datas
-	public void datas() {
-		//Iniciando combo do dia
-		cmbDia.insertItemAt("", 0);
-		for (int i = 1; i <= 28; i++) {
-			cmbDia.addItem(i);
-		}
-		
-		//Iniciando combo do Mes
-		cmbMes.insertItemAt("", 0);
-		for (int i = 1; i <= 12; i++) {
-			cmbMes.addItem(i);
-		}
-
-		//Iniciando combo do ano
-		Calendar cal = GregorianCalendar.getInstance();
-		int AnoAtual = cal.get(Calendar.YEAR);
-		cmbAno.insertItemAt("", 0);
-		for (int i = AnoAtual; i >= 1995; i--) {
-			cmbAno.addItem(i);
-		}
-		
-		//Adicionando acao para definir os dias corretos para cada mes
-		ActionListener comboBoxSelect = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int comboSelected =  (int) cmbMes.getSelectedItem();
-				if (comboSelected != 2) {
-					cmbDia.addItem("29");
-					cmbDia.addItem("30");
-					cmbDia.addItem("31");
-				}else{
-					cmbDia.removeAllItems();
-					cmbDia.insertItemAt("", 0);
-					for (int i = 1; i <= 28; i++) {
-						cmbDia.addItem(i);
-					}
-				}
-			}
-		};
-		cmbMes.addActionListener(comboBoxSelect);
 	}
 }

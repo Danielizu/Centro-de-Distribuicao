@@ -24,9 +24,6 @@ public class ControlarVeiculos implements limparTela {
         File arquivoVeiculo = new File("Veiculo.txt");        
         StringBuffer sb = new StringBuffer();
         
-        
-        
-        
         sb.append(veiculo.getPlaca());
         sb.append(";");
         sb.append(veiculo.getMarca());
