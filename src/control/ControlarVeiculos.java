@@ -15,7 +15,6 @@ import entity.Veiculo;
 /** @version 04/04/2015 */
 public class ControlarVeiculos implements limparTela {
 
-	//public FrmControleDeVeiculos form;
 	Veiculo veiculo = new Veiculo();
 
 	/** METODO DE SALVAR VEICULO */
@@ -58,21 +57,24 @@ public class ControlarVeiculos implements limparTela {
 
 	}
 
+	/** METODO PARA LIMPAR CAMPOS JTEXTFIELD */
 	public void LimparCampos(JTextField texto) {
 		texto.setText(null);
 	}
 
+	/** METODO PARA LIMPAR CAMPOS JCOMBOBOX */
 	public void LimparComboBox(JComboBox combo) {
 		combo.setSelectedItem(null);
 	}
 
+	/** METODO PARA PREENCHER O COMBOBOX */
 	public void AdicionarValoresCB(JComboBox combo, String[] lista) {
-
 		for (int i = 0; i < lista.length; i++) {
 			combo.addItem(lista[i]);
 		}
 	}
 
+	/** METODO PARA INSERIR A DATA ATUAL */
 	public void InserirData(JTextField data) {
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");

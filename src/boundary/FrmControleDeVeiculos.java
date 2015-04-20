@@ -245,17 +245,9 @@ public class FrmControleDeVeiculos {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				veiculo.setPlaca(txtPlaca.getText());
-
-				try {
-					veiculo.setCapMax(Integer.parseInt(txtCapacidadeMax
-							.getText()));
-				} catch (Exception e2) {
-				}
-
 				veiculo.setCarroceria((cbCarroceria.getSelectedItem()
 						.toString()));
-
+				veiculo.setPlaca(txtPlaca.getText());
 				veiculo.setDatacadastro(txtDataCadastro.getText());
 				veiculo.setCor(cbCor.getSelectedItem().toString());
 				veiculo.setMarca(cbMarca.getSelectedItem().toString());
@@ -265,10 +257,10 @@ public class FrmControleDeVeiculos {
 				} catch (IOException e1) {
 					System.out.println("Arquivo não encontrado");
 					e1.printStackTrace();
-
 				}
 			}
 		});
+		
 		btnSalvar.setBounds(30, 507, 89, 23);
 		frame.getContentPane().add(btnSalvar);
 

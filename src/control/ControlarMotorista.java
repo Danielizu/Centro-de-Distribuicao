@@ -1,13 +1,52 @@
 package control;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import entity.Motorista;
+import entity.Veiculo;
 import boundary.FrmControleDeMotoristas;
 
 public class ControlarMotorista implements limparTela {
 
 	public FrmControleDeMotoristas form;
+	
+	/** METODO DE SALVAR MOTORISTA */
+	public int SalvarMotorista(Motorista motorista) throws IOException
+    {
+        File arquivoMotorista = new File("Motorista.txt");        
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append(motorista.getNome());
+        sb.append(";");
+        sb.append(motorista.getTipo());
+        sb.append(";");
+        sb.append(motorista.getDatacadastro());
+        sb.append(";");
+        sb.append(motorista.getVencimento());
+        sb.append(";");
+        sb.append(motorista.getCnh());
+        sb.append(";");
+        sb.append("\r\n");          
+        
+	try {                   
+            FileWriter Arquivo = new FileWriter(arquivoMotorista,true); // true = adiciona novas linhas sem substituir
+            PrintWriter grava = new PrintWriter(Arquivo,true);
+            
+            grava.write(sb.toString());                  
+            grava.flush();
+            grava.close();
+            return 1;
+            
+        } catch (IOException e) {
+            return 0;
+        }
+    }
 
 	@Override
 	public void LimparCampos(JTextField texto) {
@@ -93,4 +132,10 @@ public class ControlarMotorista implements limparTela {
 		return false;
 	}
 
+	/** METODO PARA PREENCHER O COMBOBOX */
+	public void AdicionarValoresCB(JComboBox combo, String[] lista) {
+		for (int i = 0; i < lista.length; i++) {
+			combo.addItem(lista[i]);
+		}
+	}
 }

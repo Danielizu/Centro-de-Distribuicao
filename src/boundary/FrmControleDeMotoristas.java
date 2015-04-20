@@ -15,6 +15,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,7 +24,10 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 
 import control.ControlarMotorista;
+
 import com.toedter.calendar.JDateChooser;
+
+import entity.Motorista;
 
 public class FrmControleDeMotoristas {
 
@@ -33,6 +37,8 @@ public class FrmControleDeMotoristas {
 	private JTextField txtDataVencimento;
 	private JTextField txtDescricao;
 	public ControlarMotorista control = new ControlarMotorista();
+	public Motorista motorista = new Motorista();
+	public String TipoDocumento[] = { null, "A", "B", "C", "D", "E" };
 
 	/**
 	 * Launch the application.
@@ -106,6 +112,13 @@ public class FrmControleDeMotoristas {
 		panel.add(lblVencimento);
 
 		txtDataVencimento = new JTextField();
+		try {
+			javax.swing.text.MaskFormatter vencimento = new javax.swing.text.MaskFormatter(
+					"##/##/####");
+
+			txtDataVencimento = new javax.swing.JFormattedTextField(vencimento);
+		} catch (Exception e) {
+		}
 		txtDataVencimento.setBounds(341, 84, 105, 20);
 		panel.add(txtDataVencimento);
 		txtDataVencimento.setColumns(10);
@@ -114,9 +127,10 @@ public class FrmControleDeMotoristas {
 		lblTipo.setBounds(28, 129, 46, 14);
 		panel.add(lblTipo);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(78, 126, 113, 20);
-		panel.add(comboBox);
+		final JComboBox cbTipo = new JComboBox();
+		control.AdicionarValoresCB(cbTipo, TipoDocumento);
+		cbTipo.setBounds(78, 126, 113, 20);
+		panel.add(cbTipo);
 
 		JLabel lblDataDeCadastro = new JLabel("Data de cadastro: ");
 		lblDataDeCadastro.setBounds(28, 180, 130, 14);
@@ -134,14 +148,29 @@ public class FrmControleDeMotoristas {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String CNH = txtCNH.toString();
-				boolean vCNH = control.ValidadorCNH("01137369409");
 
-				if (vCNH == true) {
-					JOptionPane.showMessageDialog(null, "O CNH é Valido.");
+				if (JOptionPane.showConfirmDialog(null, "Deseja confirmar o cadastro do motorista?",
+						"WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+					motorista.setNome(txtNomeMotorista.getText());
+					motorista.setCnh(txtCNH.getText());
+					motorista.setTipo(cbTipo.getSelectedItem().toString());
+					motorista.setVencimento(txtDataVencimento.getText());
+					try {
+						control.SalvarMotorista(motorista);
+					} catch (IOException e1) {
+						System.out.println("Arquivo não encontrado");
+						e1.printStackTrace();
+					}
+					control.LimparCampos(txtNomeMotorista);
+					control.LimparCampos(txtDescricao);
+					control.LimparCampos(txtDataVencimento);
+					control.LimparCampos(txtCNH);
+					control.LimparComboBox(cbTipo);
 				} else {
-					JOptionPane.showMessageDialog(null, "O CNH é Invalido.");
+					
 				}
+
 			}
 		});
 		btnSalvar.setBounds(156, 496, 89, 23);
@@ -149,13 +178,22 @@ public class FrmControleDeMotoristas {
 
 		JButton btnLimpar = new JButton("Limpar");
 		btnLimpar.setBounds(273, 496, 89, 23);
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				control.LimparCampos(txtNomeMotorista);
+				control.LimparCampos(txtDescricao);
+				control.LimparCampos(txtDataVencimento);
+				control.LimparCampos(txtCNH);
+				control.LimparComboBox(cbTipo);
+			}
+		});
 		panel.add(btnLimpar);
 
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(385, 496, 89, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			frame.dispose();
+				frame.dispose();
 			}
 		});
 		panel.add(btnCancelar);
