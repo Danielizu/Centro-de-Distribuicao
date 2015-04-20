@@ -31,7 +31,7 @@ import entity.Motorista;
 
 public class FrmControleDeMotoristas extends JFrame{
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField txtNomeMotorista;
 	private JTextField txtCNH;
 	private JTextField txtDataVencimento;
