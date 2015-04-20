@@ -2,62 +2,75 @@ package boundary;
 
 import control.ControlarClientes;
 import control.ValidarCPFCNPJ;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import java.awt.Font;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
+
 import entity.Cliente;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.io.IOException;
 
+import javax.swing.JComboBox;
+
 public class FrmCliente extends JFrame {
 
 	// Declarando objetos
 	private static final long serialVersionUID = 5647441286916995173L;
-	private JPanel contentPane;
-	private JTextField txtNomeCompleto;
-	private JFormattedTextField txtCPF;
-	private JFormattedTextField txtCNPJ;
-	private JFormattedTextField txtTelefone;
-	private JTextField txtEndereco;
-	private JTextField txtNumero;
-	private JFormattedTextField txtCEP;
-	private JTextField txtComplemento;
-	private JButton btnSalvar;
-	private JButton btnLimpar;
-	private JButton btnCancelar;
-	private JLabel lblNomeCompleto;
-	private JLabel lblCpf;
-	private JLabel lblCnpj;
-	private JLabel lblTelefone;
-	private JLabel lblEndereco;
-	private JLabel lblCep;
-	private JLabel lblComplemento;
-	private JLabel lblNumero;
-	private JLabel lblCPFInvalido;
-	private JLabel lblCNPJInvalido;
-	private JLabel lblCampoObrigatrioNome;
-	private JLabel lblCampoObrigatrioCPFCNPJ;
-	private JLabel lblCampoObrigatrioTelefone;
-	private JLabel lblCampoObrigatrioNumero;
-	private JLabel lblCampoObrigatrioCEP;
-	private JLabel lblCampoObrigatrioEndereco;
-	private JRadioButton rdbtnPessoaFsica;
-	private JRadioButton rdbtnPessoaJuridica;
-	private JLabel lblRazoSocial;
+	public JPanel contentPane;
+	public JTextField txtNomeCompleto;
+	public JFormattedTextField txtCPF;
+	public JFormattedTextField txtCNPJ;
+	public JFormattedTextField txtTelefone;
+	public JTextField txtEndereco;
+	public JTextField txtNumero;
+	public JFormattedTextField txtCEP;
+	public JTextField txtComplemento;
+	public JButton btnSalvar;
+	public JButton btnLimpar;
+	public JButton btnCancelar;
+	public JLabel lblNomeCompleto;
+	public JLabel lblCpf;
+	public JLabel lblCnpj;
+	public JLabel lblTelefone;
+	public JLabel lblEndereco;
+	public JLabel lblCep;
+	public JLabel lblComplemento;
+	public JLabel lblNumero;
+	public JLabel lblCPFInvalido;
+	public JLabel lblCNPJInvalido;
+	public JLabel lblCampoObrigatrioNome;
+	public JLabel lblCampoObrigatrioCPFCNPJ;
+	public JLabel lblCampoObrigatrioTelefone;
+	public JLabel lblCampoObrigatrioNumero;
+	public JLabel lblCampoObrigatrioCEP;
+	public JLabel lblCampoObrigatrioEndereco;
+	public JRadioButton rdbtnPessoaFsica;
+	public JRadioButton rdbtnPessoaJuridica;
+	public JLabel lblRazoSocial;
+	public JComboBox<String> cmbNomeClientes;
 	public Cliente cliente = new Cliente();
 	public ControlarClientes controleCliente = new ControlarClientes();
+	public JLabel lblCnpjcpf;
+	public JTextField txtCNPJCPF;
+	private JLabel lblClientes;
 
 	// Criando o frame
 	public FrmCliente() {
@@ -79,6 +92,9 @@ public class FrmCliente extends JFrame {
 
 		// Metodo que inicializa as lebels de mensagem de erro
 		labelsMsgErro();
+		
+		//Metodo com objetos de consulta
+		consultaCliente(false);
 
 		// Declarando label da razao social
 		lblRazoSocial = new JLabel("Raz\u00E3o Social:");
@@ -266,11 +282,14 @@ public class FrmCliente extends JFrame {
 		rdbtnPessoaJuridica.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		rdbtnPessoaJuridica.setBounds(230, 8, 109, 23);
 		contentPane.add(rdbtnPessoaJuridica);
+		
 
 		// Adicionando acao ao radio button da pessoa fisica
 		rdbtnPessoaFsica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				radioPessoaFisica();
+
 			}
 		});
 
@@ -442,7 +461,7 @@ public class FrmCliente extends JFrame {
 			// salva a pessoa Fisica
 			if (rdbtnPessoaFsica.isSelected()) {
 				controleCliente.SalvarPessoaFisica(cliente);
-			// Caso contrario, invoca o que grava a pessoa juridica
+				// Caso contrario, invoca o que grava a pessoa juridica
 			} else {
 				controleCliente.SalvarPessoaJuridica(cliente);
 			}
@@ -629,4 +648,47 @@ public class FrmCliente extends JFrame {
 		}
 	}
 
+	//Metodo com objetos de consulta que iniciam invisiveis
+	public void consultaCliente(boolean hue) {
+		// Declarando label e txt para cpf cnpj somente para consulta
+		lblCnpjcpf = new JLabel("CNPJ/CPF:");
+		lblCnpjcpf.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblCnpjcpf.setBounds(54, 72, 52, 14);
+		lblCnpjcpf.setVisible(false);
+		contentPane.add(lblCnpjcpf);
+
+		txtCNPJCPF = new JTextField();
+		txtCNPJCPF.setBounds(116, 69, 143, 20);
+		txtCNPJCPF.setVisible(false);
+		contentPane.add(txtCNPJCPF);
+		txtCNPJCPF.setColumns(10);
+
+		// Label dos clientes para consulta
+		lblClientes = new JLabel("Clientes:");
+		lblClientes.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblClientes.setBounds(60, 41, 46, 14);
+		lblClientes.setVisible(false);
+		contentPane.add(lblClientes);
+
+		// Combobox do cliente somente para consultar
+		cmbNomeClientes = new JComboBox<String>();
+		cmbNomeClientes.setBounds(116, 38, 302, 20);
+		cmbNomeClientes.setVisible(false);
+		contentPane.add(cmbNomeClientes);
+		if (hue == true){
+			rdbtnPessoaFsica.setVisible(false);
+			rdbtnPessoaJuridica.setVisible(false);
+			lblCpf.setVisible(false);
+			txtCPF.setVisible(false);
+			lblCnpj.setVisible(false);
+			txtCNPJ.setVisible(false);
+			lblNomeCompleto.setVisible(false);
+			txtNomeCompleto.setVisible(false);
+			btnSalvar.setVisible(false);
+			lblCnpjcpf.setVisible(true);
+			txtCNPJCPF.setVisible(true);
+			lblClientes.setVisible(true);
+			cmbNomeClientes.setVisible(true);
+		}
+	}
 }

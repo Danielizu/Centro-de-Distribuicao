@@ -35,52 +35,57 @@ import entity.Catalogo;
 
 import com.toedter.calendar.JDateChooser;
 
+import javax.swing.JComboBox;
+import javax.swing.JProgressBar;
+
 public class FrmCatalogo extends JFrame {
 
 	private static final long serialVersionUID = -1332513679160310365L;
-	private JPanel contentPane;
-	private JPanel pnlCadastro;
-	private JPanel pnlDescricao;
-	private JLabel lblCodProduto;
-	private JLabel lblNomeDoProduto;
-	private JLabel lblFornecedor;
-	private JLabel lblCnpj;
-	private JLabel lblTelefone;
-	private JLabel lblDataDeCadastro;
-	private JLabel lblPeso;
-	private JLabel lblVolume;
-	private JTextField txtCodProduto;
-	private JTextField txtNomeDoProduto;
-	private JTextField txtFornecedor;
-	private JTextField txtPeso;
-	private JTextField txtVolume;
-	private JFormattedTextField txtTelefone;
-	private JFormattedTextField txtCNPJ;
-	private JScrollPane scrollDescricao;
-	private JTextArea txtAreaDescricao;
-	private JButton btnSalvar;
-	private JButton btnLimpar;
-	private JButton btnCancelar;
-	private JLabel lblCampoObrigatrioNomeProduto;
-	private JLabel lblCampoObrigatrioFornecedor;
-	private JLabel lblCampoObrigatrioCNPJ;
-	private JLabel lblCampoObrigatrioTelefone;
-	private JLabel lblCampoObrigatrioDataCadastro;
-	private JLabel lblCampoObrigatrioPeso;
-	private JLabel lblCampoObrigatrioVolume;
-	private JLabel lblCampoObrigatrioDescricao;
-	private JLabel lblCNPJInvalido;
-	private JDateChooser txtDataCadastro;
+	public JPanel contentPane;
+	public JPanel pnlCadastro;
+	public JPanel pnlDescricao;
+	public JLabel lblCodProduto;
+	public JLabel lblNomeDoProduto;
+	public JLabel lblFornecedor;
+	public JLabel lblCnpj;
+	public JLabel lblTelefone;
+	public JLabel lblDataDeCadastro;
+	public JLabel lblPeso;
+	public JLabel lblVolume;
+	public JTextField txtCodProduto;
+	public JTextField txtNomeDoProduto;
+	public JTextField txtFornecedor;
+	public JTextField txtPeso;
+	public JTextField txtVolume;
+	public JFormattedTextField txtTelefone;
+	public JFormattedTextField txtCNPJ;
+	public JScrollPane scrollDescricao;
+	public JTextArea txtAreaDescricao;
+	public JButton btnSalvar;
+	public JButton btnLimpar;
+	public JButton btnCancelar;
+	public JLabel lblCampoObrigatrioNomeProduto;
+	public JLabel lblCampoObrigatrioFornecedor;
+	public JLabel lblCampoObrigatrioCNPJ;
+	public JLabel lblCampoObrigatrioTelefone;
+	public JLabel lblCampoObrigatrioDataCadastro;
+	public JLabel lblCampoObrigatrioPeso;
+	public JLabel lblCampoObrigatrioVolume;
+	public JLabel lblCampoObrigatrioDescricao;
+	public JLabel lblCampoObrigatrioCodProduto;
+	public JLabel lblCNPJInvalido;
+	public JDateChooser txtDataCadastro;
 	public ControlarCatalogo controle = new ControlarCatalogo();
 	public Catalogo catalogo = new Catalogo();
-	private JLabel lblCampoObrigatrioCodProduto;
+	@SuppressWarnings("rawtypes")
+	public JComboBox cmbCodProduto;
 
 	public FrmCatalogo() {
 		// Propriedades de inicializacao da tela
 		propInicializacao();
-
 	}
 
+	// Metodo que inicializa as propriedades da tela
 	// Metodo que define as propriedades do form na inicializacao
 	private void propInicializacao() {
 		// Informando que a janela n'ao pode ser redimencionada
@@ -113,6 +118,9 @@ public class FrmCatalogo extends JFrame {
 
 		// Declarando labels de mensagem de erro
 		labelsMensagensErro();
+
+		// Metodo que desbilita objetos de consulta
+		consultaProduto(false);
 
 		// Definindo propriedades do codigo do produto
 		lblCodProduto = new JLabel("C\u00F3d. Produto:");
@@ -228,7 +236,7 @@ public class FrmCatalogo extends JFrame {
 		btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Metodo que valida e grava os dados em arquivo
+				// Metodo que valida e grava os dados em arquivo
 				salvarDados();
 			}
 		});
@@ -240,7 +248,7 @@ public class FrmCatalogo extends JFrame {
 		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Metodo que limpa os campos
+				// Metodo que limpa os campos
 				limparCampos();
 			}
 		});
@@ -265,6 +273,7 @@ public class FrmCatalogo extends JFrame {
 	}
 
 	// Declaracao de labels de mensagem de erro
+	// Metodo que inicializa as mensagens de erro
 	public void labelsMensagensErro() {
 
 		lblCampoObrigatrioDescricao = new JLabel("Campo Obrigat\u00F3rio!");
@@ -343,8 +352,8 @@ public class FrmCatalogo extends JFrame {
 		pnlCadastro.add(lblCNPJInvalido);
 	}
 
-	// Metodo para o botao Salvar
-	public boolean validarTipoCliente() {
+	// Metodo que valida o tipo do cliente e seu CNPJ
+	public boolean validarTipoFornecedor() {
 		int aindaFalta = 0;
 		if (validarCampos()) {
 			String CNPJ = "";
@@ -371,11 +380,11 @@ public class FrmCatalogo extends JFrame {
 		}
 	}
 
-	//Metodo para gravar os dados em arquivo
+	// Metodo para gravar os dados em arquivo
 	public void salvarDados() {
 		// Verifica se o metodo salvar retorna que todos as informacoes
 		// estao validas
-		if (validarTipoCliente()) {
+		if (validarTipoFornecedor()) {
 			// Caso estejam validas, estar[a habilidado para salvar as
 			// informacoes
 			System.out.println("Habilitado para salvar");
@@ -399,16 +408,16 @@ public class FrmCatalogo extends JFrame {
 			Telefone = Telefone.replace("-", "");
 			catalogo.setTelefone(Telefone);
 
-			//Coletando data no formato correto
+			// Coletando data no formato correto
 			Date data = txtDataCadastro.getDate();
 			SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
 			catalogo.setDataCadastro("" + f.format(data));
-			
-			//Gravando peso, volume e descricao
+
+			// Gravando peso, volume e descricao
 			catalogo.setPeso(Integer.parseInt(txtPeso.getText()));
 			catalogo.setVolume(Integer.parseInt(txtVolume.getText()));
 			catalogo.setDescricao(txtAreaDescricao.getText());
-			
+
 			// Try Catch para gravar em arquivo a partir do controle do catalogo
 			try {
 				controle.SalvarCatalogo(catalogo);
@@ -422,7 +431,7 @@ public class FrmCatalogo extends JFrame {
 		}
 	}
 
-	// Metodo que desabilita caracteres especiais do campo nome
+	// Metodo que desabilita caracteres especiais na tela
 	public void excluirCaracteresEspeciais() {
 		// Definindo que o campo do Nome so aceita Texto
 		txtNomeDoProduto.addKeyListener(new KeyAdapter() {
@@ -469,7 +478,7 @@ public class FrmCatalogo extends JFrame {
 		});
 	}
 
-	// Metodo para limpar campos
+	// Metodo que limpa os campos da tela
 	public void limparCampos() {
 		txtCodProduto.setText(null);
 		txtNomeDoProduto.setText(null);
@@ -491,7 +500,7 @@ public class FrmCatalogo extends JFrame {
 		lblCNPJInvalido.setVisible(false);
 	}
 
-	// Metodo para validar os campos
+	// Metodo que valida os campos
 	public boolean validarCampos() {
 		int aindaFalta = 1;
 		// Validando campo do Cod Do produto
@@ -576,6 +585,20 @@ public class FrmCatalogo extends JFrame {
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	// Metodo para validar campos de consulta
+	public void consultaProduto(boolean hue) {
+		cmbCodProduto = new JComboBox<Object>();
+		cmbCodProduto.setBounds(116, 36, 87, 20);
+		cmbCodProduto.setVisible(false);
+		pnlCadastro.add(cmbCodProduto);
+		
+		if(hue == true){
+			btnSalvar.setVisible(false);
+			cmbCodProduto.setVisible(true);
+			txtCodProduto.setVisible(false);
 		}
 	}
 }
