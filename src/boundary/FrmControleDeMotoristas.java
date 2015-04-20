@@ -29,7 +29,7 @@ import com.toedter.calendar.JDateChooser;
 
 import entity.Motorista;
 
-public class FrmControleDeMotoristas {
+public class FrmControleDeMotoristas extends JFrame{
 
 	private JFrame frame;
 	private JTextField txtNomeMotorista;
@@ -43,18 +43,18 @@ public class FrmControleDeMotoristas {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrmControleDeMotoristas window = new FrmControleDeMotoristas();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					FrmControleDeMotoristas window = new FrmControleDeMotoristas();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.

@@ -22,7 +22,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.awt.FlowLayout;
 
-public class FrmControleDeVeiculos {
+public class FrmControleDeVeiculos extends JFrame{
 
 	public JFrame frame;
 	public JTextField txtPlaca;
@@ -37,7 +37,6 @@ public class FrmControleDeVeiculos {
 	public JComboBox cbCarroceria;
 	public Veiculo veiculo = new Veiculo();
 	public ControlarVeiculos control = new ControlarVeiculos();
-	public CrudVeiculo crud = new CrudVeiculo();
 	String tipo[] = { null, "Caminhão", "Carro" };
 	String cores[] = { null, "Azul", "Amarelo", "Vermelho", "Preto", "Prata",
 			"Cinza", "Grafite" };
@@ -50,19 +49,19 @@ public class FrmControleDeVeiculos {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrmControleDeVeiculos window = new FrmControleDeVeiculos();
-
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					FrmControleDeVeiculos window = new FrmControleDeVeiculos();
+//
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
