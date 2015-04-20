@@ -19,13 +19,21 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 
 public class FrmMenuPrincipal {
 
 	private JFrame frmCentralDeDistribuio;
 	private JTextField textField;
-	private FrmCatalogo formCatalogo = new FrmCatalogo();
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Launch the application.
@@ -59,6 +67,7 @@ public class FrmMenuPrincipal {
 		frmCentralDeDistribuio.setBounds(100, 100, 838, 546);
 		frmCentralDeDistribuio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCentralDeDistribuio.setLocationRelativeTo(null);  
+		frmCentralDeDistribuio.setResizable(false);
 		frmCentralDeDistribuio.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -70,7 +79,12 @@ public class FrmMenuPrincipal {
 		JButton btnControleDeVeiculos = new JButton("     Controle de Veiculos");
 		btnControleDeVeiculos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			}
+				FrmControleDeVeiculos formVeiculos = new FrmControleDeVeiculos();
+				formVeiculos.frame.setVisible(true);
+				formVeiculos.frame.setLocationRelativeTo(null);  
+				formVeiculos.frame.setResizable(false);
+				formVeiculos.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+				}
 		});
 		btnControleDeVeiculos.setHorizontalAlignment(SwingConstants.LEFT);
 		btnControleDeVeiculos.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/veiculo_icon2.png")));
@@ -80,6 +94,15 @@ public class FrmMenuPrincipal {
 		JButton btnControleDeMotoristas = new JButton("    Controle de Motoristas");
 		btnControleDeMotoristas.setHorizontalAlignment(SwingConstants.LEFT);
 		btnControleDeMotoristas.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/motorista_icon2.png")));
+		btnControleDeMotoristas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmControleDeMotoristas formMotoristas = new FrmControleDeMotoristas();
+				formMotoristas.frame.setVisible(true);
+				formMotoristas.frame.setLocationRelativeTo(null);  
+				formMotoristas.frame.setResizable(false);
+				formMotoristas.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+			}
+			});
 		btnControleDeMotoristas.setBounds(20, 99, 220, 43);
 		panel.add(btnControleDeMotoristas);
 		
@@ -88,7 +111,11 @@ public class FrmMenuPrincipal {
 		btnCatalogo.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/catalogo_icon2.png")));
 		btnCatalogo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+			FrmCatalogo formCatalogo = new FrmCatalogo();
+			formCatalogo.setLocationRelativeTo(null);
+			formCatalogo.setVisible(true);
+			formCatalogo.setResizable(false);
+			formCatalogo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
 			}
 		});
 		btnCatalogo.setBounds(20, 153, 220, 43);
@@ -97,12 +124,25 @@ public class FrmMenuPrincipal {
 		JButton btnItensDeEntrega = new JButton("       Itens de Entrega");
 		btnItensDeEntrega.setHorizontalAlignment(SwingConstants.LEFT);
 		btnItensDeEntrega.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/box_icon2.png")));
+		btnItensDeEntrega.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+			});
 		btnItensDeEntrega.setBounds(20, 207, 220, 43);
 		panel.add(btnItensDeEntrega);
 		
 		JButton btnClientes = new JButton("       Controle de  Clientes");
 		btnClientes.setHorizontalAlignment(SwingConstants.LEFT);
 		btnClientes.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/clientes_icon2.png")));
+		btnClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmCliente formCliente = new FrmCliente();
+				formCliente.setVisible(true);
+				formCliente.setLocationRelativeTo(null);
+				formCliente.setResizable(false);
+				formCliente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+			}
+			});
 		btnClientes.setBounds(20, 261, 220, 43);
 		panel.add(btnClientes);
 		
@@ -121,6 +161,12 @@ public class FrmMenuPrincipal {
 		btnSobre.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/sobre_icon2.png")));
 		btnSobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				FrmSobre formSobre = new FrmSobre();
+				formSobre.frame.setLocationRelativeTo(null);
+				formSobre.frame.setVisible(true);
+				formSobre.frame.setResizable(false);
+				formSobre.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+				
 			}
 		});
 		btnSobre.setBounds(20, 423, 220, 43);
@@ -133,6 +179,9 @@ public class FrmMenuPrincipal {
 		btnHistorico.setHorizontalAlignment(SwingConstants.LEADING);
 		btnHistorico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				FrmHistoricoEntrega formHistorico = new FrmHistoricoEntrega();
+				formHistorico.setVisible(true);
+				formHistorico.setLocationRelativeTo(null);
 			}
 		});
 		
@@ -156,6 +205,7 @@ public class FrmMenuPrincipal {
 		btnSair.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/sair_icon2.png")));
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
 	}
