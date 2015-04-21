@@ -7,13 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.swing.JOptionPane;
+
 import entity.Cliente;
 
 public class ControlarClientes {
 	public boolean notFound = false; 
-	public String[] linhas;
-	public String[] nomeClientes;
+	String[] CPF;
 	Cliente cliente = new Cliente();
 
 	/** METODO DE SALVAR PESSOA FISICA */
@@ -134,5 +135,37 @@ public class ControlarClientes {
 			}
 		}
 		return cliente;
+	}
+	
+	//Metodo que verifica se o produto ja existe
+	public boolean validarCliente(String cpf) {
+		String arquivoCSV = "Cliente.csv";
+		BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
+		try {
+
+			br = new BufferedReader(new FileReader(arquivoCSV));
+			while ((linha = br.readLine()) != null) {
+
+				CPF = linha.split(csvDivisor);
+				if (CPF[1].equals(cpf)) {
+					return true;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return false;
 	}
 }

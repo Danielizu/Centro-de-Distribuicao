@@ -67,6 +67,7 @@ public class FrmCliente extends JFrame {
 	public Cliente cliente = new Cliente();
 	public ControlarClientes controleCliente = new ControlarClientes();
 	private JButton btnPesquisarCliente;
+	private JLabel lblClienteJExiste;
 
 	// Criando o frame
 	public FrmCliente() {
@@ -88,9 +89,6 @@ public class FrmCliente extends JFrame {
 
 		// Metodo que inicializa as lebels de mensagem de erro
 		labelsMsgErro();
-
-		// Metodo com objetos de consulta
-		consultaCliente(false);
 
 		// Declarando label da razao social
 		lblRazoSocial = new JLabel("Raz\u00E3o Social:");
@@ -218,8 +216,27 @@ public class FrmCliente extends JFrame {
 		btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Faz verificacao do tipo de cliente para habilitar a gravacao
-				if (validarTipoCliente()) {
+				boolean podeSalvar = false;
+				if (rdbtnPessoaFsica.isSelected()) {
+					if (controleCliente.validarCliente(txtCPF.getText()
+							.replace(".", "").replace("-", "")) == true) {
+						lblClienteJExiste.setVisible(true);
+						podeSalvar = false;
+					} else {
+						lblClienteJExiste.setVisible(false);
+						podeSalvar = true;
+					}
+				} else if (rdbtnPessoaJuridica.isSelected()) {
+					if (controleCliente
+							.validarCliente(txtCNPJ.getText().replace(".", "")
+									.replace("/", "").replace("-", "")) == true) {
+						lblClienteJExiste.setVisible(true);
+					} else {
+						lblClienteJExiste.setVisible(false);
+						podeSalvar = true;
+					}
+				}
+				if (validarTipoCliente() && podeSalvar == true) {
 					// Se o tipo de cliente estiver valido, segue a gravacao
 					System.out.println("Habilitado para salvar");
 					salvarDados();
@@ -277,9 +294,7 @@ public class FrmCliente extends JFrame {
 		// Adicionando acao ao radio button da pessoa fisica
 		rdbtnPessoaFsica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				radioPessoaFisica();
-
 			}
 		});
 
@@ -290,48 +305,17 @@ public class FrmCliente extends JFrame {
 			}
 		});
 
+		// Botao que faz a pesquisa do cliente
 		btnPesquisarCliente = new JButton("");
 		btnPesquisarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Caso o radio da Pessoa Fisica esteja selecionada, sera
-				// consultado o CPF
-				if (rdbtnPessoaFsica.isSelected()) {
-					String CPF = "";
-					CPF = txtCPF.getText();
-					CPF = CPF.replace(".", "");
-					CPF = CPF.replace("-", "");
-					cliente.setCpf(CPF);
-					cliente = controleCliente.PesquisarCliente(CPF);
-					// Caso o radio da Pessoa Juridica esteja selecionada, sera
-					// consultado o
-					// CNPJ
-				} else if (rdbtnPessoaJuridica.isSelected()) {
-					String CNPJ = "";
-					CNPJ = txtCNPJ.getText();
-					CNPJ = CNPJ.replace(".", "");
-					CNPJ = CNPJ.replace("/", "");
-					CNPJ = CNPJ.replace("-", "");
-					cliente.setCnpj(CNPJ);
-					cliente = controleCliente.PesquisarCliente(CNPJ);
-				}
-				if (controleCliente.notFound == true) {
-					txtNomeCompleto.setText(cliente.getNome());
-					txtCPF.setText(cliente.getCpf());
-					txtTelefone.setText(cliente.getTelefone());
-					txtEndereco.setText(cliente.getEndereco());
-					txtNumero.setText(String.valueOf(cliente.getNumero()));
-					txtCEP.setText(String.valueOf(cliente.getCep()));
-					txtComplemento.setText(cliente.getComplemento());
-				}else{
-					limparCampos();
-				}
+				consultarDados();
 			}
 		});
 		btnPesquisarCliente.setBounds(269, 70, 31, 22);
 		btnPesquisarCliente.setIcon(new ImageIcon(FrmControleDeVeiculos.class
 				.getResource("/images/pesquisar.png")));
 		contentPane.add(btnPesquisarCliente);
-
 	}
 
 	// Declaracao de labels de mensagem de erro
@@ -393,6 +377,13 @@ public class FrmCliente extends JFrame {
 		lblCNPJInvalido.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblCNPJInvalido.setBounds(269, 72, 92, 14);
 		contentPane.add(lblCNPJInvalido);
+
+		lblClienteJExiste = new JLabel("Cliente j\u00E1 existe!");
+		lblClienteJExiste.setForeground(Color.RED);
+		lblClienteJExiste.setVisible(false);
+		lblClienteJExiste.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblClienteJExiste.setBounds(315, 72, 81, 14);
+		contentPane.add(lblClienteJExiste);
 	}
 
 	// Metodo que valida o tipo de cliente e se a informacao é valida
@@ -502,6 +493,44 @@ public class FrmCliente extends JFrame {
 		}
 	}
 
+	//Metodo para consultar dados do cliente
+	public void consultarDados(){
+		// Caso o radio da Pessoa Fisica esteja selecionada, sera
+		// consultado o CPF
+		if (rdbtnPessoaFsica.isSelected()) {
+			String CPF = "";
+			CPF = txtCPF.getText();
+			CPF = CPF.replace(".", "");
+			CPF = CPF.replace("-", "");
+			cliente.setCpf(CPF);
+			cliente = controleCliente.PesquisarCliente(CPF);
+			// Caso o radio da Pessoa Juridica esteja selecionada, sera
+			// consultado o
+			// CNPJ
+		} else if (rdbtnPessoaJuridica.isSelected()) {
+			String CNPJ = "";
+			CNPJ = txtCNPJ.getText();
+			CNPJ = CNPJ.replace(".", "");
+			CNPJ = CNPJ.replace("/", "");
+			CNPJ = CNPJ.replace("-", "");
+			cliente.setCnpj(CNPJ);
+			cliente = controleCliente.PesquisarCliente(CNPJ);
+		}
+		// Caso o valor da pesquisa sej[a valido, preenche os campos da
+		// tela
+		if (controleCliente.notFound == true) {
+			txtNomeCompleto.setText(cliente.getNome());
+			txtCPF.setText(cliente.getCpf());
+			txtTelefone.setText(cliente.getTelefone());
+			txtEndereco.setText(cliente.getEndereco());
+			txtNumero.setText(String.valueOf(cliente.getNumero()));
+			txtCEP.setText(String.valueOf(cliente.getCep()));
+			txtComplemento.setText(cliente.getComplemento());
+		} else {
+			// Caso contrario, exibe mensagem e limpa campos
+			limparCampos();
+		}
+	}
 	// Metodo que aplica acoes quando o radio da pessoa fisica e selecionado
 	public void radioPessoaFisica() {
 		if (rdbtnPessoaFsica.isSelected()) {
@@ -593,6 +622,7 @@ public class FrmCliente extends JFrame {
 		lblCampoObrigatrioCEP.setVisible(false);
 		lblCPFInvalido.setVisible(false);
 		lblCNPJInvalido.setVisible(false);
+		lblClienteJExiste.setVisible(false);
 	}
 
 	// Metodo para validar se todos os campos foram preenchidos corretamente
@@ -680,18 +710,4 @@ public class FrmCliente extends JFrame {
 		}
 	}
 
-	// Metodo com objetos de consulta que iniciam invisiveis
-	public void consultaCliente(boolean hue) {
-		if (hue == true) {
-			rdbtnPessoaFsica.setVisible(false);
-			rdbtnPessoaJuridica.setVisible(false);
-			lblCpf.setVisible(false);
-			txtCPF.setVisible(false);
-			lblCnpj.setVisible(false);
-			txtCNPJ.setVisible(false);
-			lblNomeCompleto.setVisible(false);
-			txtNomeCompleto.setVisible(false);
-			btnSalvar.setVisible(false);
-		}
-	}
 }

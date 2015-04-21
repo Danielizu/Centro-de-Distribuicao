@@ -11,16 +11,17 @@ import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 import entity.Catalogo;
-import entity.Cliente;
 
 public class ControlarCatalogo {
 
+	int qtdLinha;
+	String[] codProduto;
 	public boolean notFound = false;
 	Catalogo catalogo = new Catalogo();
 
 	/** METODO DE SALVAR PESSOA CATALOGO */
 	public int SalvarCatalogo(Catalogo catalogo) throws IOException {
-		File arquivoCatalogo = new File("Catalogo.txt");
+		File arquivoCatalogo = new File("Catalogo.csv");
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(catalogo.getCodProduto());
@@ -70,7 +71,7 @@ public class ControlarCatalogo {
 			while ((linha = br.readLine()) != null) {
 
 				String[] produtoCadastrado = linha.split(csvDivisor);
-				if (produtoCadastrado[1].equals(pesquisa)) {
+				if (produtoCadastrado[0].equals(pesquisa)) {
 					catalogo.setCodProduto(Integer
 							.valueOf(produtoCadastrado[0]));
 					catalogo.setNome(produtoCadastrado[1]);
@@ -103,5 +104,37 @@ public class ControlarCatalogo {
 			}
 		}
 		return catalogo;
+	}
+
+	//Metodo que verifica se o produto ja existe
+	public boolean validarCodProduto(String cod) {
+		String arquivoCSV = "Catalogo.csv";
+		BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
+		try {
+
+			br = new BufferedReader(new FileReader(arquivoCSV));
+			while ((linha = br.readLine()) != null) {
+
+				codProduto = linha.split(csvDivisor);
+				if (codProduto[0].equals(cod)) {
+					return true;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return false;
 	}
 }
