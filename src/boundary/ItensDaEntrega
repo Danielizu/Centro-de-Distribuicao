@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.*;
+//import com.toedter.calendar.JDateChooser;
 
 import Control.ControlItens;
 
@@ -88,26 +89,55 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		txtCliente = new JTextField();
-		txtCliente.setBounds(165, 67, 160, 20);
+				
+		txtCliente.setBounds(164, 67, 160, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
 		
 		txtCodProduto = new JTextField();
+		try{
+			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
+			txtCodProduto = new javax.swing.JFormattedTextField(nota);
+		}
+		catch (Exception e){
+		
+		}
 		txtCodProduto.setBounds(165, 101, 160, 20);
 		contentPane.add(txtCodProduto);
 		txtCodProduto.setColumns(10);
 		
 		txtDataSolicit = new JTextField();
+		try{
+			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##/##/####");
+			txtDataSolicit = new javax.swing.JFormattedTextField(nota);
+		}
+		catch (Exception e){
+		
+		}
 		txtDataSolicit.setBounds(165, 135, 120, 20);
 		contentPane.add(txtDataSolicit);
 		txtDataSolicit.setColumns(10);
 		
 		txtQuant = new JTextField();
+		try{
+			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("####");
+			txtQuant = new javax.swing.JFormattedTextField(nota);
+		}
+		catch (Exception e){
+		
+		}
 		txtQuant.setBounds(165, 169, 160, 20);
 		contentPane.add(txtQuant);
 		txtQuant.setColumns(10);
 		
 		txtNumeroNota = new JTextField();
+		try{
+			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
+			txtNumeroNota = new javax.swing.JFormattedTextField(nota);
+		}
+		catch (Exception e){
+		
+		}
 		txtNumeroNota.setBounds(165, 203, 160, 20);
 		contentPane.add(txtNumeroNota);
 		txtNumeroNota.setColumns(10);
@@ -121,15 +151,15 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(lblNewLabel_5);
 		
 		JButton btnNewButton_3 = new JButton("Salvar");
-		btnNewButton_3.setBounds(30, 520, 89, 23);
+		btnNewButton_3.setBounds(22, 520, 89, 23);
 		contentPane.add(btnNewButton_3);
 		
 		JButton btnCancelar = new JButton("Limpar");
-		btnCancelar.setBounds(207, 520, 89, 23);
+		btnCancelar.setBounds(195, 520, 89, 23);
 		contentPane.add(btnCancelar);
 		
 		JButton btnNewButton_5 = new JButton("Cancelar");
-		btnNewButton_5.setBounds(358, 520, 89, 23);
+		btnNewButton_5.setBounds(365, 520, 89, 23);
 		contentPane.add(btnNewButton_5);
 		
 		JTextArea textArea = new JTextArea();
