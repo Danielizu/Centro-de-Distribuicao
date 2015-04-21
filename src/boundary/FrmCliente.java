@@ -3,6 +3,7 @@ package boundary;
 import control.ControlarClientes;
 import control.ValidarCPFCNPJ;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -27,8 +28,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.io.IOException;
-
-import javax.swing.JComboBox;
 
 public class FrmCliente extends JFrame {
 
@@ -65,12 +64,9 @@ public class FrmCliente extends JFrame {
 	public JRadioButton rdbtnPessoaFsica;
 	public JRadioButton rdbtnPessoaJuridica;
 	public JLabel lblRazoSocial;
-	public JComboBox<String> cmbNomeClientes;
 	public Cliente cliente = new Cliente();
 	public ControlarClientes controleCliente = new ControlarClientes();
-	public JLabel lblCnpjcpf;
-	public JTextField txtCNPJCPF;
-	private JLabel lblClientes;
+	private JButton btnPesquisarCliente;
 
 	// Criando o frame
 	public FrmCliente() {
@@ -92,8 +88,8 @@ public class FrmCliente extends JFrame {
 
 		// Metodo que inicializa as lebels de mensagem de erro
 		labelsMsgErro();
-		
-		//Metodo com objetos de consulta
+
+		// Metodo com objetos de consulta
 		consultaCliente(false);
 
 		// Declarando label da razao social
@@ -253,12 +249,7 @@ public class FrmCliente extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			// Declarando acao no botao cancelar
 			public void actionPerformed(ActionEvent e) {
-				// Metodo que fecha a janela atual
 				dispose();
-				// A janela do menu passa a ser acessivel
-				FrmMenu.frame.setEnabled(true);
-				// A Janela do menu vem para a frente da tela
-				FrmMenu.frame.setAlwaysOnTop(true);
 			}
 		});
 		btnCancelar.setBounds(372, 238, 89, 23);
@@ -282,7 +273,6 @@ public class FrmCliente extends JFrame {
 		rdbtnPessoaJuridica.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		rdbtnPessoaJuridica.setBounds(230, 8, 109, 23);
 		contentPane.add(rdbtnPessoaJuridica);
-		
 
 		// Adicionando acao ao radio button da pessoa fisica
 		rdbtnPessoaFsica.addActionListener(new ActionListener() {
@@ -299,6 +289,31 @@ public class FrmCliente extends JFrame {
 				radioPessoaJuridica();
 			}
 		});
+		
+		btnPesquisarCliente = new JButton("");
+		btnPesquisarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String CPF = "";
+				CPF = txtCPF.getText();
+				CPF = CPF.replace(".", "");
+				CPF = CPF.replace("-", "");
+				cliente = controleCliente.PesquisarCliente(CPF);
+
+				
+				txtNomeCompleto.setText(cliente.getNome());
+				txtCPF.setText(cliente.getCpf());
+				txtTelefone.setText(cliente.getTelefone());
+				txtEndereco.setText(cliente.getEndereco());
+				txtNumero.setText(String.valueOf(cliente.getNumero()));
+				txtCEP.setText(String.valueOf(cliente.getCep()));
+				txtComplemento.setText(cliente.getComplemento());
+				
+			}
+		});
+		btnPesquisarCliente.setBounds(269, 70, 31, 22);
+		btnPesquisarCliente.setIcon(new ImageIcon(FrmControleDeVeiculos.class
+				.getResource("/images/pesquisar.png")));
+		contentPane.add(btnPesquisarCliente);
 
 	}
 
@@ -648,34 +663,9 @@ public class FrmCliente extends JFrame {
 		}
 	}
 
-	//Metodo com objetos de consulta que iniciam invisiveis
+	// Metodo com objetos de consulta que iniciam invisiveis
 	public void consultaCliente(boolean hue) {
-		// Declarando label e txt para cpf cnpj somente para consulta
-		lblCnpjcpf = new JLabel("CNPJ/CPF:");
-		lblCnpjcpf.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCnpjcpf.setBounds(54, 72, 52, 14);
-		lblCnpjcpf.setVisible(false);
-		contentPane.add(lblCnpjcpf);
-
-		txtCNPJCPF = new JTextField();
-		txtCNPJCPF.setBounds(116, 69, 143, 20);
-		txtCNPJCPF.setVisible(false);
-		contentPane.add(txtCNPJCPF);
-		txtCNPJCPF.setColumns(10);
-
-		// Label dos clientes para consulta
-		lblClientes = new JLabel("Clientes:");
-		lblClientes.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblClientes.setBounds(60, 41, 46, 14);
-		lblClientes.setVisible(false);
-		contentPane.add(lblClientes);
-
-		// Combobox do cliente somente para consultar
-		cmbNomeClientes = new JComboBox<String>();
-		cmbNomeClientes.setBounds(116, 38, 302, 20);
-		cmbNomeClientes.setVisible(false);
-		contentPane.add(cmbNomeClientes);
-		if (hue == true){
+		if (hue == true) {
 			rdbtnPessoaFsica.setVisible(false);
 			rdbtnPessoaJuridica.setVisible(false);
 			lblCpf.setVisible(false);
@@ -685,10 +675,6 @@ public class FrmCliente extends JFrame {
 			lblNomeCompleto.setVisible(false);
 			txtNomeCompleto.setVisible(false);
 			btnSalvar.setVisible(false);
-			lblCnpjcpf.setVisible(true);
-			txtCNPJCPF.setVisible(true);
-			lblClientes.setVisible(true);
-			cmbNomeClientes.setVisible(true);
 		}
 	}
 }

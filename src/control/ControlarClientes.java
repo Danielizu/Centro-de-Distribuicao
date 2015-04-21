@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +12,10 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 
+import javax.swing.JOptionPane;
+
 import entity.Cliente;
+import entity.Veiculo;
 
 public class ControlarClientes {
 
@@ -22,7 +26,7 @@ public class ControlarClientes {
 
 	/** METODO DE SALVAR PESSOA FISICA */
 	public int SalvarPessoaFisica(Cliente cliente) throws IOException {
-		File arquivoCliente = new File("Cliente.txt");
+		File arquivoCliente = new File("Cliente.csv");
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(cliente.getNome());
@@ -57,7 +61,7 @@ public class ControlarClientes {
 
 	/** METODO DE SALVAR PESSOA JURIDICA */
 	public int SalvarPessoaJuridica(Cliente cliente) throws IOException {
-		File arquivoCliente = new File("Cliente.txt");
+		File arquivoCliente = new File("Cliente.csv");
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(cliente.getNome());
@@ -90,68 +94,51 @@ public class ControlarClientes {
 		}
 	}
 
-	// Metodo que faz a leitura de todos o dados dos clientes
-	public void lerCliente() throws IOException {
+	public Cliente PesquisarCliente(String pesquisa) {
+
+		String arquivoCSV = "Cliente.csv";
+		BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
 		try {
-			// Localizando arquivo para leitura
-			BufferedReader lerArq = new BufferedReader(new FileReader(
-					"Cliente.txt"));
-			// Enquanto a linha nao for nula ele fara a leitura
-			while ((str = lerArq.readLine()) != null) {
-				// Quebrando a linha caso encontre um ponto e virgula
-				linhas = str.split(";");
-				// Ate chegar ao tamanho do vetor das linhas exibe o conteudo
-				for (String cell : linhas) {
-					System.out.println("Conteudo: " + cell);
+
+			br = new BufferedReader(new FileReader(arquivoCSV));
+
+			int verificador = 0;
+			while ((linha = br.readLine()) != null) {
+
+				String[] clienteCadastrado = linha.split(csvDivisor);
+				// System.out.println(pesquisa);
+				if (clienteCadastrado[1].equals(pesquisa)) {
+
+					cliente.setNome(clienteCadastrado[0]);
+					cliente.setCpf((clienteCadastrado[1]));
+					cliente.setTelefone(clienteCadastrado[2]);
+					cliente.setEndereco(clienteCadastrado[3]);
+					cliente.setNumero(Integer.valueOf(clienteCadastrado[4]));
+					cliente.setCep(Integer.valueOf(clienteCadastrado[5]));
+					cliente.setComplemento(clienteCadastrado[6]);
+					verificador++;
+				} 
+
+			}
+			if (verificador < 1) {
+				JOptionPane.showMessageDialog(null, "Cliente não encontrado.");
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-			System.out.println(linhas);
-			lerArq.close();
-		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n",
-					e.getMessage());
 		}
-	}
-
-	public void alimentarNomeCliente() throws IOException {
-		FileInputStream stream = new FileInputStream("Cliente.txt");
-		InputStreamReader reader = new InputStreamReader(stream);
-		BufferedReader br = new BufferedReader(reader);
-		String linha = br.readLine();
-		
-		int numLinhas = 0;
-		// Try catch que faz a contagem do numero de linhas do documento, ou
-		// seja, quantos registros
-		try {
-			// Coletando arquivo txt
-			File arquivoLeitura = new File("Cliente.txt");
-			// Declarando variavel long que conta o numero de linhas
-			long tamanhoArquivo = arquivoLeitura.length();
-			FileInputStream fs = new FileInputStream(arquivoLeitura);
-			DataInputStream in = new DataInputStream(fs);
-
-			@SuppressWarnings("resource")
-			LineNumberReader lineRead = new LineNumberReader(
-					new InputStreamReader(in));
-			lineRead.skip(tamanhoArquivo);
-
-			// Soma a quantidade de linhas
-			numLinhas = lineRead.getLineNumber();	
-		} catch (IOException e) {
-
-		}
-		// Dizendo que o vetor nomeCliente sera do tamanho do numero de
-		// registros
-		nomeClientes = new String[numLinhas];
-		// enquanto as linhas náo forem nulas sera alimentado o vetor com o nome
-		// dos clientes.
-		for (int i = 0; linha != null; i++) {
-			// Coleta somente o nome antes do ponto e virgula
-			String nome = linha.substring(0, linha.indexOf(';'));
-			// Alimente o vetor nomeCliente com o nome
-			nomeClientes[i] = nome;
-			linha = br.readLine();
-		}
-		br.close();
+		return cliente;
 	}
 }

@@ -19,8 +19,8 @@ public class ControlarCatalogo {
 	public String[] linhas;
 	public String[] codProduto;
 	Catalogo catalogo = new Catalogo();
-	
-	/** METODO DE SALVAR PESSOA CATALOGO*/
+
+	/** METODO DE SALVAR PESSOA CATALOGO */
 	public int SalvarCatalogo(Catalogo catalogo) throws IOException {
 		File arquivoCatalogo = new File("Catalogo.txt");
 		StringBuffer sb = new StringBuffer();
@@ -46,7 +46,7 @@ public class ControlarCatalogo {
 		sb.append("\r\n");
 
 		try {
-			FileWriter Arquivo = new FileWriter(arquivoCatalogo, true); 
+			FileWriter Arquivo = new FileWriter(arquivoCatalogo, true);
 			PrintWriter grava = new PrintWriter(Arquivo, true);
 			grava.write(sb.toString());
 			grava.flush();
@@ -57,70 +57,71 @@ public class ControlarCatalogo {
 			return 0;
 		}
 	}
-	
+
 	// Metodo que faz a leitura de todos o dados dos produtos
-		public void lerCatalogo() throws IOException {
-			try {
-				// Localizando arquivo para leitura
-				BufferedReader lerArq = new BufferedReader(new FileReader(
-						"Catalogo.txt"));
-				// Enquanto a linha nao for nula ele fara a leitura
-				while ((str = lerArq.readLine()) != null) {
-					// Quebrando a linha caso encontre um ponto e virgula
-					linhas = str.split(";");
-					// Ate chegar ao tamanho do vetor das linhas exibe o conteudo
-					for (String cell : linhas) {
-						System.out.println("Conteudo: " + cell);
-					}
+	public void lerCatalogo() throws IOException {
+		try {
+			// Localizando arquivo para leitura
+			BufferedReader lerArq = new BufferedReader(new FileReader(
+					"Catalogo.txt"));
+			// Enquanto a linha nao for nula ele fara a leitura
+			while ((str = lerArq.readLine()) != null) {
+				// Quebrando a linha caso encontre um ponto e virgula
+				linhas = str.split(";");
+				// Ate chegar ao tamanho do vetor das linhas exibe o conteudo
+				for (String cell : linhas) {
+					System.out.println("Conteudo: " + cell);
 				}
-				System.out.println(linhas);
-				lerArq.close();
-			} catch (IOException e) {
-				System.err.printf("Erro na abertura do arquivo: %s.\n",
-						e.getMessage());
 			}
+			System.out.println(linhas);
+			lerArq.close();
+		} catch (IOException e) {
+			System.err.printf("Erro na abertura do arquivo: %s.\n",
+					e.getMessage());
 		}
-		
-		public void alimentarCodProduto() throws IOException {
-			FileInputStream stream = new FileInputStream("Catalogo.txt");
-			InputStreamReader reader = new InputStreamReader(stream);
-			BufferedReader br = new BufferedReader(reader);
-			String linha = br.readLine();
-			
-			int numLinhas = 0;
-			// Try catch que faz a contagem do numero de linhas do documento, ou
-			// seja, quantos registros
-			try {
-				// Coletando arquivo txt
-				File arquivoLeitura = new File("Catalogo.txt");
-				// Declarando variavel long que conta o numero de linhas
-				long tamanhoArquivo = arquivoLeitura.length();
-				FileInputStream fs = new FileInputStream(arquivoLeitura);
-				DataInputStream in = new DataInputStream(fs);
+	}
 
-				@SuppressWarnings("resource")
-				LineNumberReader lineRead = new LineNumberReader(
-						new InputStreamReader(in));
-				lineRead.skip(tamanhoArquivo);
+	// Metodo para alimentar o vetor com o codigo do produto
+	public void alimentarCodProduto() throws IOException {
+		FileInputStream stream = new FileInputStream("Catalogo.txt");
+		InputStreamReader reader = new InputStreamReader(stream);
+		BufferedReader br = new BufferedReader(reader);
+		String linha = br.readLine();
 
-				// Soma a quantidade de linhas
-				numLinhas = lineRead.getLineNumber();	
-				System.out.println(numLinhas);
-			} catch (IOException e) {
+		int numLinhas = 0;
+		// Try catch que faz a contagem do numero de linhas do documento, ou
+		// seja, quantos registros
+		try {
+			// Coletando arquivo txt
+			File arquivoLeitura = new File("Catalogo.txt");
+			// Declarando variavel long que conta o numero de linhas
+			long tamanhoArquivo = arquivoLeitura.length();
+			FileInputStream fs = new FileInputStream(arquivoLeitura);
+			DataInputStream in = new DataInputStream(fs);
 
-			}
-			// Dizendo que o vetor nomeCliente sera do tamanho do numero de
-			// registros
-			codProduto = new String[numLinhas];
-			// enquanto as linhas náo forem nulas sera alimentado o vetor com o nome
-			// dos clientes.
-			for (int i = 0; linha != null; i++) {
-				// Coleta somente o nome antes do ponto e virgula
-				String cod = linha.substring(0, linha.indexOf(';'));
-				// Alimente o vetor nomeCliente com o nome
-				codProduto[i] = cod;
-				linha = br.readLine();
-			}
-			br.close();
+			@SuppressWarnings("resource")
+			LineNumberReader lineRead = new LineNumberReader(
+					new InputStreamReader(in));
+			lineRead.skip(tamanhoArquivo);
+
+			// Soma a quantidade de linhas
+			numLinhas = lineRead.getLineNumber();
+
+		} catch (IOException e) {
+
 		}
+		// Dizendo que o vetor nomeCliente sera do tamanho do numero de
+		// registros
+		codProduto = new String[numLinhas];
+		// enquanto as linhas náo forem nulas sera alimentado o vetor com o nome
+		// dos clientes.
+		for (int i = 0; linha != null; i++) {
+			// Coleta somente o nome antes do ponto e virgula
+			String cod = linha.substring(0, linha.indexOf(';'));
+			// Alimente o vetor nomeCliente com o nome
+			codProduto[i] = cod;
+			linha = br.readLine();
+		}
+		br.close();
+	}
 }

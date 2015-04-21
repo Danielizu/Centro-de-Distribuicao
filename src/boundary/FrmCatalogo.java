@@ -4,39 +4,29 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
 import java.awt.Color;
-
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
-
 import java.awt.Font;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-
 import control.ControlarCatalogo;
 import control.ValidarCPFCNPJ;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-
 import entity.Catalogo;
-
 import com.toedter.calendar.JDateChooser;
-
 import javax.swing.JComboBox;
-import javax.swing.JProgressBar;
 
 public class FrmCatalogo extends JFrame {
 
@@ -260,19 +250,13 @@ public class FrmCatalogo extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Metodo que fecha a janela atual
 				dispose();
-				// A janela do menu passa a ser acessivel
-				FrmMenu.frame.setEnabled(true);
-				// A Janela do menu vem para a frente da tela
-				FrmMenu.frame.setAlwaysOnTop(true);
 			}
 		});
 		btnCancelar.setBounds(383, 463, 89, 23);
 		contentPane.add(btnCancelar);
 	}
 
-	// Declaracao de labels de mensagem de erro
 	// Metodo que inicializa as mensagens de erro
 	public void labelsMensagensErro() {
 
@@ -594,8 +578,8 @@ public class FrmCatalogo extends JFrame {
 		cmbCodProduto.setBounds(116, 36, 87, 20);
 		cmbCodProduto.setVisible(false);
 		pnlCadastro.add(cmbCodProduto);
-		
-		if(hue == true){
+
+		if (hue == true) {
 			btnSalvar.setVisible(false);
 			cmbCodProduto.setVisible(true);
 			txtCodProduto.setVisible(false);

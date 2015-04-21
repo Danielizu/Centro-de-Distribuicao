@@ -82,9 +82,6 @@ public class FrmHistoricoEntrega extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
-				FrmMenu.frame.setEnabled(true);
-				FrmMenu.frame.setAlwaysOnTop(true);
 			}
 		});
 		btnCancelar.setBounds(415, 141, 89, 23);
