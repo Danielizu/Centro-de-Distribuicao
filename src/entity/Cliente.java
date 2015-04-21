@@ -8,12 +8,12 @@ public class Cliente {
 	private String telefone;
 	private String endereco;
 	private int numero;
-	private int cep;
+	private String cep;
 	private String complemento;
 
 	// Construtor da classe cliente
 	public Cliente() {
-		this("", "", "", "", "", 0, 0, "");
+		this("", "", "", "", "", 0, "", "");
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class Cliente {
 	 *            complemento da residencia do cliente(nao obrigatorio)
 	 */
 	public Cliente(String nome, String cnpj, String cpf, String telefone,
-			String endereco, int numero, int cep, String complemento) {
+			String endereco, int numero, String cep, String complemento) {
 		this.nome = nome;
 		this.cnpj = cnpj;
 		this.telefone = telefone;
@@ -94,11 +94,11 @@ public class Cliente {
 		this.numero = numero;
 	}
 
-	public int getCep() {
+	public String getCep() {
 		return cep;
 	}
 
-	public void setCep(int cep) {
+	public void setCep(String cep) {
 		this.cep = cep;
 	}
 

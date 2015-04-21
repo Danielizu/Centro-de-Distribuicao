@@ -111,7 +111,7 @@ public class ControlarClientes {
 					cliente.setTelefone(clienteCadastrado[2]);
 					cliente.setEndereco(clienteCadastrado[3]);
 					cliente.setNumero(Integer.valueOf(clienteCadastrado[4]));
-					cliente.setCep(Integer.valueOf(clienteCadastrado[5]));
+					cliente.setCep(clienteCadastrado[5]);
 					cliente.setComplemento(clienteCadastrado[6]);
 					verificador++;
 					notFound = true;

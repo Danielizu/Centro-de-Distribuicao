@@ -7,14 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.swing.JOptionPane;
-
 import entity.Catalogo;
 
 public class ControlarCatalogo {
 
-	int qtdLinha;
 	String[] codProduto;
 	public boolean notFound = false;
 	Catalogo catalogo = new Catalogo();
@@ -106,7 +103,7 @@ public class ControlarCatalogo {
 		return catalogo;
 	}
 
-	//Metodo que verifica se o produto ja existe
+	/** METODO QUE VERIFICA DE PRODUTO JA EXISTE PRODUTOS */
 	public boolean validarCodProduto(String cod) {
 		String arquivoCSV = "Catalogo.csv";
 		BufferedReader br = null;
@@ -137,4 +134,5 @@ public class ControlarCatalogo {
 		}
 		return false;
 	}
+
 }

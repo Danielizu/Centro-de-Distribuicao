@@ -5,6 +5,7 @@ import control.ValidarCPFCNPJ;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
@@ -68,9 +69,11 @@ public class FrmCliente extends JFrame {
 	public ControlarClientes controleCliente = new ControlarClientes();
 	private JButton btnPesquisarCliente;
 	private JLabel lblClienteJExiste;
+	private JTextField txtRazaoSocial;
 
 	// Criando o frame
 	public FrmCliente() {
+		setTitle("Controle de Clientes");
 		// Metodo para inicializar o projeto
 		propInicializacao();
 	}
@@ -98,6 +101,15 @@ public class FrmCliente extends JFrame {
 
 		// Label da razao social comeca invisivel
 		lblRazoSocial.setVisible(false);
+
+		// Declarando txt da razao social
+		txtRazaoSocial = new JTextField();
+		txtRazaoSocial.setBounds(116, 38, 302, 20);
+		contentPane.add(txtRazaoSocial);
+		txtRazaoSocial.setColumns(10);
+
+		// Label da razao social comeca invisivel
+		txtRazaoSocial.setVisible(false);
 
 		// Declarando propriedades do campo Nome Completo
 		lblNomeCompleto = new JLabel("Nome completo:");
@@ -312,10 +324,12 @@ public class FrmCliente extends JFrame {
 				consultarDados();
 			}
 		});
+		
 		btnPesquisarCliente.setBounds(269, 70, 31, 22);
 		btnPesquisarCliente.setIcon(new ImageIcon(FrmControleDeVeiculos.class
 				.getResource("/images/pesquisar.png")));
 		contentPane.add(btnPesquisarCliente);
+
 	}
 
 	// Declaracao de labels de mensagem de erro
@@ -333,7 +347,7 @@ public class FrmCliente extends JFrame {
 		lblCampoObrigatrioCPFCNPJ.setVisible(false);
 		lblCampoObrigatrioCPFCNPJ.setForeground(Color.RED);
 		lblCampoObrigatrioCPFCNPJ.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCampoObrigatrioCPFCNPJ.setBounds(269, 72, 92, 14);
+		lblCampoObrigatrioCPFCNPJ.setBounds(310, 72, 92, 14);
 		contentPane.add(lblCampoObrigatrioCPFCNPJ);
 
 		lblCampoObrigatrioTelefone = new JLabel("Campo obrigat\u00F3rio!");
@@ -368,14 +382,14 @@ public class FrmCliente extends JFrame {
 		lblCPFInvalido.setVisible(false);
 		lblCPFInvalido.setForeground(Color.RED);
 		lblCPFInvalido.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCPFInvalido.setBounds(240, 69, 115, 20);
+		lblCPFInvalido.setBounds(310, 69, 115, 20);
 		contentPane.add(lblCPFInvalido);
 
 		lblCNPJInvalido = new JLabel("CNPJ Inválido!");
 		lblCNPJInvalido.setVisible(false);
 		lblCNPJInvalido.setForeground(Color.RED);
 		lblCNPJInvalido.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCNPJInvalido.setBounds(269, 72, 92, 14);
+		lblCNPJInvalido.setBounds(310, 72, 77, 14);
 		contentPane.add(lblCNPJInvalido);
 
 		lblClienteJExiste = new JLabel("Cliente j\u00E1 existe!");
@@ -392,13 +406,9 @@ public class FrmCliente extends JFrame {
 		// validando os campos e verificando se o CPF e valido
 		if (rdbtnPessoaFsica.isSelected()) {
 			if (validarCampos()) {
-				String CPF = "";
-				CPF = txtCPF.getText();
-				// Removendo caracteres da mascara do CPF
-				CPF = CPF.replace(".", "");
-				CPF = CPF.replace("-", "");
 				// Validacao do CPF
-				if (ValidarCPFCNPJ.CPFValido(CPF)) {
+				if (ValidarCPFCNPJ.CPFValido(txtCPF.getText()
+						.replace(".", "").replace("-", ""))) {
 					lblCPFInvalido.setVisible(false);
 				} else {
 					lblCampoObrigatrioCPFCNPJ.setVisible(false);
@@ -410,14 +420,9 @@ public class FrmCliente extends JFrame {
 			// validando os campos e verificando se o CNPJ e valido
 			if (rdbtnPessoaJuridica.isSelected()) {
 				if (validarCampos()) {
-					String CNPJ = "";
-					CNPJ = txtCNPJ.getText();
-					// Removendo caracteres da mascara do CNPJ
-					CNPJ = CNPJ.replace(".", "");
-					CNPJ = CNPJ.replace("/", "");
-					CNPJ = CNPJ.replace("-", "");
 					// Validacao do CNPJ
-					if (ValidarCPFCNPJ.CNPJValido(CNPJ)) {
+					if (ValidarCPFCNPJ.CNPJValido(txtCNPJ.getText().replace(".", "")
+							.replace("/", "").replace("-", ""))) {
 						lblCNPJInvalido.setVisible(false);
 					} else {
 						lblCampoObrigatrioCPFCNPJ.setVisible(false);
@@ -437,24 +442,18 @@ public class FrmCliente extends JFrame {
 	// Metodo que fazer a gravacao de arquivos
 	public void salvarDados() {
 		// Gravando informacoes do cliente
-		cliente.setNome(txtNomeCompleto.getText());
 
 		// Caso o radio da Pessoa Fisica esteja selecionada, sera salvo o CPF
 		if (rdbtnPessoaFsica.isSelected()) {
-			String CPF = "";
-			CPF = txtCPF.getText();
-			CPF = CPF.replace(".", "");
-			CPF = CPF.replace("-", "");
-			cliente.setCpf(CPF);
+			cliente.setNome(txtNomeCompleto.getText());
+			cliente.setCpf(txtCPF.getText()
+					.replace(".", "").replace("-", ""));
 			// Caso o radio da Pessoa Juridica esteja selecionada, sera salvo o
 			// CNPJ
 		} else if (rdbtnPessoaJuridica.isSelected()) {
-			String CNPJ = "";
-			CNPJ = txtCNPJ.getText();
-			CNPJ = CNPJ.replace(".", "");
-			CNPJ = CNPJ.replace("/", "");
-			CNPJ = CNPJ.replace("-", "");
-			cliente.setCnpj(CNPJ);
+			cliente.setNome(txtRazaoSocial.getText());
+			cliente.setCnpj(txtCNPJ.getText().replace(".", "")
+					.replace("/", "").replace("-", ""));
 		}
 
 		// Removendo os caracteres da mascara do telefone e gravando
@@ -473,7 +472,7 @@ public class FrmCliente extends JFrame {
 		String CEP = "";
 		CEP = txtCEP.getText();
 		CEP = CEP.replace("-", "");
-		cliente.setCep(Integer.parseInt(CEP));
+		cliente.setCep(CEP);
 
 		// Gravando complemento, caso digitado
 		cliente.setComplemento(txtComplemento.getText());
@@ -484,17 +483,19 @@ public class FrmCliente extends JFrame {
 			// salva a pessoa Fisica
 			if (rdbtnPessoaFsica.isSelected()) {
 				controleCliente.SalvarPessoaFisica(cliente);
+				JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!");
 				// Caso contrario, invoca o que grava a pessoa juridica
 			} else {
 				controleCliente.SalvarPessoaJuridica(cliente);
+				JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!");
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
 
-	//Metodo para consultar dados do cliente
-	public void consultarDados(){
+	// Metodo para consultar dados do cliente
+	public void consultarDados() {
 		// Caso o radio da Pessoa Fisica esteja selecionada, sera
 		// consultado o CPF
 		if (rdbtnPessoaFsica.isSelected()) {
@@ -519,18 +520,23 @@ public class FrmCliente extends JFrame {
 		// Caso o valor da pesquisa sej[a valido, preenche os campos da
 		// tela
 		if (controleCliente.notFound == true) {
-			txtNomeCompleto.setText(cliente.getNome());
+			if (rdbtnPessoaFsica.isSelected()) {
+				txtNomeCompleto.setText(cliente.getNome());
+			} else {
+				txtRazaoSocial.setText(cliente.getNome());
+			}
 			txtCPF.setText(cliente.getCpf());
 			txtTelefone.setText(cliente.getTelefone());
 			txtEndereco.setText(cliente.getEndereco());
 			txtNumero.setText(String.valueOf(cliente.getNumero()));
-			txtCEP.setText(String.valueOf(cliente.getCep()));
+			txtCEP.setText(cliente.getCep());
 			txtComplemento.setText(cliente.getComplemento());
 		} else {
 			// Caso contrario, exibe mensagem e limpa campos
 			limparCampos();
 		}
 	}
+
 	// Metodo que aplica acoes quando o radio da pessoa fisica e selecionado
 	public void radioPessoaFisica() {
 		if (rdbtnPessoaFsica.isSelected()) {
@@ -542,7 +548,9 @@ public class FrmCliente extends JFrame {
 			rdbtnPessoaJuridica.setSelected(false);
 			// Habilitando e desbilitando os campos necessarios
 			lblNomeCompleto.setVisible(true);
+			txtNomeCompleto.setVisible(true);
 			lblRazoSocial.setVisible(false);
+			txtRazaoSocial.setVisible(false);
 			txtCPF.setVisible(true);
 			lblCpf.setVisible(true);
 			txtCNPJ.setVisible(false);
@@ -555,13 +563,13 @@ public class FrmCliente extends JFrame {
 		if (rdbtnPessoaJuridica.isSelected()) {
 			// Limpando campos caso o ususario venha de pessoa Fisica
 			limparCampos();
-			// Definindo posicao do label de mensagem de erro
-			lblCampoObrigatrioCPFCNPJ.setBounds(269, 72, 92, 14);
 			// Desabilitando a selecao da Pessoa Fisica
 			rdbtnPessoaFsica.setSelected(false);
 			// Habilitando e desbilitando os campos necessarios
 			lblNomeCompleto.setVisible(false);
+			txtNomeCompleto.setVisible(false);
 			lblRazoSocial.setVisible(true);
+			txtRazaoSocial.setVisible(true);
 			txtCNPJ.setVisible(true);
 			lblCnpj.setVisible(true);
 			txtCPF.setVisible(false);
@@ -580,7 +588,15 @@ public class FrmCliente extends JFrame {
 				}
 			}
 		});
-
+		// Definindo que o campo do Nome so aceita Texto
+		txtRazaoSocial.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent arg0) {
+				String caracteres = "ƒŠŒŽšœžŸÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ/|.!?@#$%¨&*(){}][´´;";
+				if (caracteres.contains(arg0.getKeyChar() + "")) {
+					arg0.consume();
+				}
+			}
+		});
 		// Definindo que o campo do Numero so aceita Numeros
 		txtNumero.addKeyListener(new KeyAdapter() {
 			@Override
@@ -607,6 +623,7 @@ public class FrmCliente extends JFrame {
 	// Metodo para limpar todos os campos e os Labels de mensagem de erro
 	public void limparCampos() {
 		txtNomeCompleto.setText(null);
+		txtRazaoSocial.setText(null);
 		txtCPF.setValue(null);
 		txtCNPJ.setValue(null);
 		txtTelefone.setValue(null);
@@ -628,13 +645,6 @@ public class FrmCliente extends JFrame {
 	// Metodo para validar se todos os campos foram preenchidos corretamente
 	public boolean validarCampos() {
 		int aindaFalta = 1;
-		// Validando campo do Nome
-		if (txtNomeCompleto.getText().isEmpty()) {
-			lblCampoObrigatrioNome.setVisible(true);
-			aindaFalta = 0;
-		} else {
-			lblCampoObrigatrioNome.setVisible(false);
-		}
 
 		// Validando campo da pessoa fisica
 		if (rdbtnPessoaFsica.isSelected()) {
@@ -643,11 +653,18 @@ public class FrmCliente extends JFrame {
 			if (txtCPF.getText().equals("   .   .   -  ")
 					|| txtCPF.getText().trim().length() < 14) {
 				lblCampoObrigatrioCPFCNPJ.setVisible(true);
-				lblCampoObrigatrioCPFCNPJ.setBounds(240, 69, 115, 20);
 				txtCPF.setValue(null);
 				aindaFalta = 0;
 			} else {
 				lblCampoObrigatrioCPFCNPJ.setVisible(false);
+			}
+			
+			// Validando campo do Nome
+			if (txtNomeCompleto.getText().isEmpty()) {
+				lblCampoObrigatrioNome.setVisible(true);
+				aindaFalta = 0;
+			} else {
+				lblCampoObrigatrioNome.setVisible(false);
 			}
 		}
 
@@ -658,11 +675,17 @@ public class FrmCliente extends JFrame {
 			if (txtCNPJ.getText().equals("  .   .   /    -  ")
 					|| txtCNPJ.getText().trim().length() < 18) {
 				lblCampoObrigatrioCPFCNPJ.setVisible(true);
-				lblCampoObrigatrioCPFCNPJ.setBounds(269, 72, 92, 14);
 				txtCNPJ.setValue(null);
 				aindaFalta = 0;
 			} else {
 				lblCampoObrigatrioCPFCNPJ.setVisible(false);
+			}
+			// Validando campo do razao social
+			if (txtRazaoSocial.getText().isEmpty()) {
+				lblCampoObrigatrioNome.setVisible(true);
+				aindaFalta = 0;
+			} else {
+				lblCampoObrigatrioNome.setVisible(false);
 			}
 		}
 
@@ -709,5 +732,4 @@ public class FrmCliente extends JFrame {
 			return true;
 		}
 	}
-
 }
