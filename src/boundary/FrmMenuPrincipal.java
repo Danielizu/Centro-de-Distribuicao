@@ -118,6 +118,11 @@ public class FrmMenuPrincipal {
 		btnItensDeEntrega.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/box_icon2.png")));
 		btnItensDeEntrega.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				FrmItensDaEntrega formItens = new FrmItensDaEntrega();
+				formItens.setVisible(true);
+				formItens.setLocationRelativeTo(null);  
+				formItens.setResizable(false);
+				formItens.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
 			}
 			});
 		btnItensDeEntrega.setBounds(20, 207, 220, 43);
@@ -143,6 +148,11 @@ public class FrmMenuPrincipal {
 		btnNFe.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/nfe_icon2.png")));
 		btnNFe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				FrmConsultaNF formConsultaNF = new FrmConsultaNF();
+				formConsultaNF.setVisible(true);
+				formConsultaNF.setLocationRelativeTo(null);
+				formConsultaNF.setResizable(false);
+				formConsultaNF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
 			}
 		});
 		btnNFe.setBounds(20, 315, 220, 43);

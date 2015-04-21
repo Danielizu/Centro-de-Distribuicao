@@ -13,12 +13,15 @@ public class Veiculo {
 	private String carroceria;
 	private int qtdPaletes;
 	private String datacadastro;
+	private String CNH;
 
 	/** Metodo construtor da classe Veiculo - vazio */
 
 	public Veiculo() {
-		this("","",0,"","","", null);
+		this("","",0,"","","", "");
 	}
+
+	
 
 	/**
 	 * Metodo construtor da classe Veiculo
@@ -115,5 +118,13 @@ public class Veiculo {
 
 	public void setDatacadastro(String datacadastro) {
 		this.datacadastro = datacadastro;
+	}
+	
+	public String getCNH() {
+		return CNH;
+	}
+
+	public void setCNH(String cNH) {
+		CNH = cNH;
 	}
 }

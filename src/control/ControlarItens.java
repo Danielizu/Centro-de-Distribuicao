@@ -1,7 +1,7 @@
-package Control;
+package control;
 
-import Boundary.FrmConsultaNF;
-import Entity.Item;
+import boundary.FrmConsultaNF;
+import entity.Item;
 
 import java.io.*;
 
@@ -9,7 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 
-public class ControlItens {
+public class ControlarItens {
 
 	public FrmConsultaNF form;
 	Item item = new Item();
