@@ -26,14 +26,6 @@ public class FrmMenuPrincipal {
 
 	private JFrame frmCentralDeDistribuio;
 	private JTextField textField;
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * Launch the application.
@@ -190,13 +182,13 @@ public class FrmMenuPrincipal {
 		frmCentralDeDistribuio.getContentPane().add(panel_1);
 		
 		textField = new JTextField();
-		textField.setBounds(287, 95, 509, 288);
+		textField.setBounds(303, 95, 509, 288);
 		frmCentralDeDistribuio.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblListaDePendncias = new JLabel("Lista de Pend\u00EAncias");
 		lblListaDePendncias.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblListaDePendncias.setBounds(460, 70, 172, 14);
+		lblListaDePendncias.setBounds(473, 70, 172, 14);
 		frmCentralDeDistribuio.getContentPane().add(lblListaDePendncias);
 		
 		JButton btnSair = new JButton("        Sair");

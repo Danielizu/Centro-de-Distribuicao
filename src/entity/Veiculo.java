@@ -11,6 +11,7 @@ public class Veiculo {
 	private String cor;
 	private String tipo;
 	private String carroceria;
+	private int qtdPaletes;
 	private String datacadastro;
 
 	/** Metodo construtor da classe Veiculo - vazio */
@@ -46,6 +47,7 @@ public class Veiculo {
 		this.cor = cor;
 		this.tipo = tipo;
 		this.carroceria = carroceria;
+		this.qtdPaletes = qtdPaletes;
 		this.datacadastro = datacadastro;
 	}
 
@@ -96,6 +98,15 @@ public class Veiculo {
 
 	public void setCarroceria(String carroceria) {
 		this.carroceria = carroceria;
+	}
+	
+
+	public int getQtdPaletes() {
+		return qtdPaletes;
+	}
+
+	public void setQtdPaletes(int qtdPaletes) {
+		this.qtdPaletes = qtdPaletes;
 	}
 
 	public String getDatacadastro() {

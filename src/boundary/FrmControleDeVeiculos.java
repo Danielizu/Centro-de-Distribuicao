@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -22,7 +23,9 @@ import java.awt.Color;
 import java.io.IOException;
 import java.awt.FlowLayout;
 
-public class FrmControleDeVeiculos extends JFrame{
+import javax.swing.ImageIcon;
+
+public class FrmControleDeVeiculos extends JFrame {
 
 	public JFrame frame;
 	public JTextField txtPlaca;
@@ -76,37 +79,37 @@ public class FrmControleDeVeiculos extends JFrame{
 	 */
 	private void initialize() {
 
-		// Criação da Janela
+		/** CRIAÇÃO DA TELA */
 		frame = new JFrame();
 		frame.setBounds(100, 100, 520, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		// Declarando a label "Placa"
+		/** DECLARANDO A LABEL PLACA */
 		JLabel lblPlaca = new JLabel("Placa");
 		lblPlaca.setBounds(30, 58, 46, 14);
 		frame.getContentPane().add(lblPlaca);
 
-		// Declarando o campo de entrada da "Placa" e criação da máscara
+		/** DECLARANDO O CAMPO DE ENTRADA DA PLACA E CRIAÇÃO DA MÁSCARA */
 		txtPlaca = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter placa = new javax.swing.text.MaskFormatter(
 					"UUU-####");
+			txtPlaca.addFocusListener(null);
 
 			txtPlaca = new javax.swing.JFormattedTextField(placa);
 		} catch (Exception e) {
 		}
-		txtPlaca.setBounds(138, 55, 121, 20);
+		txtPlaca.setBounds(138, 55, 99, 20);
 		frame.getContentPane().add(txtPlaca);
 		txtPlaca.setColumns(10);
 
-		// Declarando a label "Capacidade Máxima"
+		/** DECLARANDO A LABEL DA CAPACIDADE MÁXIMA */
 		JLabel lblCapacidadeMax = new JLabel("Capacidade Max.");
 		lblCapacidadeMax.setBounds(30, 89, 126, 14);
 		frame.getContentPane().add(lblCapacidadeMax);
 
-		// Declarando o campo de entrada da "Capacidade Máxima" e criação da
-		// máscara
+		/** DECLARANDO O CAMPO DE ENTRADA DA CAPACIDADE MÁXIMA E CRIAÇÃO DA MÁSCARA*/
 		txtCapacidadeMax = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter capacidademax = new javax.swing.text.MaskFormatter(
@@ -120,24 +123,23 @@ public class FrmControleDeVeiculos extends JFrame{
 		frame.getContentPane().add(txtCapacidadeMax);
 		txtCapacidadeMax.setColumns(10);
 
-		// Declarando a label "Tipo"
+		/** DECLARANDO A LABEL TIPO */
 		JLabel lblTipo = new JLabel("Tipo");
 		lblTipo.setBounds(30, 122, 46, 14);
 		frame.getContentPane().add(lblTipo);
 
-		// Declarando o combo box do "Tipo"
+		/** DECLARANDO O COMBO BOX DO TIPO */
 		final JComboBox cbTipo = new JComboBox();
 		control.AdicionarValoresCB(cbTipo, tipo);
 		cbTipo.setBounds(138, 119, 121, 20);
 		frame.getContentPane().add(cbTipo);
 
-		// Declarando a label "Quantidade de Paletes"
+		/** DECLARANDO A LABEL DA QUANTIDADE DE PALETES  */
 		JLabel lblQtdPaletes = new JLabel("Qtd. Máxima de Paletes");
 		lblQtdPaletes.setBounds(30, 161, 136, 14);
 		frame.getContentPane().add(lblQtdPaletes);
 
-		// Declarando o campo de entrada da "Quantidade máxima de Paletes" e
-		// criação da máscara
+		/** DECLARANDO O CAMPO DE ENTRADA DA QUANTIDADE MÁXIMA DE PALETES E CRIAÇÃO DA MÁSCARA  */
 		txtQtdPaletesMax = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter quantidade = new javax.swing.text.MaskFormatter(
@@ -150,52 +152,64 @@ public class FrmControleDeVeiculos extends JFrame{
 		frame.getContentPane().add(txtQtdPaletesMax);
 		txtQtdPaletesMax.setColumns(10);
 
+		/** CRIAÇÃO DA LABEL DATA DE CADASTRO */
 		JLabel lblDataDeCadastro = new JLabel("Data de Cadastro");
 		lblDataDeCadastro.setBounds(30, 196, 126, 14);
 		frame.getContentPane().add(lblDataDeCadastro);
 
+		/** DECLARANDO O CAMPO DATA DE CADASTRO COM A DATA ATUAL */
 		txtDataCadastro = new JTextField();
 		txtDataCadastro.setBounds(173, 193, 86, 20);
 		frame.getContentPane().add(txtDataCadastro);
 		control.InserirData(txtDataCadastro);
 		txtDataCadastro.setColumns(10);
 
+		/** DECLARANDO A LABEL MARCA */
 		JLabel lblMarca = new JLabel("Marca");
 		lblMarca.setBounds(288, 58, 46, 14);
 		frame.getContentPane().add(lblMarca);
 
+		
+		/** DECLARANDO A LABEL DA COR */
 		JLabel lblCor = new JLabel("Cor");
 		lblCor.setBounds(288, 89, 46, 14);
 		frame.getContentPane().add(lblCor);
 
+		/** DECLARANDO A LABEL DA CARROCERIA */
 		JLabel lblCarroceria = new JLabel("Carroceria");
 		lblCarroceria.setBounds(288, 122, 74, 14);
 		frame.getContentPane().add(lblCarroceria);
 
+		/** CRIAÇÃO DA COMBO BOX DA MARCA */
 		final JComboBox cbMarca = new JComboBox();
 		cbMarca.setBounds(344, 55, 134, 20);
 		control.AdicionarValoresCB(cbMarca, marcas);
 		frame.getContentPane().add(cbMarca);
 
+		/** CRIAÇÃO DA COMBO BOX DA COR */
 		final JComboBox cbCor = new JComboBox();
 		cbCor.setBounds(344, 86, 134, 20);
 		control.AdicionarValoresCB(cbCor, cores);
 		frame.getContentPane().add(cbCor);
 
+		/** CRIAÇÃO DA COMBO BOX DA CARROCERIA */
 		final JComboBox cbCarroceria = new JComboBox();
 		cbCarroceria.setBounds(354, 119, 124, 20);
 		control.AdicionarValoresCB(cbCarroceria, carroceria);
 		frame.getContentPane().add(cbCarroceria);
 
+		/** DECLARANDO A LABEL NOME */
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setBounds(30, 311, 46, 14);
 		frame.getContentPane().add(lblNome);
 
+		/** CRIAÇÃO DO CAMPO NOME DO MOTORISTA */
 		txtNomeMotorista = new JTextField();
 		txtNomeMotorista.setBounds(88, 308, 294, 20);
 		frame.getContentPane().add(txtNomeMotorista);
 		txtNomeMotorista.setColumns(10);
 
+		/**  */
 		JLabel lblDadosDoMotorista = new JLabel("Dados do Motorista");
 		lblDadosDoMotorista.setBounds(30, 348, 126, 14);
 		frame.getContentPane().add(lblDadosDoMotorista);
@@ -228,7 +242,6 @@ public class FrmControleDeVeiculos extends JFrame{
 				control.LimparCampos(txtPlaca);
 				control.LimparCampos(txtCapacidadeMax);
 				control.LimparCampos(txtQtdPaletesMax);
-				control.LimparCampos(txtDataCadastro);
 				control.LimparCampos(txtNomeMotorista);
 				control.LimparCampos(txtDadosMotorista);
 				control.LimparComboBox(cbTipo);
@@ -244,22 +257,42 @@ public class FrmControleDeVeiculos extends JFrame{
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				veiculo.setCarroceria((cbCarroceria.getSelectedItem()
-						.toString()));
-				veiculo.setPlaca(txtPlaca.getText());
-				veiculo.setDatacadastro(txtDataCadastro.getText());
-				veiculo.setCor(cbCor.getSelectedItem().toString());
-				veiculo.setMarca(cbMarca.getSelectedItem().toString());
+				if (JOptionPane.showConfirmDialog(null,
+						"Deseja confirmar o cadastro do Veiculo?", "WARNING",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
-				try {
-					control.SalvarVeiculo(veiculo);
-				} catch (IOException e1) {
-					System.out.println("Arquivo não encontrado");
-					e1.printStackTrace();
+					veiculo.setPlaca(txtPlaca.getText());
+					veiculo.setMarca(cbMarca.getSelectedItem().toString());
+					veiculo.setCapMax(Integer.valueOf(txtCapacidadeMax
+							.getText()));
+					veiculo.setCor(cbCor.getSelectedItem().toString());
+					veiculo.setTipo(cbTipo.getSelectedItem().toString());
+					veiculo.setCarroceria((cbCarroceria.getSelectedItem()
+							.toString()));
+					veiculo.setQtdPaletes(Integer.valueOf(txtQtdPaletesMax
+							.getText()));
+					veiculo.setDatacadastro(txtDataCadastro.getText());
+
+					try {
+						control.SalvarVeiculo(veiculo);
+					} catch (IOException e1) {
+						System.out.println("Arquivo não encontrado");
+						e1.printStackTrace();
+					}
+					control.LimparCampos(txtPlaca);
+					control.LimparComboBox(cbMarca);
+					control.LimparCampos(txtCapacidadeMax);
+					control.LimparComboBox(cbCor);
+					control.LimparComboBox(cbTipo);
+					control.LimparComboBox(cbCarroceria);
+					control.LimparCampos(txtQtdPaletesMax);
+					
+					JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
 				}
 			}
+			
 		});
-		
+
 		btnSalvar.setBounds(30, 507, 89, 23);
 		frame.getContentPane().add(btnSalvar);
 
@@ -278,6 +311,33 @@ public class FrmControleDeVeiculos extends JFrame{
 				"Cadastro de Motoristas", TitledBorder.LEFT, TitledBorder.TOP,
 				null, new Color(0, 0, 0)));
 		frame.getContentPane().add(border);
+
+		JButton pesquisarPlaca = new JButton("");
+		setAlwaysOnTop(true);
+		pesquisarPlaca.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				String search = txtPlaca.getText();
+				//boolean resultado = false;
+				veiculo = control.PesquisarPlaca(search);
+
+				
+				//if (resultado == true) {
+				txtPlaca.setText(veiculo.getPlaca());
+				cbMarca.setSelectedItem(veiculo.getMarca());
+				txtCapacidadeMax.setText(String.valueOf(veiculo.getCapMax()));
+				cbCor.setSelectedItem(veiculo.getCor());
+				cbTipo.setSelectedItem(veiculo.getTipo());
+				cbCarroceria.setSelectedItem(veiculo.getCarroceria());
+				txtQtdPaletesMax.setText(String.valueOf(veiculo.getQtdPaletes()));
+				txtDataCadastro.setText(veiculo.getDatacadastro());
+			//	}
+			}
+		});
+		pesquisarPlaca.setIcon(new ImageIcon(FrmControleDeVeiculos.class
+				.getResource("/images/pesquisar.png")));
+		pesquisarPlaca.setBounds(234, 54, 31, 22);
+		frame.getContentPane().add(pesquisarPlaca);
 
 	}
 }

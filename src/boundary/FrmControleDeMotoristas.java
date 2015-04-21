@@ -16,7 +16,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -29,7 +31,7 @@ import com.toedter.calendar.JDateChooser;
 
 import entity.Motorista;
 
-public class FrmControleDeMotoristas extends JFrame{
+public class FrmControleDeMotoristas extends JFrame {
 
 	JFrame frame;
 	private JTextField txtNomeMotorista;
@@ -43,18 +45,18 @@ public class FrmControleDeMotoristas extends JFrame{
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					FrmControleDeMotoristas window = new FrmControleDeMotoristas();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	// public static void main(String[] args) {
+	// EventQueue.invokeLater(new Runnable() {
+	// public void run() {
+	// try {
+	// FrmControleDeMotoristas window = new FrmControleDeMotoristas();
+	// window.frame.setVisible(true);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// });
+	// }
 
 	/**
 	 * Create the application.
@@ -111,6 +113,10 @@ public class FrmControleDeMotoristas extends JFrame{
 		lblVencimento.setBounds(261, 87, 90, 14);
 		panel.add(lblVencimento);
 
+		final JDateChooser dataCadastro = new JDateChooser();
+		dataCadastro.setBounds(138, 180, 105, 20);
+		panel.add(dataCadastro);
+
 		txtDataVencimento = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter vencimento = new javax.swing.text.MaskFormatter(
@@ -149,13 +155,17 @@ public class FrmControleDeMotoristas extends JFrame{
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (JOptionPane.showConfirmDialog(null, "Deseja confirmar o cadastro do motorista?",
-						"WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if (JOptionPane.showConfirmDialog(null,
+						"Deseja confirmar o cadastro do motorista?", "WARNING",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
+					String data  = ((JTextField)dataCadastro.getDateEditor().getUiComponent()).getText();
+					
 					motorista.setNome(txtNomeMotorista.getText());
 					motorista.setCnh(txtCNH.getText());
 					motorista.setTipo(cbTipo.getSelectedItem().toString());
 					motorista.setVencimento(txtDataVencimento.getText());
+					motorista.setDatacadastro(data);
 					try {
 						control.SalvarMotorista(motorista);
 					} catch (IOException e1) {
@@ -167,8 +177,6 @@ public class FrmControleDeMotoristas extends JFrame{
 					control.LimparCampos(txtDataVencimento);
 					control.LimparCampos(txtCNH);
 					control.LimparComboBox(cbTipo);
-				} else {
-					
 				}
 
 			}
@@ -198,8 +206,25 @@ public class FrmControleDeMotoristas extends JFrame{
 		});
 		panel.add(btnCancelar);
 
-		JDateChooser dataCadastro = new JDateChooser();
-		dataCadastro.setBounds(138, 180, 105, 20);
-		panel.add(dataCadastro);
+		JButton pesquisarMotorista = new JButton("");
+		setAlwaysOnTop(true);
+		pesquisarMotorista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				String search = txtCNH.getText();
+				motorista = control.PesquisarMotorista(search);
+
+				txtNomeMotorista.setText(motorista.getNome());
+				txtCNH.setText(motorista.getCnh());
+				cbTipo.setSelectedItem(motorista.getTipo());
+				txtDataVencimento.setText(motorista.getVencimento());
+				dataCadastro.setToolTipText(motorista.getDatacadastro());
+			}
+
+		});
+		pesquisarMotorista.setIcon(new ImageIcon(FrmControleDeMotoristas.class
+				.getResource("/images/pesquisar.png")));
+		pesquisarMotorista.setBounds(179, 83, 31, 22);
+		panel.add(pesquisarMotorista);
 	}
 }

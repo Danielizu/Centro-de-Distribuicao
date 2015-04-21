@@ -1,11 +1,15 @@
 package control;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import entity.Motorista;
@@ -15,22 +19,23 @@ import boundary.FrmControleDeMotoristas;
 public class ControlarMotorista implements limparTela {
 
 	public FrmControleDeMotoristas form;
+	Motorista motorista = new Motorista();
 	
 	/** METODO DE SALVAR MOTORISTA */
 	public int SalvarMotorista(Motorista motorista) throws IOException
     {
-        File arquivoMotorista = new File("Motorista.txt");        
+        File arquivoMotorista = new File("Motorista.csv");        
         StringBuffer sb = new StringBuffer();
         
         sb.append(motorista.getNome());
         sb.append(";");
-        sb.append(motorista.getTipo());
+        sb.append(motorista.getCnh());
         sb.append(";");
-        sb.append(motorista.getDatacadastro());
+        sb.append(motorista.getTipo());
         sb.append(";");
         sb.append(motorista.getVencimento());
         sb.append(";");
-        sb.append(motorista.getCnh());
+        sb.append(motorista.getDatacadastro());
         sb.append(";");
         sb.append("\r\n");          
         
@@ -48,6 +53,51 @@ public class ControlarMotorista implements limparTela {
         }
     }
 
+	public Motorista PesquisarMotorista(String pesquisa) {
+
+		String arquivoCSV = "Motorista.csv";
+		BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
+		try {
+
+			br = new BufferedReader(new FileReader(arquivoCSV));
+
+			int verificador = 0;
+			while ((linha = br.readLine()) != null) {
+
+				String[] motoristacadastrado = linha.split(csvDivisor);
+				if (motoristacadastrado[1].equals(pesquisa)) {
+
+					motorista.setNome(motoristacadastrado[0]);
+					motorista.setCnh(motoristacadastrado[1]);
+					motorista.setTipo(motoristacadastrado[2]);
+					motorista.setVencimento(motoristacadastrado[3]);
+					motorista.setDatacadastro(motoristacadastrado[4]);
+					verificador++;
+				} 
+
+			}
+			if (verificador < 1) {
+				JOptionPane.showMessageDialog(null, "Motorista não encontrado.");
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return motorista;
+	}
+	
 	@Override
 	public void LimparCampos(JTextField texto) {
 		texto.setText(null);
