@@ -89,7 +89,6 @@ public class ControlarVeiculos implements limparTela {
 			while ((linha = br.readLine()) != null) {
 
 				String[] veiculocadastrado = linha.split(csvDivisor);
-				// System.out.println(pesquisa);
 				if (veiculocadastrado[0].equals(pesquisa)) {
 
 					veiculo.setPlaca(veiculocadastrado[0]);
@@ -102,12 +101,18 @@ public class ControlarVeiculos implements limparTela {
 							.parseInt(veiculocadastrado[6]));
 					veiculo.setDatacadastro(veiculocadastrado[7]);
 					verificador++;
-					
 				} 
 
 			}
 			if (verificador < 1) {
 				JOptionPane.showMessageDialog(null, "Veiculo não encontrado.");
+				veiculo.setPlaca(" ");
+				veiculo.setMarca(null);
+				veiculo.setCapMax(0);
+				veiculo.setCor(null);
+				veiculo.setTipo(null);
+				veiculo.setCarroceria(null);
+				veiculo.setQtdPaletes(0);
 			}
 
 		} catch (FileNotFoundException e) {

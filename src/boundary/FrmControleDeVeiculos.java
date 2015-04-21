@@ -18,7 +18,6 @@ import javax.swing.UIManager;
 
 import control.ControlarMotorista;
 import control.ControlarVeiculos;
-import control.CrudVeiculo;
 import entity.Motorista;
 import entity.Veiculo;
 
@@ -87,7 +86,7 @@ public class FrmControleDeVeiculos extends JFrame {
 
 		/** CRIAÇÃO DA TELA */
 		frame = new JFrame();
-		frame.setBounds(100, 100, 520, 600);
+		frame.setBounds(100, 100, 520, 545);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -205,13 +204,13 @@ public class FrmControleDeVeiculos extends JFrame {
 
 		/** CRIAÇÃO DA COMBO BOX DA MARCA */
 		final JComboBox cbMarca = new JComboBox();
-		cbMarca.setBounds(344, 55, 134, 20);
+		cbMarca.setBounds(352, 55, 126, 20);
 		control.AdicionarValoresCB(cbMarca, marcas);
 		frame.getContentPane().add(cbMarca);
 
 		/** CRIAÇÃO DA COMBO BOX DA COR */
 		final JComboBox cbCor = new JComboBox();
-		cbCor.setBounds(344, 86, 134, 20);
+		cbCor.setBounds(352, 86, 126, 20);
 		control.AdicionarValoresCB(cbCor, cores);
 		frame.getContentPane().add(cbCor);
 
@@ -223,7 +222,7 @@ public class FrmControleDeVeiculos extends JFrame {
 
 		/** DECLARANDO A LABEL CNH */
 		JLabel lblNome = new JLabel("CNH: ");
-		lblNome.setBounds(30, 311, 46, 14);
+		lblNome.setBounds(41, 275, 46, 14);
 		frame.getContentPane().add(lblNome);
 		
 		/*BOTÃO PARA PESQUISAR A PLACA*/
@@ -233,10 +232,10 @@ public class FrmControleDeVeiculos extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				String search = txtPlaca.getText();
-				// boolean resultado = false;
+				//boolean resultado = false;
 				veiculo = control.PesquisarPlaca(search);
 
-				// if (resultado == true) {
+				//if (resultado == true) {
 				txtPlaca.setText(veiculo.getPlaca());
 				cbMarca.setSelectedItem(veiculo.getMarca());
 				txtCapacidadeMax.setText(String.valueOf(veiculo.getCapMax()));
@@ -245,8 +244,9 @@ public class FrmControleDeVeiculos extends JFrame {
 				cbCarroceria.setSelectedItem(veiculo.getCarroceria());
 				txtQtdPaletesMax.setText(String.valueOf(veiculo.getQtdPaletes()));
 				txtDataCadastro.setText(veiculo.getDatacadastro());
-				// }
+			//	 }
 			}
+			
 		});
 		pesquisarPlaca.setIcon(new ImageIcon(FrmControleDeVeiculos.class
 				.getResource("/images/pesquisar.png")));
@@ -264,18 +264,18 @@ public class FrmControleDeVeiculos extends JFrame {
 			txtCNH = new javax.swing.JFormattedTextField(cnh);
 		} catch (Exception e) {
 		}
-		txtCNH.setBounds(88, 308, 294, 20);
+		txtCNH.setBounds(99, 272, 294, 20);
 		frame.getContentPane().add(txtCNH);
 		txtCNH.setColumns(10);
 
 		/**  */
 		JLabel lblDadosDoMotorista = new JLabel("Dados do Motorista: ");
-		lblDadosDoMotorista.setBounds(30, 348, 126, 14);
+		lblDadosDoMotorista.setBounds(41, 312, 126, 14);
 		frame.getContentPane().add(lblDadosDoMotorista);
 
 		txtDadosMotorista = new JTextArea();
 		txtDadosMotorista.setEditable(false);
-		txtDadosMotorista.setBounds(154, 341, 313, 131);
+		txtDadosMotorista.setBounds(165, 305, 313, 131);
 		frame.getContentPane().add(txtDadosMotorista);
 		txtDadosMotorista.setColumns(10);
 
@@ -292,7 +292,7 @@ public class FrmControleDeVeiculos extends JFrame {
 						+ motorista.getDatacadastro());
 			}
 		});
-		btnBuscar.setBounds(384, 307, 83, 23);
+		btnBuscar.setBounds(395, 271, 83, 23);
 		frame.getContentPane().add(btnBuscar);
 
 		JButton btnCancelar = new JButton("Cancelar");
@@ -301,7 +301,7 @@ public class FrmControleDeVeiculos extends JFrame {
 				frame.dispose();
 			}
 		});
-		btnCancelar.setBounds(378, 507, 89, 23);
+		btnCancelar.setBounds(389, 461, 89, 23);
 		frame.getContentPane().add(btnCancelar);
 
 		JButton btnLimpar = new JButton("Limpar");
@@ -318,7 +318,7 @@ public class FrmControleDeVeiculos extends JFrame {
 				control.LimparComboBox(cbCarroceria);
 			}
 		});
-		btnLimpar.setBounds(148, 507, 89, 23);
+		btnLimpar.setBounds(256, 461, 89, 23);
 		frame.getContentPane().add(btnLimpar);
 
 		JButton btnSalvar = new JButton("Salvar");
@@ -374,12 +374,12 @@ public class FrmControleDeVeiculos extends JFrame {
 			}
 		});
 
-		btnSalvar.setBounds(30, 507, 89, 23);
+		btnSalvar.setBounds(124, 461, 89, 23);
 		frame.getContentPane().add(btnSalvar);
 
 		JPanel borderMotorista = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) borderMotorista.getLayout();
-		borderMotorista.setBounds(10, 11, 484, 539);
+		borderMotorista.setBounds(10, 11, 484, 489);
 		borderMotorista.setBorder(BorderFactory
 				.createTitledBorder("Cadastro de Veiculos"));
 		frame.getContentPane().add(borderMotorista);

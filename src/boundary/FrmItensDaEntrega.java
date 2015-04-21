@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.*;
 
 import control.ControlarItens;
-//import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JDateChooser;
 
 
 public class FrmItensDaEntrega extends JFrame {
@@ -76,9 +76,8 @@ public class FrmItensDaEntrega extends JFrame {
 		JButton btnNewButton = new JButton("Buscar");
 		btnNewButton.setBounds(355, 66, 89, 23);
 		contentPane.add(btnNewButton);
-		
-		txtCliente = new JTextField();
-				
+	
+		txtCliente = new JTextField();			
 		txtCliente.setBounds(179, 67, 160, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
@@ -90,18 +89,6 @@ public class FrmItensDaEntrega extends JFrame {
 		catch (Exception e){
 		
 		}
-		
-		txtDataSolicit = new JTextField();
-		try{
-			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##/##/####");
-			txtDataSolicit = new javax.swing.JFormattedTextField(nota);
-		}
-		catch (Exception e){
-		
-		}
-		txtDataSolicit.setBounds(178, 138, 120, 20);
-		contentPane.add(txtDataSolicit);
-		txtDataSolicit.setColumns(10);
 		
 		txtQuant = new JTextField();
 		try{
@@ -123,9 +110,10 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(txtNumeroNota);
 		txtNumeroNota.setColumns(10);
 		
-		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.setBounds(307, 137, 32, 21);
-		contentPane.add(btnNewButton_2);
+		final JDateChooser dataCadastro = new JDateChooser();
+		dataCadastro.setBounds(179, 137, 160, 21);
+		contentPane.add(dataCadastro);
+		
 		
 		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o dos itens:");
 		lblNewLabel_5.setBounds(10, 280, 120, 14);
