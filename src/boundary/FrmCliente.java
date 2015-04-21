@@ -289,25 +289,42 @@ public class FrmCliente extends JFrame {
 				radioPessoaJuridica();
 			}
 		});
-		
+
 		btnPesquisarCliente = new JButton("");
 		btnPesquisarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String CPF = "";
-				CPF = txtCPF.getText();
-				CPF = CPF.replace(".", "");
-				CPF = CPF.replace("-", "");
-				cliente = controleCliente.PesquisarCliente(CPF);
-
-				
-				txtNomeCompleto.setText(cliente.getNome());
-				txtCPF.setText(cliente.getCpf());
-				txtTelefone.setText(cliente.getTelefone());
-				txtEndereco.setText(cliente.getEndereco());
-				txtNumero.setText(String.valueOf(cliente.getNumero()));
-				txtCEP.setText(String.valueOf(cliente.getCep()));
-				txtComplemento.setText(cliente.getComplemento());
-				
+				// Caso o radio da Pessoa Fisica esteja selecionada, sera
+				// consultado o CPF
+				if (rdbtnPessoaFsica.isSelected()) {
+					String CPF = "";
+					CPF = txtCPF.getText();
+					CPF = CPF.replace(".", "");
+					CPF = CPF.replace("-", "");
+					cliente.setCpf(CPF);
+					cliente = controleCliente.PesquisarCliente(CPF);
+					// Caso o radio da Pessoa Juridica esteja selecionada, sera
+					// consultado o
+					// CNPJ
+				} else if (rdbtnPessoaJuridica.isSelected()) {
+					String CNPJ = "";
+					CNPJ = txtCNPJ.getText();
+					CNPJ = CNPJ.replace(".", "");
+					CNPJ = CNPJ.replace("/", "");
+					CNPJ = CNPJ.replace("-", "");
+					cliente.setCnpj(CNPJ);
+					cliente = controleCliente.PesquisarCliente(CNPJ);
+				}
+				if (controleCliente.notFound == true) {
+					txtNomeCompleto.setText(cliente.getNome());
+					txtCPF.setText(cliente.getCpf());
+					txtTelefone.setText(cliente.getTelefone());
+					txtEndereco.setText(cliente.getEndereco());
+					txtNumero.setText(String.valueOf(cliente.getNumero()));
+					txtCEP.setText(String.valueOf(cliente.getCep()));
+					txtComplemento.setText(cliente.getComplemento());
+				}else{
+					limparCampos();
+				}
 			}
 		});
 		btnPesquisarCliente.setBounds(269, 70, 31, 22);

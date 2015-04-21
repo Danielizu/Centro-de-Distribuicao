@@ -1,23 +1,21 @@
 package control;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.io.PrintWriter;
 
+import javax.swing.JOptionPane;
+
 import entity.Catalogo;
+import entity.Cliente;
 
 public class ControlarCatalogo {
 
-	public String str;
-	public String[] linhas;
-	public String[] codProduto;
+	public boolean notFound = false;
 	Catalogo catalogo = new Catalogo();
 
 	/** METODO DE SALVAR PESSOA CATALOGO */
@@ -58,70 +56,52 @@ public class ControlarCatalogo {
 		}
 	}
 
-	// Metodo que faz a leitura de todos o dados dos produtos
-	public void lerCatalogo() throws IOException {
+	/** METODO PARA CONSULTA DE PRODUTOS */
+	public Catalogo PesquisarCatalogo(String pesquisa) {
+
+		String arquivoCSV = "Catalogo.csv";
+		BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
 		try {
-			// Localizando arquivo para leitura
-			BufferedReader lerArq = new BufferedReader(new FileReader(
-					"Catalogo.txt"));
-			// Enquanto a linha nao for nula ele fara a leitura
-			while ((str = lerArq.readLine()) != null) {
-				// Quebrando a linha caso encontre um ponto e virgula
-				linhas = str.split(";");
-				// Ate chegar ao tamanho do vetor das linhas exibe o conteudo
-				for (String cell : linhas) {
-					System.out.println("Conteudo: " + cell);
+
+			br = new BufferedReader(new FileReader(arquivoCSV));
+			int verificador = 0;
+			while ((linha = br.readLine()) != null) {
+
+				String[] produtoCadastrado = linha.split(csvDivisor);
+				if (produtoCadastrado[1].equals(pesquisa)) {
+					catalogo.setCodProduto(Integer
+							.valueOf(produtoCadastrado[0]));
+					catalogo.setNome(produtoCadastrado[1]);
+					catalogo.setFornecedor(produtoCadastrado[2]);
+					catalogo.setCNPJ(produtoCadastrado[3]);
+					catalogo.setTelefone(produtoCadastrado[4]);
+					catalogo.setDataCadastro(produtoCadastrado[5]);
+					catalogo.setPeso(Integer.valueOf(produtoCadastrado[6]));
+					catalogo.setVolume(Integer.valueOf(produtoCadastrado[7]));
+					catalogo.setDescricao(produtoCadastrado[8]);
+					verificador++;
+					notFound = true;
 				}
 			}
-			System.out.println(linhas);
-			lerArq.close();
+			if (verificador < 1) {
+				JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+				notFound = false;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n",
-					e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-	}
-
-	// Metodo para alimentar o vetor com o codigo do produto
-	public void alimentarCodProduto() throws IOException {
-		FileInputStream stream = new FileInputStream("Catalogo.txt");
-		InputStreamReader reader = new InputStreamReader(stream);
-		BufferedReader br = new BufferedReader(reader);
-		String linha = br.readLine();
-
-		int numLinhas = 0;
-		// Try catch que faz a contagem do numero de linhas do documento, ou
-		// seja, quantos registros
-		try {
-			// Coletando arquivo txt
-			File arquivoLeitura = new File("Catalogo.txt");
-			// Declarando variavel long que conta o numero de linhas
-			long tamanhoArquivo = arquivoLeitura.length();
-			FileInputStream fs = new FileInputStream(arquivoLeitura);
-			DataInputStream in = new DataInputStream(fs);
-
-			@SuppressWarnings("resource")
-			LineNumberReader lineRead = new LineNumberReader(
-					new InputStreamReader(in));
-			lineRead.skip(tamanhoArquivo);
-
-			// Soma a quantidade de linhas
-			numLinhas = lineRead.getLineNumber();
-
-		} catch (IOException e) {
-
-		}
-		// Dizendo que o vetor nomeCliente sera do tamanho do numero de
-		// registros
-		codProduto = new String[numLinhas];
-		// enquanto as linhas náo forem nulas sera alimentado o vetor com o nome
-		// dos clientes.
-		for (int i = 0; linha != null; i++) {
-			// Coleta somente o nome antes do ponto e virgula
-			String cod = linha.substring(0, linha.indexOf(';'));
-			// Alimente o vetor nomeCliente com o nome
-			codProduto[i] = cod;
-			linha = br.readLine();
-		}
-		br.close();
+		return catalogo;
 	}
 }
