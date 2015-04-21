@@ -2,12 +2,23 @@ package Boundary;
 
 import java.awt.EventQueue;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+
 public class FrmConsultaNF extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JLabel lblPedidos;
-	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -42,15 +53,26 @@ public class FrmConsultaNF extends JFrame {
 		contentPane.add(lblNmeroDaNota);
 		
 		textField = new JTextField();
+		try{
+			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
+			textField = new javax.swing.JFormattedTextField(nota);
+		}
+		catch (Exception e){
+		
+		}
 		textField.setBounds(160, 57, 130, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		lblPedidos = new JLabel("Pedidos");
+		lblPedidos = new JLabel("Pedido");
 		lblPedidos.setBounds(20, 104, 53, 20);
 		contentPane.add(lblPedidos);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnBuscar.setBounds(314, 56, 89, 23);
 		contentPane.add(btnBuscar);
 		
@@ -59,9 +81,8 @@ public class FrmConsultaNF extends JFrame {
 		lblConsultaNf.setBounds(20, 26, 130, 23);
 		contentPane.add(lblConsultaNf);
 		
-		table = new JTable();
-		table.setColumnSelectionAllowed(true);
-		table.setBounds(20, 150, 461, 303);
-		contentPane.add(table);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(35, 150, 429, 344);
+		contentPane.add(scrollPane);
 	}
 }
