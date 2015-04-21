@@ -1,4 +1,4 @@
-package Boundary;
+package boundary;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,9 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.*;
+
+import control.ControlarItens;
 //import com.toedter.calendar.JDateChooser;
 
-import Control.ControlItens;
 
 public class FrmItensDaEntrega extends JFrame {
 
@@ -21,7 +22,7 @@ public class FrmItensDaEntrega extends JFrame {
 	private JTextField txtQuant;
 	private JTextField txtNumeroNota;
 	public JFrame frame;
-	public ControlItens control = new ControlItens();
+	public ControlarItens control = new ControlarItens();
 
 	/**
 	 * Launch the application.

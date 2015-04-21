@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -38,6 +39,7 @@ public class ControlarVeiculos implements limparTela {
 		sb.append(";");
 		sb.append(veiculo.getDatacadastro());
 		sb.append(";");
+		sb.append(veiculo.getCNH());
 		sb.append("\r\n");
 
 		try {
@@ -65,6 +67,11 @@ public class ControlarVeiculos implements limparTela {
 
 	/** METODO PARA LIMPAR CAMPOS JTEXTFIELD */
 	public void LimparCampos(JTextField texto) {
+		texto.setText(null);
+	}
+	
+	/** METODO PARA LIMPAR CAMPOS JTEXTAREA */
+	public void LimparTextArea(JTextArea texto) {
 		texto.setText(null);
 	}
 

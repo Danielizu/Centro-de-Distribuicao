@@ -212,7 +212,7 @@ public class FrmControleDeMotoristas extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				String search = txtCNH.getText();
-				motorista = control.PesquisarMotorista(search);
+				motorista = control.PesquisarCNH(search);
 
 				txtNomeMotorista.setText(motorista.getNome());
 				txtCNH.setText(motorista.getCnh());

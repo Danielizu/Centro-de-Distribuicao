@@ -10,13 +10,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 
+import control.ControlarMotorista;
 import control.ControlarVeiculos;
 import control.CrudVeiculo;
+import entity.Motorista;
 import entity.Veiculo;
 
 import java.awt.Color;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class FrmControleDeVeiculos extends JFrame {
 
@@ -32,14 +36,16 @@ public class FrmControleDeVeiculos extends JFrame {
 	public JTextField txtCapacidadeMax;
 	public JTextField txtQtdPaletesMax;
 	public JTextField txtDataCadastro;
-	public JTextField txtNomeMotorista;
-	public JTextField txtDadosMotorista;
+	public JTextField txtCNH;
+	public JTextArea txtDadosMotorista;
 	public JComboBox cbTipo;
 	public JComboBox cbCor;
 	public JComboBox cbMarca;
 	public JComboBox cbCarroceria;
 	public Veiculo veiculo = new Veiculo();
+	public Motorista motorista = new Motorista();
 	public ControlarVeiculos control = new ControlarVeiculos();
+	public ControlarMotorista controlmotorista = new ControlarMotorista();
 	String tipo[] = { null, "Caminhão", "Carro" };
 	String cores[] = { null, "Azul", "Amarelo", "Vermelho", "Preto", "Prata",
 			"Cinza", "Grafite" };
@@ -108,8 +114,23 @@ public class FrmControleDeVeiculos extends JFrame {
 		JLabel lblCapacidadeMax = new JLabel("Capacidade Max.");
 		lblCapacidadeMax.setBounds(30, 89, 126, 14);
 		frame.getContentPane().add(lblCapacidadeMax);
+		
+		JLabel lblKg = new JLabel("KG");
+		setAlwaysOnTop(true);
+		lblKg.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblKg.setBounds(234, 89, 25, 14);
+		frame.getContentPane().add(lblKg);
+		
+		JLabel lblUnidades = new JLabel("Unid.");
+		setAlwaysOnTop(true);
+		lblUnidades.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUnidades.setBounds(234, 161, 35, 14);
+		frame.getContentPane().add(lblUnidades);
 
-		/** DECLARANDO O CAMPO DE ENTRADA DA CAPACIDADE MÁXIMA E CRIAÇÃO DA MÁSCARA*/
+		/**
+		 * DECLARANDO O CAMPO DE ENTRADA DA CAPACIDADE MÁXIMA E CRIAÇÃO DA
+		 * MÁSCARA
+		 */
 		txtCapacidadeMax = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter capacidademax = new javax.swing.text.MaskFormatter(
@@ -119,7 +140,7 @@ public class FrmControleDeVeiculos extends JFrame {
 					capacidademax);
 		} catch (Exception e) {
 		}
-		txtCapacidadeMax.setBounds(176, 86, 83, 20);
+		txtCapacidadeMax.setBounds(176, 86, 61, 20);
 		frame.getContentPane().add(txtCapacidadeMax);
 		txtCapacidadeMax.setColumns(10);
 
@@ -134,12 +155,15 @@ public class FrmControleDeVeiculos extends JFrame {
 		cbTipo.setBounds(138, 119, 121, 20);
 		frame.getContentPane().add(cbTipo);
 
-		/** DECLARANDO A LABEL DA QUANTIDADE DE PALETES  */
+		/** DECLARANDO A LABEL DA QUANTIDADE DE PALETES */
 		JLabel lblQtdPaletes = new JLabel("Qtd. Máxima de Paletes");
 		lblQtdPaletes.setBounds(30, 161, 136, 14);
 		frame.getContentPane().add(lblQtdPaletes);
 
-		/** DECLARANDO O CAMPO DE ENTRADA DA QUANTIDADE MÁXIMA DE PALETES E CRIAÇÃO DA MÁSCARA  */
+		/**
+		 * DECLARANDO O CAMPO DE ENTRADA DA QUANTIDADE MÁXIMA DE PALETES E
+		 * CRIAÇÃO DA MÁSCARA
+		 */
 		txtQtdPaletesMax = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter quantidade = new javax.swing.text.MaskFormatter(
@@ -148,7 +172,7 @@ public class FrmControleDeVeiculos extends JFrame {
 			txtQtdPaletesMax = new javax.swing.JFormattedTextField(quantidade);
 		} catch (Exception e) {
 		}
-		txtQtdPaletesMax.setBounds(176, 158, 83, 20);
+		txtQtdPaletesMax.setBounds(176, 158, 61, 20);
 		frame.getContentPane().add(txtQtdPaletesMax);
 		txtQtdPaletesMax.setColumns(10);
 
@@ -169,7 +193,6 @@ public class FrmControleDeVeiculos extends JFrame {
 		lblMarca.setBounds(288, 58, 46, 14);
 		frame.getContentPane().add(lblMarca);
 
-		
 		/** DECLARANDO A LABEL DA COR */
 		JLabel lblCor = new JLabel("Cor");
 		lblCor.setBounds(288, 89, 46, 14);
@@ -198,23 +221,60 @@ public class FrmControleDeVeiculos extends JFrame {
 		control.AdicionarValoresCB(cbCarroceria, carroceria);
 		frame.getContentPane().add(cbCarroceria);
 
-		/** DECLARANDO A LABEL NOME */
-		JLabel lblNome = new JLabel("Nome");
+		/** DECLARANDO A LABEL CNH */
+		JLabel lblNome = new JLabel("CNH: ");
 		lblNome.setBounds(30, 311, 46, 14);
 		frame.getContentPane().add(lblNome);
+		
+		/*BOTÃO PARA PESQUISAR A PLACA*/
+		JButton pesquisarPlaca = new JButton("");
+		setAlwaysOnTop(true);
+		pesquisarPlaca.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 
-		/** CRIAÇÃO DO CAMPO NOME DO MOTORISTA */
-		txtNomeMotorista = new JTextField();
-		txtNomeMotorista.setBounds(88, 308, 294, 20);
-		frame.getContentPane().add(txtNomeMotorista);
-		txtNomeMotorista.setColumns(10);
+				String search = txtPlaca.getText();
+				// boolean resultado = false;
+				veiculo = control.PesquisarPlaca(search);
+
+				// if (resultado == true) {
+				txtPlaca.setText(veiculo.getPlaca());
+				cbMarca.setSelectedItem(veiculo.getMarca());
+				txtCapacidadeMax.setText(String.valueOf(veiculo.getCapMax()));
+				cbCor.setSelectedItem(veiculo.getCor());
+				cbTipo.setSelectedItem(veiculo.getTipo());
+				cbCarroceria.setSelectedItem(veiculo.getCarroceria());
+				txtQtdPaletesMax.setText(String.valueOf(veiculo.getQtdPaletes()));
+				txtDataCadastro.setText(veiculo.getDatacadastro());
+				// }
+			}
+		});
+		pesquisarPlaca.setIcon(new ImageIcon(FrmControleDeVeiculos.class
+				.getResource("/images/pesquisar.png")));
+		pesquisarPlaca.setBounds(234, 54, 31, 22);
+		frame.getContentPane().add(pesquisarPlaca);
+		
+
+		/** CRIAÇÃO DO CAMPO CNH DO MOTORISTA */
+		txtCNH = new JTextField();
+		try {
+			javax.swing.text.MaskFormatter cnh = new javax.swing.text.MaskFormatter(
+					"###########");
+			txtCNH.addFocusListener(null);
+
+			txtCNH = new javax.swing.JFormattedTextField(cnh);
+		} catch (Exception e) {
+		}
+		txtCNH.setBounds(88, 308, 294, 20);
+		frame.getContentPane().add(txtCNH);
+		txtCNH.setColumns(10);
 
 		/**  */
-		JLabel lblDadosDoMotorista = new JLabel("Dados do Motorista");
+		JLabel lblDadosDoMotorista = new JLabel("Dados do Motorista: ");
 		lblDadosDoMotorista.setBounds(30, 348, 126, 14);
 		frame.getContentPane().add(lblDadosDoMotorista);
 
-		txtDadosMotorista = new JTextField();
+		txtDadosMotorista = new JTextArea();
+		txtDadosMotorista.setEditable(false);
 		txtDadosMotorista.setBounds(154, 341, 313, 131);
 		frame.getContentPane().add(txtDadosMotorista);
 		txtDadosMotorista.setColumns(10);
@@ -222,6 +282,14 @@ public class FrmControleDeVeiculos extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				motorista = controlmotorista.PesquisarCNH(txtCNH.getText());
+
+				txtDadosMotorista.setText("Nome do Motorista: "
+						+ motorista.getNome() + "\nCNH do Motorista: "
+						+ motorista.getCnh() + "\nCategoria da carteira: "
+						+ motorista.getTipo() + "\nData de Vencimento: "
+						+ motorista.getVencimento() + "\nData de Cadastro: "
+						+ motorista.getDatacadastro());
 			}
 		});
 		btnBuscar.setBounds(384, 307, 83, 23);
@@ -242,8 +310,8 @@ public class FrmControleDeVeiculos extends JFrame {
 				control.LimparCampos(txtPlaca);
 				control.LimparCampos(txtCapacidadeMax);
 				control.LimparCampos(txtQtdPaletesMax);
-				control.LimparCampos(txtNomeMotorista);
-				control.LimparCampos(txtDadosMotorista);
+				control.LimparCampos(txtCNH);
+				control.LimparTextArea(txtDadosMotorista);
 				control.LimparComboBox(cbTipo);
 				control.LimparComboBox(cbMarca);
 				control.LimparComboBox(cbCor);
@@ -256,41 +324,54 @@ public class FrmControleDeVeiculos extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				if (JOptionPane.showConfirmDialog(null,
-						"Deseja confirmar o cadastro do Veiculo?", "WARNING",
-						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-					veiculo.setPlaca(txtPlaca.getText());
-					veiculo.setMarca(cbMarca.getSelectedItem().toString());
-					veiculo.setCapMax(Integer.valueOf(txtCapacidadeMax
-							.getText()));
-					veiculo.setCor(cbCor.getSelectedItem().toString());
-					veiculo.setTipo(cbTipo.getSelectedItem().toString());
-					veiculo.setCarroceria((cbCarroceria.getSelectedItem()
-							.toString()));
-					veiculo.setQtdPaletes(Integer.valueOf(txtQtdPaletesMax
-							.getText()));
-					veiculo.setDatacadastro(txtDataCadastro.getText());
-
-					try {
-						control.SalvarVeiculo(veiculo);
-					} catch (IOException e1) {
-						System.out.println("Arquivo não encontrado");
-						e1.printStackTrace();
-					}
-					control.LimparCampos(txtPlaca);
-					control.LimparComboBox(cbMarca);
-					control.LimparCampos(txtCapacidadeMax);
-					control.LimparComboBox(cbCor);
-					control.LimparComboBox(cbTipo);
-					control.LimparComboBox(cbCarroceria);
-					control.LimparCampos(txtQtdPaletesMax);
+				/*VALIDAÇÃO PARA SABER SE TODOS OS CAMPOS FORAM PREENCHIDOS*/
+				if (txtPlaca.getText().isEmpty() ||  txtCapacidadeMax.getText().isEmpty()
+						||  txtQtdPaletesMax.getText().isEmpty()
+						||  txtDadosMotorista.getText().isEmpty() ||cbTipo.getSelectedItem() == null
+						||  cbMarca.getSelectedItem() == null ||  cbCor.getSelectedItem() == null
+						||  cbCarroceria.getSelectedItem() == null) {
 					
-					JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+					JOptionPane.showMessageDialog(null,
+							"Todos os campos devem ser preenchidos.");
+				} else {
+					
+                   /*PERGUNTA AO USUÁRIO SE ELE TEM CERTEZA SE DESEJA GRAVAR OS DADOS*/
+					if (JOptionPane.showConfirmDialog(null,
+							"Deseja confirmar o cadastro do Veiculo?",
+							"WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+						veiculo.setPlaca(txtPlaca.getText());
+						veiculo.setMarca(cbMarca.getSelectedItem().toString());
+						veiculo.setCapMax(Integer.valueOf(txtCapacidadeMax
+								.getText()));
+						veiculo.setCor(cbCor.getSelectedItem().toString());
+						veiculo.setTipo(cbTipo.getSelectedItem().toString());
+						veiculo.setCarroceria((cbCarroceria.getSelectedItem()
+								.toString()));
+						veiculo.setQtdPaletes(Integer.valueOf(txtQtdPaletesMax
+								.getText()));
+						veiculo.setDatacadastro(txtDataCadastro.getText());
+						veiculo.setCNH(txtCNH.getText());
+
+						try {
+							control.SalvarVeiculo(veiculo);
+						} catch (IOException e1) {
+							System.out.println("Arquivo não encontrado");
+							e1.printStackTrace();
+						}
+						control.LimparCampos(txtPlaca);
+						control.LimparComboBox(cbMarca);
+						control.LimparCampos(txtCapacidadeMax);
+						control.LimparComboBox(cbCor);
+						control.LimparComboBox(cbTipo);
+						control.LimparComboBox(cbCarroceria);
+						control.LimparCampos(txtQtdPaletesMax);
+
+						JOptionPane.showMessageDialog(null,
+								"Cadastro realizado com sucesso!");
+					}
 				}
 			}
-			
 		});
 
 		btnSalvar.setBounds(30, 507, 89, 23);
@@ -312,32 +393,8 @@ public class FrmControleDeVeiculos extends JFrame {
 				null, new Color(0, 0, 0)));
 		frame.getContentPane().add(border);
 
-		JButton pesquisarPlaca = new JButton("");
-		setAlwaysOnTop(true);
-		pesquisarPlaca.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		
 
-				String search = txtPlaca.getText();
-				//boolean resultado = false;
-				veiculo = control.PesquisarPlaca(search);
-
-				
-				//if (resultado == true) {
-				txtPlaca.setText(veiculo.getPlaca());
-				cbMarca.setSelectedItem(veiculo.getMarca());
-				txtCapacidadeMax.setText(String.valueOf(veiculo.getCapMax()));
-				cbCor.setSelectedItem(veiculo.getCor());
-				cbTipo.setSelectedItem(veiculo.getTipo());
-				cbCarroceria.setSelectedItem(veiculo.getCarroceria());
-				txtQtdPaletesMax.setText(String.valueOf(veiculo.getQtdPaletes()));
-				txtDataCadastro.setText(veiculo.getDatacadastro());
-			//	}
-			}
-		});
-		pesquisarPlaca.setIcon(new ImageIcon(FrmControleDeVeiculos.class
-				.getResource("/images/pesquisar.png")));
-		pesquisarPlaca.setBounds(234, 54, 31, 22);
-		frame.getContentPane().add(pesquisarPlaca);
 
 	}
 }

@@ -53,7 +53,7 @@ public class ControlarMotorista implements limparTela {
         }
     }
 
-	public Motorista PesquisarMotorista(String pesquisa) {
+	public Motorista PesquisarCNH(String pesquisa) {
 
 		String arquivoCSV = "Motorista.csv";
 		BufferedReader br = null;
