@@ -64,47 +64,31 @@ public class FrmItensDaEntrega extends JFrame {
 		lblNewLabel.setBounds(10, 70, 140, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("C\u00F3d. Produto");
-		lblNewLabel_1.setBounds(10, 104, 140, 14);
-		contentPane.add(lblNewLabel_1);
-		
 		JLabel lblNewLabel_2 = new JLabel("Data solicita\u00E7\u00E3o do pedido");
-		lblNewLabel_2.setBounds(10, 138, 160, 14);
+		lblNewLabel_2.setBounds(10, 141, 160, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("Quantidade de paletes");
-		lblNewLabel_3.setBounds(10, 172, 140, 14);
-		contentPane.add(lblNewLabel_3);
-		
 		JLabel lblNewLabel_4 = new JLabel("N\u00FAmero nota fiscal");
-		lblNewLabel_4.setBounds(10, 206, 140, 14);
+		lblNewLabel_4.setBounds(10, 106, 140, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		JButton btnNewButton = new JButton("Buscar");
-		btnNewButton.setBounds(334, 66, 89, 23);
+		btnNewButton.setBounds(355, 66, 89, 23);
 		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Buscar");
-		btnNewButton_1.setBounds(334, 100, 89, 23);
-		contentPane.add(btnNewButton_1);
 		
 		txtCliente = new JTextField();
 				
-		txtCliente.setBounds(164, 67, 160, 20);
+		txtCliente.setBounds(179, 67, 160, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
 		
 		txtCodProduto = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
-			txtCodProduto = new javax.swing.JFormattedTextField(nota);
 		}
 		catch (Exception e){
 		
 		}
-		txtCodProduto.setBounds(165, 101, 160, 20);
-		contentPane.add(txtCodProduto);
-		txtCodProduto.setColumns(10);
 		
 		txtDataSolicit = new JTextField();
 		try{
@@ -114,21 +98,17 @@ public class FrmItensDaEntrega extends JFrame {
 		catch (Exception e){
 		
 		}
-		txtDataSolicit.setBounds(165, 135, 120, 20);
+		txtDataSolicit.setBounds(178, 138, 120, 20);
 		contentPane.add(txtDataSolicit);
 		txtDataSolicit.setColumns(10);
 		
 		txtQuant = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("####");
-			txtQuant = new javax.swing.JFormattedTextField(nota);
 		}
 		catch (Exception e){
 		
 		}
-		txtQuant.setBounds(165, 169, 160, 20);
-		contentPane.add(txtQuant);
-		txtQuant.setColumns(10);
 		
 		txtNumeroNota = new JTextField();
 		try{
@@ -138,12 +118,12 @@ public class FrmItensDaEntrega extends JFrame {
 		catch (Exception e){
 		
 		}
-		txtNumeroNota.setBounds(165, 203, 160, 20);
+		txtNumeroNota.setBounds(179, 103, 160, 20);
 		contentPane.add(txtNumeroNota);
 		txtNumeroNota.setColumns(10);
 		
 		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.setBounds(293, 134, 32, 23);
+		btnNewButton_2.setBounds(307, 137, 32, 21);
 		contentPane.add(btnNewButton_2);
 		
 		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o dos itens:");
