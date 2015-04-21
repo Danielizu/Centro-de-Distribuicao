@@ -175,6 +175,7 @@ public class FrmMenuPrincipal {
 		panel.add(btnSobre);
 		
 		JButton btnHistorico = new JButton("   Hist\u00F3rico de Entregas");
+		btnHistorico.setEnabled(false);
 		btnHistorico.setBounds(20, 369, 220, 43);
 		panel.add(btnHistorico);
 		btnHistorico.setIcon(new ImageIcon(FrmMenuPrincipal.class.getResource("/images/entrega_icon2.png")));

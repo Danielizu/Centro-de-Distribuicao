@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -37,7 +38,7 @@ public class FrmControleDeMotoristas extends JFrame {
 	private JTextField txtNomeMotorista;
 	private JTextField txtCNH;
 	private JTextField txtDataVencimento;
-	private JTextField txtDescricao;
+	private JTextArea txtDescricao;
 	public ControlarMotorista control = new ControlarMotorista();
 	public Motorista motorista = new Motorista();
 	public String TipoDocumento[] = { null, "A", "B", "C", "D", "E" };
@@ -70,12 +71,12 @@ public class FrmControleDeMotoristas extends JFrame {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 520, 600);
+		frame.setBounds(100, 100, 520, 551);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 5, 484, 530);
+		panel.setBounds(10, 11, 484, 493);
 		panel.setBorder(new TitledBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)),
@@ -105,7 +106,7 @@ public class FrmControleDeMotoristas extends JFrame {
 			txtCNH = new javax.swing.JFormattedTextField(cnh);
 		} catch (Exception e) {
 		}
-		txtCNH.setBounds(78, 84, 100, 20);
+		txtCNH.setBounds(78, 83, 121, 20);
 		panel.add(txtCNH);
 		txtCNH.setColumns(10);
 
@@ -114,7 +115,7 @@ public class FrmControleDeMotoristas extends JFrame {
 		panel.add(lblVencimento);
 
 		final JDateChooser dataCadastro = new JDateChooser();
-		dataCadastro.setBounds(138, 180, 105, 20);
+		dataCadastro.setBounds(140, 143, 90, 20);
 		panel.add(dataCadastro);
 
 		txtDataVencimento = new JTextField();
@@ -130,24 +131,24 @@ public class FrmControleDeMotoristas extends JFrame {
 		txtDataVencimento.setColumns(10);
 
 		JLabel lblTipo = new JLabel("Tipo: ");
-		lblTipo.setBounds(28, 129, 46, 14);
+		lblTipo.setBounds(28, 115, 46, 14);
 		panel.add(lblTipo);
 
 		final JComboBox cbTipo = new JComboBox();
 		control.AdicionarValoresCB(cbTipo, TipoDocumento);
-		cbTipo.setBounds(78, 126, 113, 20);
+		cbTipo.setBounds(78, 112, 152, 20);
 		panel.add(cbTipo);
 
 		JLabel lblDataDeCadastro = new JLabel("Data de cadastro: ");
-		lblDataDeCadastro.setBounds(28, 180, 130, 14);
+		lblDataDeCadastro.setBounds(28, 143, 130, 14);
 		panel.add(lblDataDeCadastro);
 
 		JLabel lblObservaes = new JLabel("Observa\u00E7\u00F5es:");
-		lblObservaes.setBounds(10, 254, 105, 14);
+		lblObservaes.setBounds(28, 211, 105, 14);
 		panel.add(lblObservaes);
 
-		txtDescricao = new JTextField();
-		txtDescricao.setBounds(51, 279, 390, 195);
+		txtDescricao = new JTextArea();
+		txtDescricao.setBounds(56, 236, 390, 195);
 		panel.add(txtDescricao);
 		txtDescricao.setColumns(10);
 
@@ -173,7 +174,7 @@ public class FrmControleDeMotoristas extends JFrame {
 						e1.printStackTrace();
 					}
 					control.LimparCampos(txtNomeMotorista);
-					control.LimparCampos(txtDescricao);
+					control.LimparTextArea(txtDescricao);
 					control.LimparCampos(txtDataVencimento);
 					control.LimparCampos(txtCNH);
 					control.LimparComboBox(cbTipo);
@@ -181,15 +182,15 @@ public class FrmControleDeMotoristas extends JFrame {
 
 			}
 		});
-		btnSalvar.setBounds(156, 496, 89, 23);
+		btnSalvar.setBounds(128, 459, 89, 23);
 		panel.add(btnSalvar);
 
 		JButton btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(273, 496, 89, 23);
+		btnLimpar.setBounds(244, 459, 89, 23);
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				control.LimparCampos(txtNomeMotorista);
-				control.LimparCampos(txtDescricao);
+				control.LimparTextArea(txtDescricao);
 				control.LimparCampos(txtDataVencimento);
 				control.LimparCampos(txtCNH);
 				control.LimparComboBox(cbTipo);
@@ -198,7 +199,7 @@ public class FrmControleDeMotoristas extends JFrame {
 		panel.add(btnLimpar);
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(385, 496, 89, 23);
+		btnCancelar.setBounds(357, 459, 89, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
@@ -224,7 +225,7 @@ public class FrmControleDeMotoristas extends JFrame {
 		});
 		pesquisarMotorista.setIcon(new ImageIcon(FrmControleDeMotoristas.class
 				.getResource("/images/pesquisar.png")));
-		pesquisarMotorista.setBounds(179, 83, 31, 22);
+		pesquisarMotorista.setBounds(200, 82, 31, 22);
 		panel.add(pesquisarMotorista);
 	}
 }

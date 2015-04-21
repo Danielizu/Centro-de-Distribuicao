@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import entity.Motorista;
@@ -108,6 +109,11 @@ public class ControlarMotorista implements limparTela {
 	public void LimparComboBox(JComboBox combo) {
 		combo.setSelectedItem(null);
 
+	}
+
+	/** METODO PARA LIMPAR CAMPOS JTEXTAREA */
+	public void LimparTextArea(JTextArea texto) {
+		texto.setText(null);
 	}
 
 	public boolean ValidadorCNH(String CNH) {
