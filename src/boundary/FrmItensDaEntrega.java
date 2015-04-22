@@ -1,16 +1,6 @@
 package boundary;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.*;
-
-import control.ControlarItens;
-import com.toedter.calendar.JDateChooser;
 
 
 public class FrmItensDaEntrega extends JFrame {
@@ -90,6 +80,18 @@ public class FrmItensDaEntrega extends JFrame {
 		
 		}
 		
+/*		txtDataSolicit = new JTextField();
+		try{
+			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##/##/####");
+			txtDataSolicit = new javax.swing.JFormattedTextField(nota);
+		}
+		catch (Exception e){
+		
+		}
+		txtDataSolicit.setBounds(178, 138, 120, 20);
+		contentPane.add(txtDataSolicit);
+		txtDataSolicit.setColumns(10);
+	*/	
 		txtQuant = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("####");
@@ -119,29 +121,35 @@ public class FrmItensDaEntrega extends JFrame {
 		lblNewLabel_5.setBounds(10, 280, 120, 14);
 		contentPane.add(lblNewLabel_5);
 		
-		JButton btnNewButton_3 = new JButton("Salvar");
-		btnNewButton_3.setBounds(22, 520, 89, 23);
-		contentPane.add(btnNewButton_3);
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(22, 520, 89, 23);
+		contentPane.add(btnSalvar);
 		
-		JButton btnCancelar = new JButton("Limpar");
-		btnCancelar.setBounds(195, 520, 89, 23);
+		JButton btnLimpar = new JButton("Limpar");
+		btnLimpar.setBounds(195, 520, 89, 23);
+		contentPane.add(btnLimpar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnCancelar.setBounds(365, 520, 89, 23);
 		contentPane.add(btnCancelar);
-		
-		JButton btnNewButton_5 = new JButton("Cancelar");
-		btnNewButton_5.setBounds(365, 520, 89, 23);
-		contentPane.add(btnNewButton_5);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(10, 305, 484, 190);
 		contentPane.add(textArea);
 		
-		btnCancelar.addActionListener(new ActionListener() {
+		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			control.LimparCampos(txtCliente);
 			control.LimparCampos(txtCodProduto);
 			control.LimparCampos(txtDataSolicit);
 			control.LimparCampos(txtQuant);
 			control.LimparCampos(txtNumeroNota);
+			control.LimparData(dataCadastro);
 	}
 
 		});
