@@ -1,6 +1,19 @@
 package boundary;
 
 import java.awt.*;
+import java.io.IOException;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import com.toedter.calendar.JDateChooser;
+
+import control.ControlarItens;
+import entity.Item;
 
 
 public class FrmItensDaEntrega extends JFrame {
@@ -80,7 +93,7 @@ public class FrmItensDaEntrega extends JFrame {
 				item = control.PesquisarItem(search);
 
 
-				textArea.setText("Nota Fiscal: " + item.getNota()+ "\nData da solicitação: "+ item.getData() );		
+				textArea.setText("Nota Fiscal: " + item.getNota()+ "\nData da solicitaÃ§Ã£o: "+ item.getData() );		
 		//		textArea.setText(item.getData());
 			}
 
@@ -134,7 +147,7 @@ public class FrmItensDaEntrega extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if (JOptionPane.showConfirmDialog(null,
-						"Os itens estão certos?", "WARNING",
+						"Os itens estÃ£o certos?", "WARNING",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
 					String data  = ((JTextField)dataCadastro.getDateEditor().getUiComponent()).getText();
@@ -145,7 +158,7 @@ public class FrmItensDaEntrega extends JFrame {
 					try {
 						control.SalvarItem(item);
 					} catch (IOException e1) {
-						System.out.println("Arquivo não encontrado");
+						System.out.println("Arquivo nÃ£o encontrado");
 						e1.printStackTrace();
 					}
 					control.LimparCampos(txtCliente);
