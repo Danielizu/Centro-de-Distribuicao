@@ -5,15 +5,24 @@ import java.awt.*;
 
 public class FrmItensDaEntrega extends JFrame {
 
+	protected static final JTextComponent dataCadastro = null;
 	private JPanel contentPane;
 	private JTextField txtCliente;
-	private JTextField txtCodProduto;
+	private JTextField txtCodProdut;
 	private JTextField txtDataSolicit;
 	private JTextField txtQuant;
 	private JTextField txtNumeroNota;
 	public JFrame frame;
 	public ControlarItens control = new ControlarItens();
-
+	public Item item = new Item();
+	private JTextField textField;
+	public ControlarCatalogo controlCatalogo = new ControlarCatalogo();
+	public Catalogo catalogo = new Catalogo();
+	private JTextField textProd;
+	public FrmCatalogo cat = new FrmCatalogo ();
+	public ControlarClientes controlC = new ControlarClientes ();
+	public Cliente cliente = new Cliente();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -56,23 +65,44 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_2 = new JLabel("Data solicita\u00E7\u00E3o do pedido");
-		lblNewLabel_2.setBounds(10, 141, 160, 14);
+		lblNewLabel_2.setBounds(10, 142, 160, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_4 = new JLabel("N\u00FAmero nota fiscal");
-		lblNewLabel_4.setBounds(10, 106, 140, 14);
+		lblNewLabel_4.setBounds(10, 178, 140, 14);
 		contentPane.add(lblNewLabel_4);
 		
-		JButton btnNewButton = new JButton("Buscar");
-		btnNewButton.setBounds(355, 66, 89, 23);
-		contentPane.add(btnNewButton);
-	
+		final JTextArea textArea = new JTextArea();
+		textArea.setBounds(20, 305, 449, 57);
+		contentPane.add(textArea);
+		
+		
 		txtCliente = new JTextField();			
 		txtCliente.setBounds(179, 67, 160, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
 		
-		txtCodProduto = new JTextField();
+		
+
+		JButton pesquisarCliente = new JButton("Buscar");
+//		setAlwaysOnTop(true);
+		pesquisarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				String search = txtCliente.getText();
+				cliente = controlC.PesquisarCliente(search);
+
+
+			txtCliente.setText(cliente.getNome());		
+			}
+
+		});
+		pesquisarCliente.setBounds(355, 66, 89, 23);
+		contentPane.add(pesquisarCliente);
+		
+		
+		
+		txtCodProdut = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
 		}
@@ -80,18 +110,6 @@ public class FrmItensDaEntrega extends JFrame {
 		
 		}
 		
-/*		txtDataSolicit = new JTextField();
-		try{
-			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##/##/####");
-			txtDataSolicit = new javax.swing.JFormattedTextField(nota);
-		}
-		catch (Exception e){
-		
-		}
-		txtDataSolicit.setBounds(178, 138, 120, 20);
-		contentPane.add(txtDataSolicit);
-		txtDataSolicit.setColumns(10);
-	*/	
 		txtQuant = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("####");
@@ -103,25 +121,49 @@ public class FrmItensDaEntrega extends JFrame {
 		txtNumeroNota = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
-			txtNumeroNota = new javax.swing.JFormattedTextField(nota);
 		}
 		catch (Exception e){
 		
 		}
-		txtNumeroNota.setBounds(179, 103, 160, 20);
+		txtNumeroNota.setBounds(179, 175, 160, 20);
 		contentPane.add(txtNumeroNota);
-		txtNumeroNota.setColumns(10);
+		txtNumeroNota.setColumns(8);
 		
 		final JDateChooser dataCadastro = new JDateChooser();
 		dataCadastro.setBounds(179, 137, 160, 21);
 		contentPane.add(dataCadastro);
 		
 		
-		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o dos itens:");
+		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o:");
 		lblNewLabel_5.setBounds(10, 280, 120, 14);
 		contentPane.add(lblNewLabel_5);
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (JOptionPane.showConfirmDialog(null,
+						"Os itens estÃ£o corretos?", "AVISO",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+					String data  = ((JTextField)dataCadastro.getDateEditor().getUiComponent()).getText();
+					
+					item.setCliente(txtCliente.getText());
+					item.setNota(txtNumeroNota.getText());
+					item.setData(data);
+					try {
+						control.SalvarItem(item);
+					} catch (IOException e1) {
+						System.out.println("Arquivo nÃ£o encontrado");
+						e1.printStackTrace();
+					}
+					control.LimparCampos(txtCliente);
+					control.LimparCampos(txtNumeroNota);
+					control.LimparCampos(dataCadastro);
+				}
+
+			}
+		});
 		btnSalvar.setBounds(22, 520, 89, 23);
 		contentPane.add(btnSalvar);
 		
@@ -138,18 +180,45 @@ public class FrmItensDaEntrega extends JFrame {
 		btnCancelar.setBounds(365, 520, 89, 23);
 		contentPane.add(btnCancelar);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 305, 484, 190);
-		contentPane.add(textArea);
+		JLabel lblNewLabel_1 = new JLabel("C\u00F3digo do Item");
+		lblNewLabel_1.setBounds(10, 106, 120, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		textField = new JTextField();
+		textField.setBounds(179, 103, 160, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		
+		
+		textProd = new JTextField();
+		textProd.setBounds(25, 397, 429, 57);
+		contentPane.add(textProd);
+		textProd.setColumns(10);
+		
+		
+		JButton btnCod = new JButton("Buscar");
+		btnCod.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+			String search = cat.txtCodProduto.getText();
+			catalogo = controlCatalogo.PesquisarCatalogo(search);
+			
+				textProd.setText(String.valueOf(catalogo.getCodProduto()) + catalogo.getNome() + String.valueOf(catalogo.getPeso()) + String.valueOf(catalogo.getVolume()) + catalogo.getDescricao());
+			}
+		});
+		
+		btnCod.setBounds(355, 102, 89, 23);
+		contentPane.add(btnCod);
 		
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			control.LimparCampos(txtCliente);
-			control.LimparCampos(txtCodProduto);
+			control.LimparCampos(txtCodProdut);
 			control.LimparCampos(txtDataSolicit);
 			control.LimparCampos(txtQuant);
 			control.LimparCampos(txtNumeroNota);
-			control.LimparData(dataCadastro);
+			control.LimparCampos(dataCadastro);
 	}
 
 		});
