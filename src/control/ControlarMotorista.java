@@ -25,7 +25,7 @@ public class ControlarMotorista implements limparTela {
 	/** METODO DE SALVAR MOTORISTA */
 	public int SalvarMotorista(Motorista motorista) throws IOException
     {
-        File arquivoMotorista = new File("Motorista.csv");        
+        File arquivoMotorista = new File("Arquivos/Motorista.csv");        
         StringBuffer sb = new StringBuffer();
         
         sb.append(motorista.getNome());
@@ -56,7 +56,7 @@ public class ControlarMotorista implements limparTela {
 
 	public Motorista PesquisarCNH(String pesquisa) {
 
-		String arquivoCSV = "Motorista.csv";
+		String arquivoCSV = "Arquivos/Motorista.csv";
 		BufferedReader br = null;
 		String linha = "";
 		String csvDivisor = ";";

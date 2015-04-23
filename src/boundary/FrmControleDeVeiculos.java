@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 import javax.swing.UIManager;
 
 import control.ControlarMotorista;
@@ -32,8 +34,10 @@ public class FrmControleDeVeiculos extends JFrame {
 
 	public JFrame frame;
 	public JTextField txtPlaca;
-	public JTextField txtCapacidadeMax;
-	public JTextField txtQtdPaletesMax;
+	public JFormattedTextField txtCapacidadeMax;
+	private JFormattedTextField txtCapacidadeMax_1;
+	public JFormattedTextField txtQtdPaletesMax;
+	private JFormattedTextField txtQtdPaletesMax_1;
 	public JTextField txtDataCadastro;
 	public JTextField txtCNH;
 	public JTextArea txtDadosMotorista;
@@ -98,11 +102,11 @@ public class FrmControleDeVeiculos extends JFrame {
 		/** DECLARANDO O CAMPO DE ENTRADA DA PLACA E CRIAÇÃO DA MÁSCARA */
 		txtPlaca = new JTextField();
 		try {
-			javax.swing.text.MaskFormatter placa = new javax.swing.text.MaskFormatter(
+			MaskFormatter placa = new MaskFormatter(
 					"UUU-####");
 			txtPlaca.addFocusListener(null);
 
-			txtPlaca = new javax.swing.JFormattedTextField(placa);
+			txtPlaca = new JFormattedTextField(placa);
 		} catch (Exception e) {
 		}
 		txtPlaca.setBounds(138, 55, 99, 20);
@@ -130,18 +134,19 @@ public class FrmControleDeVeiculos extends JFrame {
 		 * DECLARANDO O CAMPO DE ENTRADA DA CAPACIDADE MÁXIMA E CRIAÇÃO DA
 		 * MÁSCARA
 		 */
-		txtCapacidadeMax = new JTextField();
+		txtCapacidadeMax = new JFormattedTextField();
 		try {
 			javax.swing.text.MaskFormatter capacidademax = new javax.swing.text.MaskFormatter(
 					"###");
 
-			txtCapacidadeMax = new javax.swing.JFormattedTextField(
+			txtCapacidadeMax_1 = new JFormattedTextField(
 					capacidademax);
+			txtCapacidadeMax_1.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		} catch (Exception e) {
 		}
-		txtCapacidadeMax.setBounds(176, 86, 61, 20);
-		frame.getContentPane().add(txtCapacidadeMax);
-		txtCapacidadeMax.setColumns(10);
+		txtCapacidadeMax_1.setBounds(176, 86, 61, 20);
+		frame.getContentPane().add(txtCapacidadeMax_1);
+		txtCapacidadeMax_1.setColumns(10);
 
 		/** DECLARANDO A LABEL TIPO */
 		JLabel lblTipo = new JLabel("Tipo");
@@ -163,17 +168,18 @@ public class FrmControleDeVeiculos extends JFrame {
 		 * DECLARANDO O CAMPO DE ENTRADA DA QUANTIDADE MÁXIMA DE PALETES E
 		 * CRIAÇÃO DA MÁSCARA
 		 */
-		txtQtdPaletesMax = new JTextField();
+		txtQtdPaletesMax = new JFormattedTextField();
 		try {
 			javax.swing.text.MaskFormatter quantidade = new javax.swing.text.MaskFormatter(
 					"###");
 
-			txtQtdPaletesMax = new javax.swing.JFormattedTextField(quantidade);
+			txtQtdPaletesMax_1 = new javax.swing.JFormattedTextField(quantidade);
+			txtQtdPaletesMax_1.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		} catch (Exception e) {
 		}
-		txtQtdPaletesMax.setBounds(176, 158, 61, 20);
-		frame.getContentPane().add(txtQtdPaletesMax);
-		txtQtdPaletesMax.setColumns(10);
+		txtQtdPaletesMax_1.setBounds(176, 158, 61, 20);
+		frame.getContentPane().add(txtQtdPaletesMax_1);
+		txtQtdPaletesMax_1.setColumns(10);
 
 		/** CRIAÇÃO DA LABEL DATA DE CADASTRO */
 		JLabel lblDataDeCadastro = new JLabel("Data de Cadastro");
@@ -318,7 +324,7 @@ public class FrmControleDeVeiculos extends JFrame {
 				control.LimparComboBox(cbCarroceria);
 			}
 		});
-		btnLimpar.setBounds(256, 461, 89, 23);
+		btnLimpar.setBounds(273, 461, 89, 23);
 		frame.getContentPane().add(btnLimpar);
 
 		JButton btnSalvar = new JButton("Salvar");
@@ -374,7 +380,7 @@ public class FrmControleDeVeiculos extends JFrame {
 			}
 		});
 
-		btnSalvar.setBounds(124, 461, 89, 23);
+		btnSalvar.setBounds(153, 461, 89, 23);
 		frame.getContentPane().add(btnSalvar);
 
 		JPanel borderMotorista = new JPanel();

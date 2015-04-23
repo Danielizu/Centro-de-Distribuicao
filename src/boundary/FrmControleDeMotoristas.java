@@ -43,31 +43,14 @@ public class FrmControleDeMotoristas extends JFrame {
 	public Motorista motorista = new Motorista();
 	public String TipoDocumento[] = { null, "A", "B", "C", "D", "E" };
 
-	/**
-	 * Launch the application.
-	 */
-	// public static void main(String[] args) {
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// try {
-	// FrmControleDeMotoristas window = new FrmControleDeMotoristas();
-	// window.frame.setVisible(true);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// });
-	// }
-
-	/**
-	 * Create the application.
-	 */
+	
 	public FrmControleDeMotoristas() {
 		initialize();
 	}
 
+	
 	/**
-	 * Initialize the contents of the frame.
+	 * Inicializa o conteudo do Frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -85,6 +68,7 @@ public class FrmControleDeMotoristas extends JFrame {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
+        // DEFININDO AS PROPRIEDADES DO MOTORISTA
 		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setBounds(28, 49, 46, 14);
 		panel.add(lblNome);
@@ -94,10 +78,8 @@ public class FrmControleDeMotoristas extends JFrame {
 		panel.add(txtNomeMotorista);
 		txtNomeMotorista.setColumns(10);
 
-		JLabel lblNCnh = new JLabel("N. CNH:");
-		lblNCnh.setBounds(28, 87, 46, 14);
-		panel.add(lblNCnh);
-
+		
+		// DENIFINDO AS PROPRIEDADES DO CNH
 		txtCNH = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter cnh = new javax.swing.text.MaskFormatter(
@@ -109,15 +91,16 @@ public class FrmControleDeMotoristas extends JFrame {
 		txtCNH.setBounds(78, 83, 121, 20);
 		panel.add(txtCNH);
 		txtCNH.setColumns(10);
-
+		
+		JLabel lblCnh = new JLabel("CNH:");
+		lblCnh.setBounds(28, 86, 46, 14);
+		panel.add(lblCnh);
+		
+		// DEFININDO AS PROPRIEDADES DA DATA DE VENCIMENTO
 		JLabel lblVencimento = new JLabel("Vencimento:");
 		lblVencimento.setBounds(261, 87, 90, 14);
 		panel.add(lblVencimento);
-
-		final JDateChooser dataCadastro = new JDateChooser();
-		dataCadastro.setBounds(140, 143, 90, 20);
-		panel.add(dataCadastro);
-
+		
 		txtDataVencimento = new JTextField();
 		try {
 			javax.swing.text.MaskFormatter vencimento = new javax.swing.text.MaskFormatter(
@@ -129,7 +112,17 @@ public class FrmControleDeMotoristas extends JFrame {
 		txtDataVencimento.setBounds(341, 84, 105, 20);
 		panel.add(txtDataVencimento);
 		txtDataVencimento.setColumns(10);
+		
+		// DEFININDO AS PROPRIEDADES DA DATA DE CADASTRO
+		JLabel lblDataDeCadastro = new JLabel("Data de cadastro: ");
+		lblDataDeCadastro.setBounds(28, 143, 130, 14);
+		panel.add(lblDataDeCadastro);
+		
+		final JDateChooser dataCadastro = new JDateChooser();
+		dataCadastro.setBounds(140, 143, 90, 20);
+		panel.add(dataCadastro);
 
+		// DEFININDO AS PROPRIEDADES DO TIPO DE VEICULO
 		JLabel lblTipo = new JLabel("Tipo: ");
 		lblTipo.setBounds(28, 115, 46, 14);
 		panel.add(lblTipo);
@@ -139,52 +132,72 @@ public class FrmControleDeMotoristas extends JFrame {
 		cbTipo.setBounds(78, 112, 152, 20);
 		panel.add(cbTipo);
 
-		JLabel lblDataDeCadastro = new JLabel("Data de cadastro: ");
-		lblDataDeCadastro.setBounds(28, 143, 130, 14);
-		panel.add(lblDataDeCadastro);
-
-		JLabel lblObservaes = new JLabel("Observa\u00E7\u00F5es:");
-		lblObservaes.setBounds(28, 211, 105, 14);
-		panel.add(lblObservaes);
+		
+		// DEFININDO AS PROPRIEDADES DAS OBSERVAÇÕES
+		JLabel lblObservacoes = new JLabel("Observa\u00E7\u00F5es:");
+		lblObservacoes.setBounds(28, 211, 105, 14);
+		panel.add(lblObservacoes);
 
 		txtDescricao = new JTextArea();
 		txtDescricao.setBounds(56, 236, 390, 195);
 		panel.add(txtDescricao);
 		txtDescricao.setColumns(10);
 
+		// CRIAÇÃO DO BOTÃO SALVAR
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (JOptionPane.showConfirmDialog(null,
-						"Deseja confirmar o cadastro do motorista?", "WARNING",
-						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				/* VALIDAÇÃO PARA SABER SE TODOS OS CAMPOS FORAM PREENCHIDOS */
+				if (txtNomeMotorista.getText().isEmpty() || txtCNH.getText().isEmpty()
+						|| cbTipo.getSelectedItem() == null
+						|| dataCadastro.getToolTipText().isEmpty()
+						|| txtDataVencimento.getText().isEmpty()) {
 
-					String data  = ((JTextField)dataCadastro.getDateEditor().getUiComponent()).getText();
-					
-					motorista.setNome(txtNomeMotorista.getText());
-					motorista.setCnh(txtCNH.getText());
-					motorista.setTipo(cbTipo.getSelectedItem().toString());
-					motorista.setVencimento(txtDataVencimento.getText());
-					motorista.setDatacadastro(data);
-					try {
-						control.SalvarMotorista(motorista);
-					} catch (IOException e1) {
-						System.out.println("Arquivo não encontrado");
-						e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,
+							"Todos os campos devem ser preenchidos.");
+				} else {
+
+					/*
+					 * PERGUNTA AO USUÁRIO SE ELE TEM CERTEZA SE DESEJA GRAVAR
+					 * OS DADOS
+					 */
+
+					if (JOptionPane.showConfirmDialog(null,
+							"Deseja confirmar o cadastro do motorista?",
+							"WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+						
+						// GRAVA OS DADOS NO ARQUIVO CSV
+						String data = ((JTextField) dataCadastro
+								.getDateEditor().getUiComponent()).getText();
+						
+						motorista.setNome(txtNomeMotorista.getText());
+						motorista.setCnh(txtCNH.getText());
+						motorista.setTipo(cbTipo.getSelectedItem().toString());
+						motorista.setVencimento(txtDataVencimento.getText());
+						motorista.setDatacadastro(data);
+						try {
+							control.SalvarMotorista(motorista);
+						} catch (IOException e1) {
+							System.out.println("Arquivo não encontrado");
+							e1.printStackTrace();
+						}
+						
+						// LIMPA OS CAMPOS APÓS A GRAVAÇÃO
+						control.LimparCampos(txtNomeMotorista);
+						control.LimparTextArea(txtDescricao);
+						control.LimparCampos(txtDataVencimento);
+						control.LimparCampos(txtCNH);
+						control.LimparComboBox(cbTipo);
 					}
-					control.LimparCampos(txtNomeMotorista);
-					control.LimparTextArea(txtDescricao);
-					control.LimparCampos(txtDataVencimento);
-					control.LimparCampos(txtCNH);
-					control.LimparComboBox(cbTipo);
 				}
-
 			}
 		});
 		btnSalvar.setBounds(128, 459, 89, 23);
 		panel.add(btnSalvar);
 
+		// CRIAÇÃO DO BOTÃO LIMPAR CAMPOS
 		JButton btnLimpar = new JButton("Limpar");
 		btnLimpar.setBounds(244, 459, 89, 23);
 		btnLimpar.addActionListener(new ActionListener() {
@@ -198,15 +211,17 @@ public class FrmControleDeMotoristas extends JFrame {
 		});
 		panel.add(btnLimpar);
 
+		// CRIAÇÃO DO BOTÃO CANCELAR
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(357, 459, 89, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
+				frame.dispose(); // FECHA A TELA, SEM FECHAR O MENU PRINCIPAL
 			}
 		});
 		panel.add(btnCancelar);
 
+		// CRIAÇÃO DO BOTÃO PESQUISAR CNH
 		JButton pesquisarMotorista = new JButton("");
 		setAlwaysOnTop(true);
 		pesquisarMotorista.addActionListener(new ActionListener() {
@@ -227,5 +242,6 @@ public class FrmControleDeMotoristas extends JFrame {
 				.getResource("/images/pesquisar.png")));
 		pesquisarMotorista.setBounds(200, 82, 31, 22);
 		panel.add(pesquisarMotorista);
+		
 	}
 }
