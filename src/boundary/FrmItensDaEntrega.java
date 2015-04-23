@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 
 import com.toedter.calendar.JDateChooser;
 
+import control.ControlarCatalogo;
+import entity.Catalogo;
+
 import control.ControlarItens;
 import entity.Item;
 
@@ -29,7 +32,10 @@ public class FrmItensDaEntrega extends JFrame {
 	public ControlarItens control = new ControlarItens();
 	public Item item = new Item();
 	private JTextField textField;
-
+	public ControlarCatalogo controlCatalogo = new ControlarCatalogo();
+	public Catalogo catalogo = new Catalogo();
+	private JTextField textProd;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -76,11 +82,11 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_4 = new JLabel("N\u00FAmero nota fiscal");
-		lblNewLabel_4.setBounds(10, 106, 140, 14);
+		lblNewLabel_4.setBounds(10, 178, 140, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		final JTextArea textArea = new JTextArea();
-		textArea.setBounds(20, 305, 449, 201);
+		textArea.setBounds(20, 305, 449, 57);
 		contentPane.add(textArea);
 		
 		
@@ -93,7 +99,7 @@ public class FrmItensDaEntrega extends JFrame {
 				item = control.PesquisarItem(search);
 
 
-				textArea.setText("Nota Fiscal: " + item.getNota()+ "\nData da solicitaÃ§Ã£o: "+ item.getData() );		
+				textArea.setText("Nota Fiscal: " + item.getNota()+ "\nData solicitado: "+ item.getData() );		
 		//		textArea.setText(item.getData());
 			}
 
@@ -129,7 +135,7 @@ public class FrmItensDaEntrega extends JFrame {
 		catch (Exception e){
 		
 		}
-		txtNumeroNota.setBounds(179, 103, 160, 20);
+		txtNumeroNota.setBounds(179, 175, 160, 20);
 		contentPane.add(txtNumeroNota);
 		txtNumeroNota.setColumns(8);
 		
@@ -147,7 +153,7 @@ public class FrmItensDaEntrega extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if (JOptionPane.showConfirmDialog(null,
-						"Os itens estÃ£o certos?", "WARNING",
+						"Os itens estÃ£o corretos?", "AVISO",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
 					String data  = ((JTextField)dataCadastro.getDateEditor().getUiComponent()).getText();
@@ -185,15 +191,35 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(btnCancelar);
 		
 		JLabel lblNewLabel_1 = new JLabel("C\u00F3digo do Item");
-		lblNewLabel_1.setBounds(10, 178, 120, 14);
+		lblNewLabel_1.setBounds(10, 106, 120, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		textField = new JTextField();
-		textField.setBounds(179, 175, 160, 20);
+		textField.setBounds(179, 103, 160, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		
+		
+		textProd = new JTextField();
+		textProd.setBounds(25, 397, 429, 57);
+		contentPane.add(textProd);
+		textProd.setColumns(10);
+		
+		
+		JButton btnCod = new JButton("Buscar");
+		btnCod.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			String search = txtCodProduto.getText();
+			catalogo = controlCatalogo.PesquisarCatalogo(search);
+			
+				textProd.setText(String.valueOf(catalogo.getCodProduto()) + catalogo.getNome() + String.valueOf(catalogo.getPeso()) + String.valueOf(catalogo.getVolume()) + catalogo.getDescricao());
+			}
+		});
+		
+		btnCod.setBounds(355, 102, 89, 23);
+		contentPane.add(btnCod);
 		
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
