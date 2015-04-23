@@ -1,20 +1,6 @@
 package boundary;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.JTextComponent;
-import javax.swing.*;
-
-import control.ControlarItens;
-import com.toedter.calendar.JDateChooser;
-
-import entity.Item;
 
 
 public class FrmItensDaEntrega extends JFrame {
@@ -30,7 +16,6 @@ public class FrmItensDaEntrega extends JFrame {
 	public ControlarItens control = new ControlarItens();
 	public Item item = new Item();
 	private JTextField textField;
-	private JTextField textField2;
 
 	/**
 	 * Launch the application.
@@ -74,12 +59,17 @@ public class FrmItensDaEntrega extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_2 = new JLabel("Data solicita\u00E7\u00E3o do pedido");
-		lblNewLabel_2.setBounds(10, 141, 160, 14);
+		lblNewLabel_2.setBounds(10, 142, 160, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_4 = new JLabel("N\u00FAmero nota fiscal");
 		lblNewLabel_4.setBounds(10, 106, 140, 14);
 		contentPane.add(lblNewLabel_4);
+		
+		final JTextArea textArea = new JTextArea();
+		textArea.setBounds(20, 305, 449, 201);
+		contentPane.add(textArea);
+		
 		
 		JButton pesquisarItem = new JButton("Buscar");
 		setAlwaysOnTop(true);
@@ -90,8 +80,8 @@ public class FrmItensDaEntrega extends JFrame {
 				item = control.PesquisarItem(search);
 
 
-				textField.setText(item.getNota());			
-				textField2.setText(item.getData());
+				textArea.setText("Nota Fiscal: " + item.getNota()+ "\nData da solicitação: "+ item.getData() );		
+		//		textArea.setText(item.getData());
 			}
 
 		});
@@ -111,18 +101,6 @@ public class FrmItensDaEntrega extends JFrame {
 		
 		}
 		
-/*		txtDataSolicit = new JTextField();
-		try{
-			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##/##/####");
-			txtDataSolicit = new javax.swing.JFormattedTextField(nota);
-		}
-		catch (Exception e){
-		
-		}
-		txtDataSolicit.setBounds(178, 138, 120, 20);
-		contentPane.add(txtDataSolicit);
-		txtDataSolicit.setColumns(10);
-	*/	
 		txtQuant = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("####");
@@ -134,7 +112,6 @@ public class FrmItensDaEntrega extends JFrame {
 		txtNumeroNota = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
-			//txtNumeroNota = new javax.swing.JFormattedTextField(nota);
 		}
 		catch (Exception e){
 		
@@ -194,15 +171,15 @@ public class FrmItensDaEntrega extends JFrame {
 		btnCancelar.setBounds(365, 520, 89, 23);
 		contentPane.add(btnCancelar);
 		
+		JLabel lblNewLabel_1 = new JLabel("C\u00F3digo do Item");
+		lblNewLabel_1.setBounds(10, 178, 120, 14);
+		contentPane.add(lblNewLabel_1);
+		
 		textField = new JTextField();
-		textField.setBounds(20, 310, 366, 30);
+		textField.setBounds(179, 175, 160, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		textField2 = new JTextField();
-		textField2.setBounds(20, 360, 366, 30);
-		contentPane.add(textField2);
-		textField2.setColumns(10);
 		
 		
 		btnLimpar.addActionListener(new ActionListener() {
