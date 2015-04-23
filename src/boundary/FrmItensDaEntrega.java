@@ -1,10 +1,25 @@
 package boundary;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
+import javax.swing.*;
+
+import control.ControlarItens;
+import com.toedter.calendar.JDateChooser;
+
+import entity.Item;
 
 
 public class FrmItensDaEntrega extends JFrame {
 
+	protected static final JTextComponent dataCadastro = null;
 	private JPanel contentPane;
 	private JTextField txtCliente;
 	private JTextField txtCodProduto;
@@ -13,6 +28,9 @@ public class FrmItensDaEntrega extends JFrame {
 	private JTextField txtNumeroNota;
 	public JFrame frame;
 	public ControlarItens control = new ControlarItens();
+	public Item item = new Item();
+	private JTextField textField;
+	private JTextField textField2;
 
 	/**
 	 * Launch the application.
@@ -63,9 +81,22 @@ public class FrmItensDaEntrega extends JFrame {
 		lblNewLabel_4.setBounds(10, 106, 140, 14);
 		contentPane.add(lblNewLabel_4);
 		
-		JButton btnNewButton = new JButton("Buscar");
-		btnNewButton.setBounds(355, 66, 89, 23);
-		contentPane.add(btnNewButton);
+		JButton pesquisarItem = new JButton("Buscar");
+		setAlwaysOnTop(true);
+		pesquisarItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				String search = txtCliente.getText();
+				item = control.PesquisarItem(search);
+
+
+				textField.setText(item.getNota());			
+				textField2.setText(item.getData());
+			}
+
+		});
+		pesquisarItem.setBounds(355, 66, 89, 23);
+		contentPane.add(pesquisarItem);
 	
 		txtCliente = new JTextField();			
 		txtCliente.setBounds(179, 67, 160, 20);
@@ -103,25 +134,50 @@ public class FrmItensDaEntrega extends JFrame {
 		txtNumeroNota = new JTextField();
 		try{
 			javax.swing.text.MaskFormatter nota = new javax.swing.text.MaskFormatter("##########");
-			txtNumeroNota = new javax.swing.JFormattedTextField(nota);
+			//txtNumeroNota = new javax.swing.JFormattedTextField(nota);
 		}
 		catch (Exception e){
 		
 		}
 		txtNumeroNota.setBounds(179, 103, 160, 20);
 		contentPane.add(txtNumeroNota);
-		txtNumeroNota.setColumns(10);
+		txtNumeroNota.setColumns(8);
 		
 		final JDateChooser dataCadastro = new JDateChooser();
 		dataCadastro.setBounds(179, 137, 160, 21);
 		contentPane.add(dataCadastro);
 		
 		
-		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o dos itens:");
+		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o:");
 		lblNewLabel_5.setBounds(10, 280, 120, 14);
 		contentPane.add(lblNewLabel_5);
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (JOptionPane.showConfirmDialog(null,
+						"Os itens estão certos?", "WARNING",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+					String data  = ((JTextField)dataCadastro.getDateEditor().getUiComponent()).getText();
+					
+					item.setCliente(txtCliente.getText());
+					item.setNota(txtNumeroNota.getText());
+					item.setData(data);
+					try {
+						control.SalvarItem(item);
+					} catch (IOException e1) {
+						System.out.println("Arquivo não encontrado");
+						e1.printStackTrace();
+					}
+					control.LimparCampos(txtCliente);
+					control.LimparCampos(txtNumeroNota);
+					control.LimparCampos(dataCadastro);
+				}
+
+			}
+		});
 		btnSalvar.setBounds(22, 520, 89, 23);
 		contentPane.add(btnSalvar);
 		
@@ -138,9 +194,16 @@ public class FrmItensDaEntrega extends JFrame {
 		btnCancelar.setBounds(365, 520, 89, 23);
 		contentPane.add(btnCancelar);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 305, 484, 190);
-		contentPane.add(textArea);
+		textField = new JTextField();
+		textField.setBounds(20, 310, 366, 30);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		textField2 = new JTextField();
+		textField2.setBounds(20, 360, 366, 30);
+		contentPane.add(textField2);
+		textField2.setColumns(10);
+		
 		
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -149,7 +212,7 @@ public class FrmItensDaEntrega extends JFrame {
 			control.LimparCampos(txtDataSolicit);
 			control.LimparCampos(txtQuant);
 			control.LimparCampos(txtNumeroNota);
-			control.LimparData(dataCadastro);
+			control.LimparCampos(dataCadastro);
 	}
 
 		});
