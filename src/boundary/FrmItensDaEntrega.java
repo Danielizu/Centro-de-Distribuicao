@@ -1,20 +1,6 @@
 package boundary;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
-import com.toedter.calendar.JDateChooser;
-
-import control.ControlarItens;
 
 
 public class FrmItensDaEntrega extends JFrame {
@@ -62,27 +48,27 @@ public class FrmItensDaEntrega extends JFrame {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblNovaEntrega = new JLabel("Nova Entrega");
-		lblNovaEntrega.setBounds(30, 37, 80, 14);
+		lblNovaEntrega.setBounds(10, 26, 80, 14);
 		contentPane.add(lblNovaEntrega);
 		
 		JLabel lblNewLabel = new JLabel("Cliente");
-		lblNewLabel.setBounds(30, 78, 140, 20);
+		lblNewLabel.setBounds(10, 70, 140, 14);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_2 = new JLabel("Data solicita\u00E7\u00E3o do pedido");
-		lblNewLabel_2.setBounds(30, 149, 160, 20);
+		lblNewLabel_2.setBounds(10, 141, 160, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_4 = new JLabel("N\u00FAmero nota fiscal");
-		lblNewLabel_4.setBounds(30, 118, 140, 20);
+		lblNewLabel_4.setBounds(10, 106, 140, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		JButton btnNewButton = new JButton("Buscar");
-		btnNewButton.setBounds(364, 77, 89, 22);
+		btnNewButton.setBounds(355, 66, 89, 23);
 		contentPane.add(btnNewButton);
 	
 		txtCliente = new JTextField();			
-		txtCliente.setBounds(166, 78, 160, 20);
+		txtCliente.setBounds(179, 67, 160, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
 		
@@ -122,25 +108,25 @@ public class FrmItensDaEntrega extends JFrame {
 		catch (Exception e){
 		
 		}
-		txtNumeroNota.setBounds(166, 118, 160, 20);
+		txtNumeroNota.setBounds(179, 103, 160, 20);
 		contentPane.add(txtNumeroNota);
 		txtNumeroNota.setColumns(10);
 		
 		final JDateChooser dataCadastro = new JDateChooser();
-		dataCadastro.setBounds(166, 148, 160, 21);
+		dataCadastro.setBounds(179, 137, 160, 21);
 		contentPane.add(dataCadastro);
 		
 		
 		JLabel lblNewLabel_5 = new JLabel("Descri\u00E7\u00E3o dos itens:");
-		lblNewLabel_5.setBounds(30, 281, 120, 14);
+		lblNewLabel_5.setBounds(10, 280, 120, 14);
 		contentPane.add(lblNewLabel_5);
 		
 		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(156, 520, 89, 23);
+		btnSalvar.setBounds(22, 520, 89, 23);
 		contentPane.add(btnSalvar);
 		
 		JButton btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(272, 520, 89, 23);
+		btnLimpar.setBounds(195, 520, 89, 23);
 		contentPane.add(btnLimpar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -149,12 +135,11 @@ public class FrmItensDaEntrega extends JFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setBounds(387, 520, 89, 23);
+		btnCancelar.setBounds(365, 520, 89, 23);
 		contentPane.add(btnCancelar);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setBounds(73, 305, 403, 190);
+		textArea.setBounds(10, 305, 484, 190);
 		contentPane.add(textArea);
 		
 		btnLimpar.addActionListener(new ActionListener() {

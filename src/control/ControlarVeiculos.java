@@ -20,7 +20,7 @@ public class ControlarVeiculos implements limparTela {
 
 	/** METODO DE SALVAR VEICULO */
 	public int SalvarVeiculo(Veiculo veiculo) throws IOException {
-		File arquivoVeiculo = new File("Arquivos/Veiculo.csv");
+		File arquivoVeiculo = new File("Veiculo.csv");
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(veiculo.getPlaca());
@@ -74,11 +74,10 @@ public class ControlarVeiculos implements limparTela {
 	public void LimparTextArea(JTextArea texto) {
 		texto.setText(null);
 	}
-	
-	/** METODO PARA PESQUISAR A PLACA */
+
 	public Veiculo PesquisarPlaca(String pesquisa) {
 
-		String arquivoCSV = "Arquivos/Veiculo.csv";
+		String arquivoCSV = "Veiculo.csv";
 		BufferedReader br = null;
 		String linha = "";
 		String csvDivisor = ";";
