@@ -16,7 +16,10 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -219,7 +222,16 @@ public class FrmControleDeMotoristas extends JFrame {
 				txtCNH.setText(motorista.getCnh());
 				cbTipo.setSelectedItem(motorista.getTipo());
 				txtDataVencimento.setText(motorista.getVencimento());
-				dataCadastro.setToolTipText(motorista.getDatacadastro());
+				
+				String data = motorista.getDatacadastro();
+				DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				Date date = null;
+				try {
+					date = (Date) formatter.parse(data);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				dataCadastro.setDate(date);
 			}
 
 		});
